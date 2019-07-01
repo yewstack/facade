@@ -12,6 +12,7 @@ const PORT_DEF: &str = "12400";
 pub async fn main() -> Result<(), Error> {
     let port: u16 = env::var(PORT_VAR).unwrap_or(PORT_DEF.to_string()).parse()?;
     let addr = ([127, 0, 0, 1], port).into();
+    log::debug!("Starting RillRate with address: {}", addr);
     let make_service = || {
         service_fn_ok(|_req| {
             Response::new(Body::from("Hello World"))
