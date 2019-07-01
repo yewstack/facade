@@ -16,3 +16,6 @@ version = "0.1.28"
 package = "futures-preview"
 version = "=0.3.0-alpha.16"
 features = ["async-await", "nightly", "compat"]
+
+[build-dependencies]
+failure = "0.1.5"
