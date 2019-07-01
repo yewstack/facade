@@ -7,3 +7,13 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+failure = "0.1.5"
+hyper = "0.12.31"
+
+[dependencies.futures]
+version = "0.1.28"
+
+[dependencies.futures3]
+package = "futures-preview"
+version = "=0.3.0-alpha.16"
+features = ["async-await", "nightly", "compat"]
