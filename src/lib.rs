@@ -3,18 +3,18 @@
 use failure::{format_err, Error};
 use flate2::read::GzDecoder;
 use futures::Stream;
-use futures3::{StreamExt, TryFutureExt};
 use futures3::compat::{Compat, Future01CompatExt, Sink01CompatExt, Stream01CompatExt};
+use futures3::{StreamExt, TryFutureExt};
 use headers::{ContentType, HeaderMapExt};
+use std::collections::HashMap;
 use std::env;
 use std::io::Read;
-use std::collections::HashMap;
 use tar::Archive;
+use warp::filters::ws::WebSocket;
 use warp::http::{StatusCode, Uri};
-use warp::Filter;
 use warp::path::Tail;
 use warp::reply::Reply;
-use warp::filters::ws::WebSocket;
+use warp::Filter;
 
 const PORT_VAR: &str = "RILLRATE_PORT";
 const PORT_DEF: &str = "12400";
@@ -24,8 +24,7 @@ pub async fn process_ws(websocket: WebSocket) -> Result<(), Error> {
     let (tx, rx) = websocket.split();
     let _tx = tx.sink_compat();
     let mut rx = rx.compat();
-    while let Some(_msg) = rx.next().await {
-    }
+    while let Some(_msg) = rx.next().await {}
     Ok(())
 }
 
@@ -49,8 +48,7 @@ pub async fn main() -> Result<(), Error> {
         }
     }
 
-    let index = warp::path::end()
-        .map(|| warp::redirect(Uri::from_static("/index.html")));
+    let index = warp::path::end().map(|| warp::redirect(Uri::from_static("/index.html")));
 
     let live = warp::path("live")
         .and(warp::ws2())
@@ -61,21 +59,24 @@ pub async fn main() -> Result<(), Error> {
             })
         });
 
-    let assets = warp::path::tail()
-        .map(move |tail: Tail| {
-            log::trace!("req: {}", tail.as_str());
-            let mime = mime_guess::guess_mime_type(tail.as_str());
-            let mut resp = files.get(tail.as_str())
-                .map(|data| data.clone().into_response())
-                .unwrap_or_else(|| StatusCode::NOT_FOUND.into_response());
-            resp.headers_mut().typed_insert(ContentType::from(mime));
-            resp
-        });
+    let assets = warp::path::tail().map(move |tail: Tail| {
+        log::trace!("req: {}", tail.as_str());
+        let mime = mime_guess::guess_mime_type(tail.as_str());
+        let mut resp = files
+            .get(tail.as_str())
+            .map(|data| data.clone().into_response())
+            .unwrap_or_else(|| StatusCode::NOT_FOUND.into_response());
+        resp.headers_mut().typed_insert(ContentType::from(mime));
+        resp
+    });
 
     let routes = index.or(live).or(assets);
 
     let port: u16 = env::var(PORT_VAR).unwrap_or(PORT_DEF.to_string()).parse()?;
-    warp::serve(routes).bind(([127, 0, 0, 1], port)).compat().await
+    warp::serve(routes)
+        .bind(([127, 0, 0, 1], port))
+        .compat()
+        .await
         .or_else(|_| Err(format_err!("server error")))?;
     Ok(())
 }

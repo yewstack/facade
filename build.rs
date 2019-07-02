@@ -28,7 +28,8 @@ fn main() -> Result<(), Error> {
 
     let out_path = PathBuf::from(env::var("OUT_DIR")?);
     let tar_path = out_path.join("ui.tar.gz");
-    let tar_path = tar_path.to_str()
+    let tar_path = tar_path
+        .to_str()
         .ok_or_else(|| format_err!("can't create path to archive"))?;
     Command::new("tar")
         .args(&["-cvzf", tar_path, "-C", "target/deploy", "."])
