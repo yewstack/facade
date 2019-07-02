@@ -8,10 +8,7 @@ pub enum Action {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Reaction {
     Layout(Layout),
-    Assing {
-        id: Id,
-        value: Value,
-    },
+    Assign(Dynamic),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -19,7 +16,7 @@ pub enum Layout {
     // TODO Add widgets
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Id(String);
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
