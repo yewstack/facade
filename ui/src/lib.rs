@@ -1,6 +1,7 @@
 use yew::{html, Component, ComponentLink, Html, Renderable, ShouldRender};
 
 pub struct Model {
+    counter: u64,
 }
 
 pub enum Msg {
@@ -12,12 +13,15 @@ impl Component for Model {
     type Properties = ();
 
     fn create(_: Self::Properties, _: ComponentLink<Self>) -> Self {
-        Model { }
+        Model {
+            counter: 0,
+        }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::Click => {
+                self.counter += 1;
             }
         }
         true
@@ -29,6 +33,7 @@ impl Renderable<Model> for Model {
         html! {
             <div>
                 <button onclick=|_| Msg::Click,>{ "Click" }</button>
+                <p>{ format!("Counter: {}", self.counter) }</p>
             </div>
         }
     }
