@@ -9,7 +9,10 @@ use std::env;
 use std::io::Read;
 use std::collections::HashMap;
 use tar::Archive;
+use warp::http::StatusCode;
 use warp::Filter;
+use warp::path::Tail;
+use warp::reply::Reply;
 use warp::filters::ws::WebSocket;
 
 const PORT_VAR: &str = "RILLRATE_PORT";
@@ -32,13 +35,15 @@ pub async fn main() -> Result<(), Error> {
     for entry in archive.entries()? {
         let mut entry = entry?;
         let mut data = Vec::new();
+        entry.read_to_end(&mut data)?;
         if data.len() > 0 {
-            entry.read_to_end(&mut data)?;
             let name = entry
                 .path()?
                 .to_str()
+                .map(|s| &s[2..])
                 .ok_or_else(|| format_err!("can't get path from static srchaive"))?
                 .to_owned();
+            log::trace!("Register asset file: {}", name);
             files.insert(name, data);
         }
     }
@@ -52,7 +57,17 @@ pub async fn main() -> Result<(), Error> {
             })
         });
     let index = warp::path::end().map(|| warp::reply::html("RillRate"));
-    let routes = index.or(live);
+
+    let assets = warp::path::tail()
+        .map(move |tail: Tail| {
+            log::trace!("req: {}", tail.as_str());
+            files.get(tail.as_str())
+                .map(|data| data.clone().into_response())
+                .unwrap_or_else(|| StatusCode::NOT_FOUND.into_response())
+        });
+
+    let routes = index.or(live).or(assets);
+
     let port: u16 = env::var(PORT_VAR).unwrap_or(PORT_DEF.to_string()).parse()?;
     warp::serve(routes).bind(([127, 0, 0, 1], port)).compat().await;
     Ok(())
