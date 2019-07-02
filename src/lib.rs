@@ -4,13 +4,14 @@ use failure::{format_err, Error};
 use flate2::read::GzDecoder;
 use futures::Stream;
 use futures3::compat::{Compat, Future01CompatExt, Sink01CompatExt, Stream01CompatExt};
-use futures3::{StreamExt, TryFutureExt};
+use futures3::{SinkExt, StreamExt, TryFutureExt};
 use headers::{ContentType, HeaderMapExt};
+use protocol::{Action, Layout, Reaction};
 use std::collections::HashMap;
 use std::env;
 use std::io::Read;
 use tar::Archive;
-use warp::filters::ws::WebSocket;
+use warp::filters::ws::{Message, WebSocket};
 use warp::http::{StatusCode, Uri};
 use warp::path::Tail;
 use warp::reply::Reply;
@@ -22,9 +23,19 @@ const DATA: &'static [u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ui.tar.gz"
 
 pub async fn process_ws(websocket: WebSocket) -> Result<(), Error> {
     let (tx, rx) = websocket.split();
-    let _tx = tx.sink_compat();
+
+    let mut tx = tx.sink_compat();
+    let notification = Reaction::Layout(Layout::Blank);
+    let text = serde_json::to_string(&notification)?;
+    let msg = Message::text(text);
+    tx.send(msg).await?;
+
     let mut rx = rx.compat();
-    while let Some(_msg) = rx.next().await {}
+    while let Some(msg) = rx.next().await.transpose()? {
+        let text = msg.to_str().map_err(|_| format_err!("WebSocket message doesn't contain text"))?;
+        let action: Action = serde_json::from_str(text)?;
+        log::debug!("Action: {:?}", action);
+    }
     Ok(())
 }
 

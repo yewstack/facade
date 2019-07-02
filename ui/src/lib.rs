@@ -1,7 +1,7 @@
 mod live;
 mod widgets;
 
-use crate::live::Requirement;
+use crate::live::{Requirement, ResponseEvt};
 use std::collections::HashSet;
 use widgets::{Widget, WidgetModel};
 
@@ -20,5 +20,9 @@ impl Default for LayoutWidget {
 impl Widget for LayoutWidget {
     fn requirements(&self) -> HashSet<Requirement> {
         vec![Requirement::LayoutChange].into_iter().collect()
+    }
+
+    fn handle_incoming(&mut self, event: ResponseEvt) {
+        log::info!("Recieved: {:?}", event);
     }
 }

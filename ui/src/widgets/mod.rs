@@ -4,7 +4,7 @@ use yew::{html, Bridge, Bridged, Component, ComponentLink, Html, Renderable, Sho
 
 pub trait Widget: Default + 'static {
     fn requirements(&self) -> HashSet<Requirement>;
-    //fn handle_incoming(&mut self, event: ResponseEvt);
+    fn handle_incoming(&mut self, event: ResponseEvt);
     //fn main_view(&self) -> Html<WidgetModel<Self>>;
 }
 
@@ -36,6 +36,7 @@ impl<T: Widget> Component for WidgetModel<T> {
         match msg {
             Msg::Incoming(event) => {
                 log::trace!("Incioming event: {:?}", event);
+                self.widget.handle_incoming(event);
                 true
             }
         }
