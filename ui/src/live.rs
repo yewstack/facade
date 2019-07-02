@@ -1,5 +1,5 @@
 use failure::Error;
-use protocol::{Request, Response};
+use protocol::{Action, Reaction};
 use serde_derive::{Deserialize, Serialize};
 use yew::agent::{Agent, AgentLink, Context, HandlerId, Transferable};
 use yew::format::Json;
@@ -12,7 +12,7 @@ pub struct Live {
 }
 
 pub enum Msg {
-    Received(Result<Response, Error>),
+    Received(Result<Reaction, Error>),
     StatusChanged(WebSocketStatus),
 }
 
