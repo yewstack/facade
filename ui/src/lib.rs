@@ -1,19 +1,27 @@
-use yew::{html, Component, ComponentLink, Html, Renderable, ShouldRender};
+mod live;
+
+use live::{Live, ResponseEvt};
+use yew::{html, Bridge, Bridged, Component, ComponentLink, Html, Renderable, ShouldRender};
 
 pub struct Model {
+    connection: Box<dyn Bridge<Live>>,
     counter: u64,
 }
 
 pub enum Msg {
     Click,
+    Event(ResponseEvt),
 }
 
 impl Component for Model {
     type Message = Msg;
     type Properties = ();
 
-    fn create(_: Self::Properties, _: ComponentLink<Self>) -> Self {
+    fn create(_: Self::Properties, mut link: ComponentLink<Self>) -> Self {
+        let callback = link.send_back(Msg::Event);
+        let connection = Live::bridge(callback);
         Model {
+            connection,
             counter: 0,
         }
     }
@@ -22,6 +30,8 @@ impl Component for Model {
         match msg {
             Msg::Click => {
                 self.counter += 1;
+            }
+            Msg::Event(_) => {
             }
         }
         true
