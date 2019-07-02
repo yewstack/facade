@@ -24,6 +24,8 @@ pub enum Reaction {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Layout {
     Widget(Widget),
+    Row(Vec<Layout>),
+    Column(Vec<Layout>),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

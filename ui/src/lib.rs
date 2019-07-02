@@ -1,50 +1,24 @@
 mod live;
+mod widgets;
 
-use live::{Live, ResponseEvt};
-use yew::{html, Bridge, Bridged, Component, ComponentLink, Html, Renderable, ShouldRender};
+use crate::live::Requirement;
+use std::collections::HashSet;
+use widgets::{Widget, WidgetModel};
 
-pub struct Model {
-    connection: Box<dyn Bridge<Live>>,
-    counter: u64,
+pub type Model = WidgetModel<LayoutWidget>;
+
+pub struct LayoutWidget {
 }
 
-pub enum Msg {
-    Click,
-    Event(ResponseEvt),
-}
-
-impl Component for Model {
-    type Message = Msg;
-    type Properties = ();
-
-    fn create(_: Self::Properties, mut link: ComponentLink<Self>) -> Self {
-        let callback = link.send_back(Msg::Event);
-        let connection = Live::bridge(callback);
-        Model {
-            connection,
-            counter: 0,
+impl Default for LayoutWidget {
+    fn default() -> Self {
+        Self {
         }
     }
-
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        match msg {
-            Msg::Click => {
-                self.counter += 1;
-            }
-            Msg::Event(_) => {
-            }
-        }
-        true
-    }
 }
 
-impl Renderable<Model> for Model {
-    fn view(&self) -> Html<Self> {
-        html! {
-            <div>
-                <button onclick=|_| Msg::Click,>{ "Click" }</button>
-                <p>{ format!("Counter: {}", self.counter) }</p>
-            </div>
-        }
+impl Widget for LayoutWidget {
+    fn requirements(&self) -> HashSet<Requirement> {
+        vec![Requirement::LayoutChange].into_iter().collect()
     }
 }

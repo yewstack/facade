@@ -21,5 +21,9 @@ package = "futures-preview"
 version = "=0.3.0-alpha.16"
 features = ["async-await", "nightly", "compat"]
 
+[dependencies.protocol]
+package = "rillrate-protocol"
+path = "protocol"
+
 [build-dependencies]
 failure = "0.1.5"

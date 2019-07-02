@@ -8,7 +8,7 @@ use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask}
 
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum Interest {
+pub enum Requirement {
     LayoutChange,
     AssignUpdate(Id),
 }
@@ -21,7 +21,7 @@ pub enum Msg {
 #[derive(Serialize, Deserialize, Debug)]
 pub enum RequestEvt {
     /// Pass empty `HashSet` to unsubscribe.
-    Listen(HashSet<Interest>),
+    Listen(HashSet<Requirement>),
     Action(Action),
 }
 
@@ -34,15 +34,15 @@ pub enum ResponseEvt {
 
 impl Transferable for ResponseEvt {}
 
-pub struct Live {
+pub struct LiveAgent {
     link: AgentLink<Self>,
     connection: WebSocketTask,
-    /// This field keeps all `Interest` values required by a listener.
-    interests: HashMap<HandlerId, HashSet<Interest>>,
-    listeners: HashMap<Interest, HashSet<HandlerId>>,
+    /// This field keeps all `Requirement` values required by a listener.
+    subscriptions: HashMap<HandlerId, HashSet<Requirement>>,
+    listeners: HashMap<Requirement, HashSet<HandlerId>>,
 }
 
-impl Agent for Live {
+impl Agent for LiveAgent {
     type Reach = Context;
     type Message = Msg;
     type Input = RequestEvt;
@@ -59,7 +59,7 @@ impl Agent for Live {
         Self {
             link,
             connection,
-            interests: HashMap::new(),
+            subscriptions: HashMap::new(),
             listeners: HashMap::new(),
         }
     }
@@ -71,7 +71,7 @@ impl Agent for Live {
         match request {
             RequestEvt::Listen(new_listen_set) => {
                 // It's important to remove all existent values and refresh with new
-                let original_set = self.interests.remove(&who);
+                let original_set = self.subscriptions.remove(&who);
                 if let Some(to_remove) = original_set {
                     // Unsubscribe all, because if a client subscribes again
                     // we have to resend all updates again.
@@ -93,7 +93,7 @@ impl Agent for Live {
                             .insert(who);
                         self.send_data_to(requirement.clone(), who);
                     }
-                    self.interests.insert(who, new_listen_set);
+                    self.subscriptions.insert(who, new_listen_set);
 }
             }
             RequestEvt::Action(action) => {
@@ -103,12 +103,12 @@ impl Agent for Live {
     }
 }
 
-impl Live {
+impl LiveAgent {
     fn send_interaction(&mut self, action: Action) {
         self.connection.send(Json(&action));
     }
 
-    fn send_data_to(&mut self, interest: Interest, who: HandlerId) {
+    fn send_data_to(&mut self, requirement: Requirement, who: HandlerId) {
         // TODO: Send actual values from a data-board
     }
 }
