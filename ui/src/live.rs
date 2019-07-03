@@ -1,5 +1,5 @@
 use failure::Error;
-use protocol::{Action, Id, Reaction};
+use protocol::{Action, Id, Layout, Reaction, Value};
 use serde_derive::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use yew::agent::{Agent, AgentLink, Context, HandlerId, Transferable};
@@ -40,6 +40,8 @@ pub struct LiveAgent {
     /// This field keeps all `Requirement` values required by a listener.
     subscriptions: HashMap<HandlerId, HashSet<Requirement>>,
     listeners: HashMap<Requirement, HashSet<HandlerId>>,
+    layout: Layout,
+    board: HashMap<Id, Value>,
 }
 
 impl Agent for LiveAgent {
@@ -61,6 +63,8 @@ impl Agent for LiveAgent {
             connection,
             subscriptions: HashMap::new(),
             listeners: HashMap::new(),
+            layout: Layout::Blank,
+            board: HashMap::new(),
         }
     }
 
@@ -109,6 +113,21 @@ impl LiveAgent {
     }
 
     fn send_data_to(&mut self, requirement: Requirement, who: HandlerId) {
-        // TODO: Send actual values from a data-board
+        let reaction = {
+            match requirement {
+                Requirement::LayoutChange => {
+                    let layout = self.layout.clone();
+                    Some(Reaction::Layout(layout))
+                }
+                Requirement::AssignUpdate(id) => {
+                    self.board.get(&id).cloned()
+                        .map(|value| Reaction::Assign { id, value })
+                }
+            }
+        };
+        if let Some(reaction) = reaction {
+            let response = ResponseEvt::Reaction(reaction);
+            self.link.response(who, response);
+        }
     }
 }
