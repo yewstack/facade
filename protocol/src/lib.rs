@@ -15,10 +15,8 @@ pub enum Kind {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Reaction {
     Layout(Layout),
-    Assign {
-        id: Id,
-        value: Value,
-    },
+    Snapshot(Vec<Update>),
+    Delta(Update),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -44,4 +42,10 @@ pub struct Id(String);
 pub enum Value {
     String(String),
     Decimal(BigDecimal),
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Update {
+    pub id: Id,
+    pub value: Value,
 }

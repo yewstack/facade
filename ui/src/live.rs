@@ -1,5 +1,5 @@
 use failure::Error;
-use protocol::{Action, Id, Layout, Reaction, Value};
+use protocol::{Action, Id, Layout, Reaction, Update, Value};
 use serde_derive::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use yew::agent::{Agent, AgentLink, Context, HandlerId, Transferable};
@@ -121,7 +121,9 @@ impl LiveAgent {
                 }
                 Requirement::AssignUpdate(id) => {
                     self.board.get(&id).cloned()
-                        .map(|value| Reaction::Assign { id, value })
+                        .map(|value| {
+                            Reaction::Delta(Update { id, value })
+                        })
                 }
             }
         };

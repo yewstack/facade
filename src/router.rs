@@ -2,7 +2,8 @@ use failure::Error;
 use futures3::channel::mpsc;
 use futures3::stream::select;
 use futures3::{SinkExt, StreamExt};
-use protocol::{Layout, Reaction};
+use protocol::{Layout, Reaction, Update};
+use std::collections::HashMap;
 
 pub fn channel() -> (Sender, Receiver) {
     let (tx, rx) = mpsc::channel(8);
@@ -32,6 +33,7 @@ pub struct Receiver {
 pub enum Request {
     Subscribe(mpsc::Sender<Response>),
     SetLayout(Layout),
+    SetValue(Update),
 }
 
 #[derive(Clone)]
@@ -41,6 +43,7 @@ pub enum Response {
 
 pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
     let mut subscribers = Vec::new();
+    let mut board = HashMap::new();
     let mut layout = Layout::Welcome;
     while let Some(request) = receiver.rx.next().await {
         let mut drain_all = false;
@@ -60,6 +63,9 @@ pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
                 for sender in &mut subscribers {
                     drain_all |= sender.send(response.clone()).await.is_err();
                 }
+            }
+            Request::SetValue(value) => {
+                board.insert(value.id, value.value);
             }
         }
         if drain_all {
