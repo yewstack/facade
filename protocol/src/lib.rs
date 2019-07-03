@@ -36,7 +36,7 @@ pub enum Widget {
     Action(Id),
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Id(String);
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

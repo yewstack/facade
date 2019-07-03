@@ -1,5 +1,7 @@
 #![feature(async_await)]
 
+mod router;
+
 use failure::{format_err, Error};
 use flate2::read::GzDecoder;
 use futures::Stream;
@@ -32,7 +34,9 @@ pub async fn process_ws(websocket: WebSocket) -> Result<(), Error> {
 
     let mut rx = rx.compat();
     while let Some(msg) = rx.next().await.transpose()? {
-        let text = msg.to_str().map_err(|_| format_err!("WebSocket message doesn't contain text"))?;
+        let text = msg
+            .to_str()
+            .map_err(|_| format_err!("WebSocket message doesn't contain text"))?;
         let action: Action = serde_json::from_str(text)?;
         log::debug!("Action: {:?}", action);
     }
