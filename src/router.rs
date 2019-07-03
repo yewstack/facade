@@ -4,6 +4,31 @@ use futures3::stream::select;
 use futures3::{SinkExt, StreamExt};
 use protocol::{Layout, Reaction};
 
+pub fn channel() -> (Sender, Receiver) {
+    let (tx, rx) = mpsc::channel(8);
+    let sender = Sender { tx };
+    let receiver = Receiver { rx };
+    (sender, receiver)
+}
+
+#[derive(Clone)]
+pub struct Sender {
+    tx: mpsc::Sender<Request>,
+}
+
+impl Sender {
+    pub async fn register(&mut self) -> Result<mpsc::Receiver<Response>, Error> {
+        let (tx, rx) = mpsc::channel(8);
+        let request = Request::Subscribe(tx);
+        self.tx.send(request).await?;
+        Ok(rx)
+    }
+}
+
+pub struct Receiver {
+    rx: mpsc::Receiver<Request>,
+}
+
 pub enum Request {
     Subscribe(mpsc::Sender<Response>),
     SetLayout(Layout),
@@ -14,14 +39,10 @@ pub enum Response {
     Reaction(Reaction),
 }
 
-pub struct Router {
-    rx: mpsc::Receiver<Request>,
-}
-
-pub async fn router(mut router: Router) -> Result<(), Error> {
+pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
     let mut subscribers = Vec::new();
     let mut layout = None;
-    while let Some(request) = router.rx.next().await {
+    while let Some(request) = receiver.rx.next().await {
         let mut drain_all = false;
         match request {
             Request::Subscribe(mut sender) => {
