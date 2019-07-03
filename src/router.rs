@@ -41,24 +41,22 @@ pub enum Response {
 
 pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
     let mut subscribers = Vec::new();
-    let mut layout = None;
+    let mut layout = Layout::Welcome;
     while let Some(request) = receiver.rx.next().await {
         let mut drain_all = false;
         match request {
             Request::Subscribe(mut sender) => {
                 // Send layout to a new subscriber
-                if let Some(layout) = layout.clone() {
-                    let reaction = Reaction::Layout(layout);
-                    let response = Response::Reaction(reaction);
-                    drain_all |= sender.send(response).await.is_err();
-                }
+                let reaction = Reaction::Layout(layout.clone());
+                let response = Response::Reaction(reaction);
+                drain_all |= sender.send(response).await.is_err();
                 subscribers.push(sender);
             }
             Request::SetLayout(new_layout) => {
                 // Send new_layout to every subscriber
-                let reaction = Reaction::Layout(new_layout.clone());
+                layout = new_layout;
+                let reaction = Reaction::Layout(layout.clone());
                 let response = Response::Reaction(reaction);
-                layout = Some(new_layout);
                 for sender in &mut subscribers {
                     drain_all |= sender.send(response.clone()).await.is_err();
                 }

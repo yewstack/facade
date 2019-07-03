@@ -21,10 +21,11 @@ const PORT_VAR: &str = "RILLRATE_PORT";
 const PORT_DEF: &str = "12400";
 const DATA: &'static [u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ui.tar.gz"));
 
-pub async fn process_ws(router: router::Sender, websocket: WebSocket) -> Result<(), Error> {
+pub async fn process_ws(mut router: router::Sender, websocket: WebSocket) -> Result<(), Error> {
     let (tx, rx) = websocket.split();
 
-    // TODO Register itself to router
+    let router_rx = router.register().await?;
+    // TODO Read router_rx and send Reactions to a connected client
 
     let mut tx = tx.sink_compat();
     let notification = Reaction::Layout(Layout::Blank);
