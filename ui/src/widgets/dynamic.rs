@@ -3,13 +3,11 @@ use yew::html;
 
 pub type Dynamic = WidgetModel<Model>;
 
-pub struct Model {
-}
+pub struct Model {}
 
 impl Default for Model {
     fn default() -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 

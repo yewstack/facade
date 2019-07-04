@@ -1,11 +1,10 @@
 use failure::Error;
-use protocol::{Action, Id, Layout, Reaction, Delta, Value};
+use protocol::{Action, Delta, Id, Layout, Reaction, Value};
 use serde_derive::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use yew::agent::{Agent, AgentLink, Context, HandlerId, Transferable};
 use yew::format::Json;
 use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
-
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Requirement {
@@ -101,7 +100,7 @@ impl Agent for LiveAgent {
                     log::info!("CONNECTED!");
                 }
                 _ => {}
-            }
+            },
         }
     }
 
@@ -132,7 +131,7 @@ impl Agent for LiveAgent {
                         self.send_data_to(requirement.clone(), who);
                     }
                     self.subscriptions.insert(who, new_listen_set);
-}
+                }
             }
             RequestEvt::Action(action) => {
                 self.send_interaction(action);
@@ -158,12 +157,11 @@ impl LiveAgent {
                     let layout = self.layout.clone();
                     Some(Reaction::Layout(layout))
                 }
-                Requirement::AssignUpdate(id) => {
-                    self.board.get(&id).cloned()
-                        .map(|value| {
-                            Reaction::Delta(Delta { id, value })
-                        })
-                }
+                Requirement::AssignUpdate(id) => self
+                    .board
+                    .get(&id)
+                    .cloned()
+                    .map(|value| Reaction::Delta(Delta { id, value })),
             }
         };
         if let Some(reaction) = reaction {

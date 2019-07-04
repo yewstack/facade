@@ -45,25 +45,23 @@ impl Widget for Model {
                     <p>{ "Welcome" }</p>
                 }
             }
-            Layout::Widget(ref widget) => {
-                match widget {
-                    Widget::Dynamic(id) => {
-                        html! {
-                            <widgets::Dynamic: />
-                        }
-                    }
-                    Widget::Fixed(value) => {
-                        html! {
-                            <widgets::Fixed: />
-                        }
-                    }
-                    Widget::Button(id) => {
-                        html! {
-                            <widgets::Button: />
-                        }
+            Layout::Widget(ref widget) => match widget {
+                Widget::Dynamic(id) => {
+                    html! {
+                        <widgets::Dynamic: />
                     }
                 }
-            }
+                Widget::Fixed(value) => {
+                    html! {
+                        <widgets::Fixed: />
+                    }
+                }
+                Widget::Button(id) => {
+                    html! {
+                        <widgets::Button: />
+                    }
+                }
+            },
             Layout::Row(_) => {
                 html! {
                     <p>{ "Row" }</p>

@@ -1,5 +1,5 @@
 use bigdecimal::BigDecimal;
-use serde_derive::{Serialize, Deserialize};
+use serde_derive::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Action {

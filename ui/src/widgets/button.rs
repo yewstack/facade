@@ -3,13 +3,11 @@ use yew::html;
 
 pub type Button = WidgetModel<Model>;
 
-pub struct Model {
-}
+pub struct Model {}
 
 impl Default for Model {
     fn default() -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
@@ -20,4 +18,3 @@ impl Widget for Model {
         }
     }
 }
-

@@ -1,4 +1,4 @@
-use crate::live::{LiveAgent, Requirement, RequestEvt, ResponseEvt};
+use crate::live::{LiveAgent, RequestEvt, Requirement, ResponseEvt};
 use std::collections::HashSet;
 use yew::{Bridge, Bridged, Component, ComponentLink, Html, Renderable, ShouldRender};
 
@@ -6,8 +6,12 @@ pub type Reqs = HashSet<Requirement>;
 pub type View<T> = Html<WidgetModel<T>>;
 
 pub trait Widget: Default + 'static {
-    fn requirements(&self) -> Reqs { Reqs::new() }
-    fn handle_incoming(&mut self, _event: ResponseEvt) -> ShouldRender { false }
+    fn requirements(&self) -> Reqs {
+        Reqs::new()
+    }
+    fn handle_incoming(&mut self, _event: ResponseEvt) -> ShouldRender {
+        false
+    }
     fn main_view(&self) -> View<Self>;
 }
 
