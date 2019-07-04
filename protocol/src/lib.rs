@@ -15,8 +15,7 @@ pub enum Kind {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Reaction {
     Layout(Layout),
-    Snapshot(Vec<Update>),
-    Delta(Update),
+    Delta(Delta),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -45,7 +44,13 @@ pub enum Value {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Update {
+pub struct Delta {
     pub id: Id,
     pub value: Value,
+}
+
+impl From<(Id, Value)> for Delta {
+    fn from((id, value): (Id, Value)) -> Self {
+        Self { id, value }
+    }
 }

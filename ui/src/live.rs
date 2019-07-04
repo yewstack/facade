@@ -1,5 +1,5 @@
 use failure::Error;
-use protocol::{Action, Id, Layout, Reaction, Update, Value};
+use protocol::{Action, Id, Layout, Reaction, Delta, Value};
 use serde_derive::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use yew::agent::{Agent, AgentLink, Context, HandlerId, Transferable};
@@ -11,6 +11,15 @@ use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask}
 pub enum Requirement {
     LayoutChange,
     AssignUpdate(Id),
+}
+
+impl From<Reaction> for Requirement {
+    fn from(reaction: Reaction) -> Self {
+        match reaction {
+            Reaction::Layout(_) => Requirement::LayoutChange,
+            Reaction::Delta(Delta { id, .. }) => Requirement::AssignUpdate(id),
+        }
+    }
 }
 
 pub enum Msg {
@@ -69,6 +78,29 @@ impl Agent for LiveAgent {
     }
 
     fn update(&mut self, msg: Self::Message) {
+        match msg {
+            Msg::Received(Ok(event)) => {
+                //log::trace!("Warehouse reveiced: {:?}", event);
+                let requirement = event.clone().into();
+                match event {
+                    Reaction::Layout(layout) => {
+                    }
+                    Reaction::Delta(delta) => {
+                        log::trace!("Delta: {:?}", delta);
+                        self.apply_delta(delta);
+                        self.send_data_for(requirement);
+                    }
+                }
+                //self.send_to_all(event);
+            }
+            Msg::Received(Err(_)) => {}
+            Msg::StatusChanged(status) => match status {
+                WebSocketStatus::Opened => {
+                    log::info!("CONNECTED!");
+                }
+                _ => {}
+            }
+        }
     }
 
     fn handle(&mut self, request: Self::Input, who: HandlerId) {
@@ -108,6 +140,11 @@ impl Agent for LiveAgent {
 }
 
 impl LiveAgent {
+    // Move to Board
+    fn apply_delta(&mut self, delta: Delta) {
+        self.board.insert(delta.id, delta.value);
+    }
+
     fn send_interaction(&mut self, action: Action) {
         self.connection.send(Json(&action));
     }
@@ -122,7 +159,7 @@ impl LiveAgent {
                 Requirement::AssignUpdate(id) => {
                     self.board.get(&id).cloned()
                         .map(|value| {
-                            Reaction::Delta(Update { id, value })
+                            Reaction::Delta(Delta { id, value })
                         })
                 }
             }
@@ -130,6 +167,17 @@ impl LiveAgent {
         if let Some(reaction) = reaction {
             let response = ResponseEvt::Reaction(reaction);
             self.link.response(who, response);
+        }
+    }
+
+    fn send_data_for(&mut self, requirement: Requirement) {
+        let listeners = self
+            .listeners
+            .get(&requirement)
+            .cloned()
+            .unwrap_or_default();
+        for listener in listeners {
+            self.send_data_to(requirement.clone(), listener);
         }
     }
 }
