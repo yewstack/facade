@@ -1,5 +1,6 @@
 use bigdecimal::BigDecimal;
 use serde_derive::{Deserialize, Serialize};
+use std::fmt;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Action {
@@ -66,10 +67,27 @@ impl<T: AsRef<str>> From<T> for Id {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Value {
+    Nothing,
     String(String),
     Decimal(BigDecimal),
+}
+
+impl Default for Value {
+    fn default() -> Self {
+        Value::Nothing
+    }
+}
+
+impl fmt::Display for Value {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Value::Nothing => write!(f, ""),
+            Value::String(value) => write!(f, "{}", value),
+            Value::Decimal(value) => write!(f, "{}", value),
+        }
+    }
 }
 
 macro_rules! decimal_from {

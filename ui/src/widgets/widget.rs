@@ -2,22 +2,28 @@ use crate::live::{LiveAgent, RequestEvt, Requirement, ResponseEvt};
 use std::collections::HashSet;
 use yew::{Bridge, Bridged, Component, ComponentLink, Html, Renderable, ShouldRender};
 
-pub type Reqs = HashSet<Requirement>;
+pub type Reqs = Option<HashSet<Requirement>>;
 pub type View<T> = Html<WidgetModel<T>>;
 
 pub trait Widget: Default + 'static {
-    fn requirements(&self) -> Reqs {
-        Reqs::new()
+    type Properties: Default + Clone + PartialEq;
+
+    fn recompose(&mut self, _props: &Self::Properties) -> Reqs {
+        None
     }
+
     fn handle_incoming(&mut self, _event: ResponseEvt) -> ShouldRender {
         false
     }
+
     fn main_view(&self) -> View<Self>;
 }
 
 pub struct WidgetModel<T: Widget> {
     connection: Box<dyn Bridge<LiveAgent>>,
     widget: T,
+    props: T::Properties,
+    requirements: HashSet<Requirement>,
 }
 
 pub enum Msg {
@@ -26,16 +32,18 @@ pub enum Msg {
 
 impl<T: Widget> Component for WidgetModel<T> {
     type Message = Msg;
-    type Properties = ();
+    type Properties = T::Properties;
 
-    fn create(_: Self::Properties, mut link: ComponentLink<Self>) -> Self {
+    fn create(props: Self::Properties, mut link: ComponentLink<Self>) -> Self {
         let callback = link.send_back(Msg::Incoming);
         let connection = LiveAgent::bridge(callback);
         let mut this = Self {
             connection,
             widget: T::default(),
+            props,
+            requirements: HashSet::new(),
         };
-        this.subscribe_updates();
+        this.recompose_inner_component();
         this
     }
 
@@ -48,7 +56,9 @@ impl<T: Widget> Component for WidgetModel<T> {
         }
     }
 
-    fn change(&mut self, _: Self::Properties) -> ShouldRender {
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
+        self.props = props;
+        self.recompose_inner_component();
         true
     }
 }
@@ -60,9 +70,14 @@ impl<T: Widget> Renderable<Self> for WidgetModel<T> {
 }
 
 impl<T: Widget> WidgetModel<T> {
-    fn subscribe_updates(&mut self) {
-        let set = self.widget.requirements();
-        let request = RequestEvt::Listen(set);
-        self.connection.send(request);
+    fn recompose_inner_component(&mut self) {
+        if let Some(new_requirements) = self.widget.recompose(&self.props) {
+            if self.requirements != new_requirements {
+                self.requirements = new_requirements;
+                let set = self.requirements.clone();
+                let request = RequestEvt::Listen(set);
+                self.connection.send(request);
+            }
+        }
     }
 }

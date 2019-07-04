@@ -18,8 +18,10 @@ impl Default for Model {
 }
 
 impl Widget for Model {
-    fn requirements(&self) -> Reqs {
-        vec![Requirement::LayoutChange].into_iter().collect()
+    type Properties = ();
+
+    fn recompose(&mut self, _: &Self::Properties) -> Reqs {
+        Some(vec![Requirement::LayoutChange].into_iter().collect())
     }
 
     fn handle_incoming(&mut self, event: ResponseEvt) -> ShouldRender {
@@ -53,7 +55,7 @@ impl Widget for Model {
                 }
                 Widget::Fixed(value) => {
                     html! {
-                        <widgets::Fixed: />
+                        <widgets::Fixed: value=value, />
                     }
                 }
                 Widget::Button(id) => {

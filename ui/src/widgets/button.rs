@@ -12,6 +12,8 @@ impl Default for Model {
 }
 
 impl Widget for Model {
+    type Properties = ();
+
     fn main_view(&self) -> View<Self> {
         html! {
             <button>{ "Button!" }</button>
