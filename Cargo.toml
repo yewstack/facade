@@ -16,6 +16,8 @@ tar = "0.4.26"
 tokio = "0.1.22"
 warp = "0.1.16"
 
+futures-timer = "0.2.1"
+
 [dependencies.futures]
 version = "0.1.28"
 
