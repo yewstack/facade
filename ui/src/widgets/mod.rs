@@ -1,64 +1,17 @@
-use crate::live::{LiveAgent, Requirement, RequestEvt, ResponseEvt};
-use std::collections::HashSet;
-use yew::{html, Bridge, Bridged, Component, ComponentLink, Html, Renderable, ShouldRender};
+mod button;
+pub use button::Button;
 
-pub trait Widget: Default + 'static {
-    fn requirements(&self) -> HashSet<Requirement>;
-    fn handle_incoming(&mut self, event: ResponseEvt);
-    //fn main_view(&self) -> Html<WidgetModel<Self>>;
-}
+mod dynamic;
+pub use dynamic::Dynamic;
 
-pub struct WidgetModel<T: Widget> {
-    connection: Box<dyn Bridge<LiveAgent>>,
-    widget: T,
-}
+mod fixed;
+pub use fixed::Fixed;
 
-pub enum Msg {
-    Incoming(ResponseEvt),
-}
+mod layout;
+pub use layout::Layout;
 
-impl<T: Widget> Component for WidgetModel<T> {
-    type Message = Msg;
-    type Properties = ();
+mod welcome;
+pub use welcome::Welcome;
 
-    fn create(_: Self::Properties, mut link: ComponentLink<Self>) -> Self {
-        let callback = link.send_back(Msg::Incoming);
-        let connection = LiveAgent::bridge(callback);
-        let mut this = Self {
-            connection,
-            widget: T::default(),
-        };
-        this.subscribe_updates();
-        this
-    }
-
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        match msg {
-            Msg::Incoming(event) => {
-                log::trace!("Incioming event: {:?}", event);
-                self.widget.handle_incoming(event);
-                true
-            }
-        }
-    }
-
-    fn change(&mut self, _: Self::Properties) -> ShouldRender {
-        true
-    }
-}
-
-impl<T: Widget> Renderable<Self> for WidgetModel<T> {
-    fn view(&self) -> Html<Self> {
-        html! {
-            <p>{ "Widget" }</p>
-        }
-    }
-}
-
-impl<T: Widget> WidgetModel<T> {
-    fn subscribe_updates(&mut self) {
-        let set = self.widget.requirements();
-        let request = RequestEvt::Listen(set);
-        self.connection.send(request);
-    }
-}
+mod widget;
+pub use widget::{Reqs, View, Widget, WidgetModel};

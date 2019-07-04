@@ -31,8 +31,8 @@ impl Reaction {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Layout {
-    Welcome,
     Blank,
+    Welcome,
     Widget(Widget),
     Row(Vec<Layout>),
     Column(Vec<Layout>),
@@ -41,8 +41,8 @@ pub enum Layout {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Widget {
     Dynamic(Id),
-    Static(Value),
-    Action(Id),
+    Fixed(Value),
+    Button(Id),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
