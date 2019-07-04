@@ -4,7 +4,7 @@ use flate2::read::GzDecoder;
 use futures::Stream;
 use futures3::channel::mpsc;
 use futures3::compat::{Compat, Future01CompatExt, Sink01CompatExt, Stream01CompatExt};
-use futures3::{SinkExt, StreamExt, TryFutureExt};
+use futures3::{join, SinkExt, StreamExt, TryFutureExt};
 use headers::{ContentType, HeaderMapExt};
 use protocol::{Action, Layout, Reaction};
 use std::collections::HashMap;
@@ -24,23 +24,31 @@ const DATA: &'static [u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ui.tar.gz"
 pub async fn process_ws(mut router: router::Sender, websocket: WebSocket) -> Result<(), Error> {
     let (tx, rx) = websocket.split();
 
-    let router_rx = router.register().await?;
+    let mut router_rx = router.register().await?;
+
     // TODO Read router_rx and send Reactions to a connected client
+    let outbound = (async move || -> Result<(), Error> {
+        let mut tx = tx.sink_compat();
+        while let Some(msg) = router_rx.next().await {
+            let text = serde_json::to_string(&msg)?;
+            let msg = Message::text(text);
+            tx.send(msg).await?;
+        }
+        Ok(())
+    })();
 
-    let mut tx = tx.sink_compat();
-    let notification = Reaction::Layout(Layout::Blank);
-    let text = serde_json::to_string(&notification)?;
-    let msg = Message::text(text);
-    tx.send(msg).await?;
-
-    let mut rx = rx.compat();
-    while let Some(msg) = rx.next().await.transpose()? {
-        let text = msg
-            .to_str()
-            .map_err(|_| format_err!("WebSocket message doesn't contain text"))?;
-        let action: Action = serde_json::from_str(text)?;
-        log::debug!("Action: {:?}", action);
-    }
+    let inbound = (async move || -> Result<(), Error> {
+        let mut rx = rx.compat();
+        while let Some(msg) = rx.next().await.transpose()? {
+            let text = msg
+                .to_str()
+                .map_err(|_| format_err!("WebSocket message doesn't contain text"))?;
+            let action: Action = serde_json::from_str(text)?;
+            log::debug!("Action: {:?}", action);
+        }
+        Ok(())
+    })();
+    join!(inbound, outbound);
     Ok(())
 }
 

@@ -41,10 +41,7 @@ pub enum Request {
     SetValue(Delta),
 }
 
-#[derive(Clone)]
-pub enum Response {
-    Reaction(Reaction),
-}
+pub type Response = Reaction;
 
 pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
     let mut subscribers = Vec::new();
@@ -55,13 +52,11 @@ pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
         match request {
             Request::Subscribe(mut sender) => {
                 // Send layout to a new subscriber
-                let reaction = Reaction::Layout(layout.clone());
-                let response = Response::Reaction(reaction);
+                let response = Reaction::Layout(layout.clone());
                 drain_all |= sender.send(response).await.is_err();
                 let snapshot = board.iter().map(|(id, value)| Delta::from((id.clone(), value.clone())));
                 for delta in snapshot {
-                    let reaction = Reaction::Delta(delta);
-                    let response = Response::Reaction(reaction);
+                    let response = Reaction::Delta(delta);
                     drain_all |= sender.send(response).await.is_err();
                 }
                 subscribers.push(sender);
@@ -69,16 +64,14 @@ pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
             Request::SetLayout(new_layout) => {
                 // Send new_layout to every subscriber
                 layout = new_layout;
-                let reaction = Reaction::Layout(layout.clone());
-                let response = Response::Reaction(reaction);
+                let response = Reaction::Layout(layout.clone());
                 for sender in &mut subscribers {
                     drain_all |= sender.send(response.clone()).await.is_err();
                 }
             }
             Request::SetValue(delta) => {
                 board.insert(delta.id.clone(), delta.value.clone());
-                let reaction = Reaction::Delta(delta);
-                let mut response = Response::Reaction(reaction);
+                let response = Reaction::Delta(delta);
                 for sender in &mut subscribers {
                     drain_all |= sender.send(response.clone()).await.is_err();
                 }
