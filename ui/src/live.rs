@@ -84,13 +84,15 @@ impl Agent for LiveAgent {
                 let requirement = event.clone().into();
                 match event {
                     Reaction::Layout(layout) => {
+                        log::trace!("Layout: {:?}", layout);
+                        self.layout = layout;
                     }
                     Reaction::Delta(delta) => {
                         log::trace!("Delta: {:?}", delta);
                         self.apply_delta(delta);
-                        self.send_data_for(requirement);
                     }
                 }
+                self.send_data_for(requirement);
                 //self.send_to_all(event);
             }
             Msg::Received(Err(_)) => {}

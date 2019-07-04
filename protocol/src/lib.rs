@@ -34,15 +34,6 @@ pub enum Widget {
     Action(Id),
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Id(String);
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub enum Value {
-    String(String),
-    Decimal(BigDecimal),
-}
-
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Delta {
     pub id: Id,
@@ -52,5 +43,26 @@ pub struct Delta {
 impl From<(Id, Value)> for Delta {
     fn from((id, value): (Id, Value)) -> Self {
         Self { id, value }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Id(String);
+
+impl<T: AsRef<str>> From<T> for Id {
+    fn from(value: T) -> Self {
+        Id(value.as_ref().to_string())
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub enum Value {
+    String(String),
+    Decimal(BigDecimal),
+}
+
+impl From<u8> for Value {
+    fn from(value: u8) -> Self {
+        Value::Decimal(value.into())
     }
 }

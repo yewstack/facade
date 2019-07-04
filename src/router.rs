@@ -1,16 +1,11 @@
 use failure::Error;
 use futures3::channel::mpsc;
+use futures3::executor::block_on;
 use futures3::stream::select;
 use futures3::{SinkExt, StreamExt};
-use protocol::{Id, Layout, Reaction, Delta, Value};
+use protocol::{Delta, Id, Layout, Reaction, Value};
 use std::collections::HashMap;
 
-pub fn channel() -> (Sender, Receiver) {
-    let (tx, rx) = mpsc::channel(8);
-    let sender = Sender { tx };
-    let receiver = Receiver { rx };
-    (sender, receiver)
-}
 
 #[derive(Clone)]
 pub struct Sender {
@@ -18,6 +13,10 @@ pub struct Sender {
 }
 
 impl Sender {
+    pub fn wrap(tx: mpsc::Sender<Request>) -> Self {
+        Self { tx }
+    }
+
     pub async fn register(&mut self) -> Result<mpsc::Receiver<Response>, Error> {
         let (tx, rx) = mpsc::channel(8);
         let request = Request::Subscribe(tx);
@@ -28,6 +27,12 @@ impl Sender {
 
 pub struct Receiver {
     rx: mpsc::Receiver<Request>,
+}
+
+impl Receiver {
+    pub fn wrap(rx: mpsc::Receiver<Request>) -> Self {
+        Self { rx }
+    }
 }
 
 pub enum Request {

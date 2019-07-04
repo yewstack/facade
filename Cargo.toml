@@ -13,6 +13,7 @@ mime_guess = "2.0.0-alpha.6"
 serde = "1.0.94"
 serde_json = "1.0.40"
 tar = "0.4.26"
+tokio = "0.1.22"
 warp = "0.1.16"
 
 [dependencies.futures]
@@ -20,7 +21,7 @@ version = "0.1.28"
 
 [dependencies.futures3]
 package = "futures-preview"
-version = "=0.3.0-alpha.16"
+version = "0.3.0-alpha.17"
 features = ["async-await", "nightly", "compat"]
 
 [dependencies.protocol]
