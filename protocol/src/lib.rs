@@ -61,8 +61,17 @@ pub enum Value {
     Decimal(BigDecimal),
 }
 
-impl From<u8> for Value {
-    fn from(value: u8) -> Self {
-        Value::Decimal(value.into())
-    }
+macro_rules! decimal_from {
+    (@declare $type:ty) => {
+        impl From<$type> for Value {
+            fn from(value: $type) -> Self {
+                Value::Decimal(value.into())
+            }
+        }
+    };
+    ($($type:ty),*) => {
+        $( decimal_from!(@declare $type); )+
+    };
 }
+
+decimal_from!(u8, i8, u16, i16, u32, i32, u64, i64);
