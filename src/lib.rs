@@ -8,7 +8,7 @@ use futures3::channel::mpsc;
 use futures3::compat::Compat;
 use futures3::executor::block_on;
 use futures3::{join, SinkExt, StreamExt, TryFutureExt};
-use protocol::{Delta, Id, Layout, Value};
+pub use protocol::*;
 use std::thread;
 
 pub fn main() -> Control {
