@@ -67,6 +67,12 @@ impl<T: AsRef<str>> From<T> for Id {
     }
 }
 
+impl Default for Id {
+    fn default() -> Self {
+        Id("<default>".into())
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Value {
     Nothing,

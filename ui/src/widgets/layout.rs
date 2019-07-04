@@ -50,7 +50,7 @@ impl Widget for Model {
             Layout::Widget(ref widget) => match widget {
                 Widget::Dynamic(id) => {
                     html! {
-                        <widgets::Dynamic: />
+                        <widgets::Dynamic: id=id, />
                     }
                 }
                 Widget::Fixed(value) => {
