@@ -7,7 +7,7 @@ use futures3::compat::{Compat, Future01CompatExt, Sink01CompatExt, Stream01Compa
 use futures3::{join, SinkExt, StreamExt, TryFutureExt};
 use futures_timer::Interval;
 use headers::{ContentType, HeaderMapExt};
-use protocol::{Action, Layout, Reaction};
+use protocol::{Action, Layout, OverlayId, Reaction};
 use std::collections::HashMap;
 use std::env;
 use std::io::Read;
@@ -20,7 +20,6 @@ use warp::path::Tail;
 use warp::reply::Reply;
 use warp::Filter;
 
-
 // TODO Derive these types below!
 use protocol::{Id, Value};
 
@@ -31,54 +30,45 @@ const DATA: &'static [u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ui.tar.gz"
 pub async fn process_ws(mut router: router::Sender, websocket: WebSocket) -> Result<(), Error> {
     let (tx, rx) = websocket.split();
 
-    struct Holder {
-        new_layout: Option<Layout>,
-        updates: HashMap<Id, Value>,
-    }
-
-    impl Holder {
-        fn new() -> Self {
-            Self {
-                new_layout: None,
-                updates: HashMap::new(),
-            }
-        }
-    }
-
     let mut router_rx = router.register().await?;
-    //let throttle_map = Arc::new(Mutex::new(Holder::new()));
+    type Updates = HashMap<OverlayId, Reaction>;
+    let throttle_map = Arc::new(Mutex::new(Updates::new()));
 
     // TODO Read router_rx and send Reactions to a connected client
+    let map = throttle_map.clone();
     let outbound_get = (async move || -> Result<(), Error> {
-        let mut tx = tx.sink_compat();
-        while let Some(msg) = router_rx.next().await {
-            let text = serde_json::to_string(&msg)?;
-            let msg = Message::text(text);
-            tx.send(msg).await?;
+        while let Some(reaction) = router_rx.next().await {
+            let mut map = map
+                .lock()
+                .map_err(|_| format_err!("can't borrow shared map to add a message"))?;
+            map.insert(reaction.overlay_id(), reaction);
         }
         Ok(())
     })();
 
-    /*
     let map = Arc::downgrade(&throttle_map);
     let outbound_send = (async move || -> Result<(), Error> {
+        let mut tx = tx.sink_compat();
         let mut interval = Interval::new(Duration::from_millis(100));
         let mut buffer = Vec::new();
         loop {
             interval.next().await;
             if let Some(map) = map.upgrade() {
-                let mut map = map.lock()
-                    .map_err(|_| format_err!("can't borrow shared map as mutable"))?;
-                for (id, value) in map.updates.drain() {
-                    buffer.push();
-                }
+                let mut map = map
+                    .lock()
+                    .map_err(|_| format_err!("can't borrow shared map to get a message"))?;
+                buffer.extend(map.drain().map(|(_, msg)| msg));
             } else {
                 break;
+            }
+            for reaction in buffer.drain(..) {
+                let text = serde_json::to_string(&reaction)?;
+                let msg = Message::text(text);
+                tx.send(msg).await?;
             }
         }
         Ok(())
     })();
-    */
 
     let inbound = (async move || -> Result<(), Error> {
         let mut rx = rx.compat();
@@ -91,7 +81,7 @@ pub async fn process_ws(mut router: router::Sender, websocket: WebSocket) -> Res
         }
         Ok(())
     })();
-    join!(inbound, outbound_get/*, outbound_send*/);
+    join!(inbound, outbound_get, outbound_send);
     Ok(())
 }
 

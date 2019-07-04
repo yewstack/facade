@@ -18,6 +18,17 @@ pub enum Reaction {
     Delta(Delta),
 }
 
+pub type OverlayId = Option<Id>;
+
+impl Reaction {
+    pub fn overlay_id(&self) -> OverlayId {
+        match self {
+            Reaction::Layout(_) => None,
+            Reaction::Delta(delta) => Some(delta.id.clone()),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Layout {
     Welcome,
