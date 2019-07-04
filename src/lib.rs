@@ -23,9 +23,7 @@ pub fn main() -> Control {
     control
 }
 
-async fn routine(tx: router::Sender, rx: router::Receiver)
-    -> Result<(), Error>
-{
+async fn routine(tx: router::Sender, rx: router::Receiver) -> Result<(), Error> {
     let router = router::main(rx);
     let main = server::main(tx);
     join!(router, main);
@@ -40,8 +38,7 @@ pub struct Control {
 impl Control {
     pub fn layout(&mut self, layout: Layout) {
         let request = router::Request::SetLayout(layout);
-        block_on(self.tx.send(request))
-            .expect("RillRate router lost to set layout");
+        block_on(self.tx.send(request)).expect("RillRate router lost to set layout");
     }
 
     pub fn assign(&mut self, id: impl Into<Id>, value: impl Into<Value>) {
@@ -50,8 +47,6 @@ impl Control {
             value: value.into(),
         };
         let request = router::Request::SetValue(delta);
-        block_on(self.tx.send(request))
-            .expect("RillRate router lost to set a value");
+        block_on(self.tx.send(request)).expect("RillRate router lost to set a value");
     }
 }
-

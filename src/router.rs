@@ -6,7 +6,6 @@ use futures3::{SinkExt, StreamExt};
 use protocol::{Delta, Id, Layout, Reaction, Value};
 use std::collections::HashMap;
 
-
 #[derive(Clone)]
 pub struct Sender {
     tx: mpsc::Sender<Request>,
@@ -54,7 +53,9 @@ pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
                 // Send layout to a new subscriber
                 let response = Reaction::Layout(layout.clone());
                 drain_all |= sender.send(response).await.is_err();
-                let snapshot = board.iter().map(|(id, value)| Delta::from((id.clone(), value.clone())));
+                let snapshot = board
+                    .iter()
+                    .map(|(id, value)| Delta::from((id.clone(), value.clone())));
                 for delta in snapshot {
                     let response = Reaction::Delta(delta);
                     drain_all |= sender.send(response).await.is_err();
