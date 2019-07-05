@@ -96,17 +96,19 @@ impl fmt::Display for Value {
     }
 }
 
-macro_rules! decimal_from {
-    (@declare $type:ty) => {
+macro_rules! value_convert {
+    (@declare $var:ident $type:ty) => {
         impl From<$type> for Value {
             fn from(value: $type) -> Self {
-                Value::Decimal(value.into())
+                Value::$var(value.into())
             }
         }
     };
-    ($($type:ty),*) => {
-        $( decimal_from!(@declare $type); )+
+    ($var:ident : $($type:ty),*) => {
+        $( value_convert!(@declare $var $type); )+
     };
 }
 
-decimal_from!(u8, i8, u16, i16, u32, i32, u64, i64, BigDecimal);
+value_convert!(Decimal: u8, i8, u16, i16, u32, i32, u64, i64, BigDecimal);
+
+value_convert!(String: &str);

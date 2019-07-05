@@ -77,15 +77,15 @@ impl Widget for Model {
             },
             Layout::Row(ref layouts) => {
                 html! {
-                    <div class="row",>
-                        { for layouts.iter().map(|lyo| self.sub_layout(lyo)) }
+                    <div class="rows",>
+                        { for layouts.iter().map(|lyo| self.row(lyo)) }
                     </>
                 }
             }
             Layout::Column(ref layouts) => {
                 html! {
-                    <div class="column",>
-                        { for layouts.iter().map(|lyo| self.sub_layout(lyo)) }
+                    <div class="columns",>
+                        { for layouts.iter().map(|lyo| self.column(lyo)) }
                     </>
                 }
             }
@@ -94,9 +94,19 @@ impl Widget for Model {
 }
 
 impl Model {
-    fn sub_layout(&self, layout: &Layout) -> View<Self> {
+    fn column(&self, layout: &Layout) -> View<Self> {
         html! {
-            <LayoutWidget: layout=Some(layout.clone()), />
+            <div class="column",>
+                <LayoutWidget: layout=Some(layout.clone()), />
+            </div>
+        }
+    }
+
+    fn row(&self, layout: &Layout) -> View<Self> {
+        html! {
+            <div class="row",>
+                <LayoutWidget: layout=Some(layout.clone()), />
+            </div>
         }
     }
 }

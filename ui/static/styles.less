@@ -1,0 +1,16 @@
+@font: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+
+* { font-family: @font; font-size: 20px; }
+* { padding: 0; margin: 0; box-sizing: border-box; }
+
+body { background: #F9FAFB; color: #495057; }
+
+.flex { display: flex; }
+.flex-row { .flex; flex-direction: row; }
+.flex-col { .flex; flex-direction: column; }
+.pad { padding: 10px; }
+
+.rows { .flex-row; .pad; }
+.row { .pad; }
+.columns { .flex-col; .pad; }
+.column { .pad; }
