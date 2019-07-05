@@ -1,4 +1,5 @@
 use crate::router;
+use crate::settings::Settings;
 use failure::{format_err, Error};
 use flate2::read::GzDecoder;
 use futures::Stream;
@@ -8,10 +9,8 @@ use futures_timer::Interval;
 use headers::{ContentType, HeaderMapExt};
 use protocol::{Action, OverlayId, Reaction};
 use std::collections::HashMap;
-use std::env;
 use std::io::Read;
 use std::sync::{Arc, Mutex};
-use std::time::Duration;
 use tar::Archive;
 use warp::filters::ws::{Message, WebSocket};
 use warp::http::{StatusCode, Uri};
@@ -20,11 +19,9 @@ use warp::reply::Reply;
 use warp::Filter;
 
 
-const PORT_VAR: &str = "RILLRATE_PORT";
-const PORT_DEF: &str = "12400";
 const DATA: &'static [u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ui.tar.gz"));
 
-pub async fn process_ws(mut router: router::Sender, websocket: WebSocket) -> Result<(), Error> {
+pub async fn process_ws(settings: Settings, mut router: router::Sender, websocket: WebSocket) -> Result<(), Error> {
     let (tx, rx) = websocket.split();
 
     let mut router_rx = router.register().await?;
@@ -46,7 +43,8 @@ pub async fn process_ws(mut router: router::Sender, websocket: WebSocket) -> Res
     let map = Arc::downgrade(&throttle_map);
     let outbound_send = (async move || -> Result<(), Error> {
         let mut tx = tx.sink_compat();
-        let mut interval = Interval::new(Duration::from_millis(100));
+        let ms = settings.throttle_ms();
+        let mut interval = Interval::new(ms);
         let mut buffer = Vec::new();
         loop {
             interval.next().await;
@@ -82,7 +80,10 @@ pub async fn process_ws(mut router: router::Sender, websocket: WebSocket) -> Res
     r1.and(r2).and(r3)
 }
 
-pub async fn main(router: router::Sender) -> Result<(), Error> {
+pub async fn main(settings: Settings, router: router::Sender) -> Result<(), Error> {
+    // TODO Get the full adderss with a single call.
+    let port = settings.port();
+
     let tar = GzDecoder::new(DATA);
     let mut archive = Archive::new(tar);
     let mut files = HashMap::new();
@@ -107,9 +108,10 @@ pub async fn main(router: router::Sender) -> Result<(), Error> {
     let live = warp::path("live")
         .and(warp::ws2())
         .map(move |ws: warp::ws::Ws2| {
+            let settings = settings.clone();
             let router = router.clone();
             ws.on_upgrade(move |websocket| {
-                let fut = process_ws(router, websocket).map_err(drop);
+                let fut = process_ws(settings, router, websocket).map_err(drop);
                 Compat::new(Box::pin(fut))
             })
         });
@@ -127,7 +129,6 @@ pub async fn main(router: router::Sender) -> Result<(), Error> {
 
     let routes = index.or(live).or(assets);
 
-    let port: u16 = env::var(PORT_VAR).unwrap_or(PORT_DEF.to_string()).parse()?;
     warp::serve(routes)
         .bind(([127, 0, 0, 1], port))
         .compat()
