@@ -1,27 +1,38 @@
 use crate::live::{Requirement, ResponseEvt};
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use protocol::Reaction;
+use protocol::{Layout, Reaction};
 use yew::{html, ShouldRender};
 
-pub type Layout = WidgetModel<Model>;
+pub type LayoutWidget = WidgetModel<Model>;
 
 pub struct Model {
-    layout: protocol::Layout,
+    layout: Layout,
 }
 
 impl Default for Model {
     fn default() -> Self {
         Self {
-            layout: protocol::Layout::Blank,
+            layout: Layout::Blank,
         }
     }
 }
 
-impl Widget for Model {
-    type Properties = ();
+#[derive(Default, PartialEq, Clone)]
+pub struct Props {
+    pub layout: Option<Layout>,
+}
 
-    fn recompose(&mut self, _: &Self::Properties) -> Reqs {
-        Some(vec![Requirement::LayoutChange].into_iter().collect())
+impl Widget for Model {
+    type Properties = Props;
+
+    fn recompose(&mut self, props: &Self::Properties) -> Reqs {
+        if let Some(ref layout) = props.layout {
+            self.layout = layout.clone();
+            // Don't subscribe if layout was set by properties
+            None
+        } else {
+            Some(vec![Requirement::LayoutChange].into_iter().collect())
+        }
     }
 
     fn handle_incoming(&mut self, event: ResponseEvt) -> ShouldRender {
@@ -35,7 +46,7 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        use protocol::{Layout, Widget};
+        use protocol::Widget;
         match self.layout {
             Layout::Blank => {
                 html! {
@@ -64,16 +75,28 @@ impl Widget for Model {
                     }
                 }
             },
-            Layout::Row(_) => {
+            Layout::Row(ref layouts) => {
                 html! {
-                    <p>{ "Row" }</p>
+                    <div class="row",>
+                        { for layouts.iter().map(|lyo| self.sub_layout(lyo)) }
+                    </>
                 }
             }
-            Layout::Column(_) => {
+            Layout::Column(ref layouts) => {
                 html! {
-                    <p>{ "Column" }</p>
+                    <div class="column",>
+                        { for layouts.iter().map(|lyo| self.sub_layout(lyo)) }
+                    </>
                 }
             }
+        }
+    }
+}
+
+impl Model {
+    fn sub_layout(&self, layout: &Layout) -> View<Self> {
+        html! {
+            <LayoutWidget: layout=Some(layout.clone()), />
         }
     }
 }

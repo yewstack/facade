@@ -8,7 +8,7 @@ mod fixed;
 pub use fixed::Fixed;
 
 mod layout;
-pub use layout::Layout;
+pub use layout::LayoutWidget as Layout;
 
 mod welcome;
 pub use welcome::Welcome;
