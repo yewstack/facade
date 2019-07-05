@@ -109,4 +109,4 @@ macro_rules! decimal_from {
     };
 }
 
-decimal_from!(u8, i8, u16, i16, u32, i32, u64, i64);
+decimal_from!(u8, i8, u16, i16, u32, i32, u64, i64, BigDecimal);
