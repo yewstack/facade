@@ -1,12 +1,11 @@
 #![feature(async_await)]
 
 mod control;
-mod dsl;
+pub mod dsl;
 mod router;
 mod server;
 
-use control::Control;
-pub use dsl::*;
+pub use control::Control;
 use failure::Error;
 use futures3::channel::mpsc;
 use futures3::compat::Compat;
