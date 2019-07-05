@@ -1,7 +1,5 @@
 use failure::Error;
 use futures3::channel::mpsc;
-use futures3::executor::block_on;
-use futures3::stream::select;
 use futures3::{SinkExt, StreamExt};
 use protocol::{Delta, Id, Layout, Reaction, Value};
 use std::collections::HashMap;

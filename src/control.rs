@@ -1,7 +1,7 @@
 use crate::router::Request;
 use futures3::channel::mpsc;
 use futures3::executor::block_on;
-use futures3::{join, SinkExt, StreamExt, TryFutureExt};
+use futures3::SinkExt;
 use protocol::{Delta, Id, Layout, Value};
 
 

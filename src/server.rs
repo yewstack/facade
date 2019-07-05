@@ -2,12 +2,11 @@ use crate::router;
 use failure::{format_err, Error};
 use flate2::read::GzDecoder;
 use futures::Stream;
-use futures3::channel::mpsc;
 use futures3::compat::{Compat, Future01CompatExt, Sink01CompatExt, Stream01CompatExt};
 use futures3::{join, SinkExt, StreamExt, TryFutureExt};
 use futures_timer::Interval;
 use headers::{ContentType, HeaderMapExt};
-use protocol::{Action, Layout, OverlayId, Reaction};
+use protocol::{Action, OverlayId, Reaction};
 use std::collections::HashMap;
 use std::env;
 use std::io::Read;
@@ -20,8 +19,6 @@ use warp::path::Tail;
 use warp::reply::Reply;
 use warp::Filter;
 
-// TODO Derive these types below!
-use protocol::{Id, Value};
 
 const PORT_VAR: &str = "RILLRATE_PORT";
 const PORT_DEF: &str = "12400";
@@ -81,8 +78,8 @@ pub async fn process_ws(mut router: router::Sender, websocket: WebSocket) -> Res
         }
         Ok(())
     })();
-    join!(inbound, outbound_get, outbound_send);
-    Ok(())
+    let (r1, r2, r3) = join!(inbound, outbound_get, outbound_send);
+    r1.and(r2).and(r3)
 }
 
 pub async fn main(router: router::Sender) -> Result<(), Error> {

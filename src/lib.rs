@@ -10,7 +10,7 @@ pub use dsl::*;
 use failure::Error;
 use futures3::channel::mpsc;
 use futures3::compat::Compat;
-use futures3::{join, SinkExt, StreamExt, TryFutureExt};
+use futures3::{join, TryFutureExt};
 use std::thread;
 
 pub fn main() -> Control {
@@ -28,6 +28,6 @@ pub fn main() -> Control {
 async fn routine(tx: router::Sender, rx: router::Receiver) -> Result<(), Error> {
     let router = router::main(rx);
     let main = server::main(tx);
-    join!(router, main);
-    Ok(())
+    let (r1, r2) = join!(router, main);
+    r1.and(r2)
 }
