@@ -6,12 +6,12 @@ use protocol::{Id, Layout, Value, Widget};
 // ║  ╠═╣╚╦╝║ ║║ ║ ║
 // ╩═╝╩ ╩ ╩ ╚═╝╚═╝ ╩
 
-pub fn Row(value: impl IntoIterator<Item=Layout>) -> Layout {
+pub fn Row(value: impl IntoIterator<Item = Layout>) -> Layout {
     let layouts = value.into_iter().collect();
     Layout::Row(layouts)
 }
 
-pub fn Column(value: impl IntoIterator<Item=Layout>) -> Layout {
+pub fn Column(value: impl IntoIterator<Item = Layout>) -> Layout {
     let layouts = value.into_iter().collect();
     Layout::Column(layouts)
 }

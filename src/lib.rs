@@ -11,8 +11,8 @@ use failure::Error;
 use futures3::channel::mpsc;
 use futures3::compat::Compat;
 use futures3::{join, TryFutureExt};
-use std::thread;
 use settings::Settings;
+use std::thread;
 
 pub fn main() -> Result<Control, Error> {
     let settings = Settings::parse()?;
@@ -27,7 +27,11 @@ pub fn main() -> Result<Control, Error> {
     Ok(control)
 }
 
-async fn routine(settings: Settings, tx: router::Sender, rx: router::Receiver) -> Result<(), Error> {
+async fn routine(
+    settings: Settings,
+    tx: router::Sender,
+    rx: router::Receiver,
+) -> Result<(), Error> {
     let router = router::main(rx);
     let main = server::main(settings.clone(), tx);
     let (r1, r2) = join!(router, main);

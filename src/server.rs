@@ -18,10 +18,13 @@ use warp::path::Tail;
 use warp::reply::Reply;
 use warp::Filter;
 
-
 const DATA: &'static [u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ui.tar.gz"));
 
-pub async fn process_ws(settings: Settings, mut router: router::Sender, websocket: WebSocket) -> Result<(), Error> {
+pub async fn process_ws(
+    settings: Settings,
+    mut router: router::Sender,
+    websocket: WebSocket,
+) -> Result<(), Error> {
     let (tx, rx) = websocket.split();
 
     let mut router_rx = router.register().await?;

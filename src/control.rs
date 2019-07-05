@@ -4,7 +4,6 @@ use futures3::executor::block_on;
 use futures3::SinkExt;
 use protocol::{Delta, Id, Layout, Value};
 
-
 #[derive(Clone)]
 pub struct Control {
     tx: mpsc::Sender<Request>,

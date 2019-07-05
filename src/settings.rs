@@ -1,10 +1,10 @@
-use config::{ConfigError, Config, File, Environment};
+use config::{Config, ConfigError, Environment, File};
 use serde_derive::Deserialize;
 use std::sync::Arc;
 use std::time::Duration;
 
 #[derive(Clone)]
-pub struct Settings  {
+pub struct Settings {
     inner: Arc<Inner>,
 }
 
