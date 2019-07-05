@@ -84,8 +84,7 @@ pub async fn process_ws(
 }
 
 pub async fn main(settings: Settings, router: router::Sender) -> Result<(), Error> {
-    // TODO Get the full adderss with a single call.
-    let port = settings.port();
+    let address = settings.socket_addr();
 
     let tar = GzDecoder::new(DATA);
     let mut archive = Archive::new(tar);
@@ -133,7 +132,7 @@ pub async fn main(settings: Settings, router: router::Sender) -> Result<(), Erro
     let routes = index.or(live).or(assets);
 
     warp::serve(routes)
-        .bind(([127, 0, 0, 1], port))
+        .bind(address)
         .compat()
         .await
         .or_else(|_| Err(format_err!("server error")))?;

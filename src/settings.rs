@@ -1,5 +1,6 @@
 use config::{Config, ConfigError, Environment, File};
 use serde_derive::Deserialize;
+use std::net::{IpAddr, SocketAddr};
 use std::sync::Arc;
 use std::time::Duration;
 
@@ -14,8 +15,8 @@ impl Settings {
     }
 
     // TODO: Return the full address instead of port!
-    pub fn port(&self) -> u16 {
-        self.inner.port
+    pub fn socket_addr(&self) -> SocketAddr {
+        SocketAddr::new(self.inner.address, self.inner.port)
     }
 }
 
@@ -23,6 +24,7 @@ impl Settings {
 pub struct Inner {
     /// Throttle Interval
     ms: u64,
+    address: IpAddr,
     port: u16,
 }
 
@@ -32,6 +34,7 @@ impl Settings {
         c.merge(File::with_name("rillrate").required(false))?;
         c.merge(Environment::with_prefix("rillrate"))?;
         c.set_default("ms", 100)?;
+        c.set_default("address", "127.0.0.1")?;
         c.set_default("port", 12400)?;
         let inner = Arc::new(c.try_into()?);
         Ok(Settings { inner })
