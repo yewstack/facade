@@ -1,7 +1,6 @@
-use crate::live::{Requirement, ResponseEvt};
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use protocol::{Layout, Reaction};
-use yew::{html, ShouldRender};
+use protocol::Layout;
+use yew::html;
 
 pub type LayoutWidget = WidgetModel<Model>;
 
@@ -28,22 +27,8 @@ impl Widget for Model {
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         if let Some(ref layout) = props.layout {
             self.layout = layout.clone();
-            // Don't subscribe if layout was set by properties
-            None
-        } else {
-            // TODO REMOVE IT
-            Some(vec![Requirement::SceneChange].into_iter().collect())
         }
-    }
-
-    fn handle_incoming(&mut self, event: ResponseEvt) -> ShouldRender {
-        if let ResponseEvt::Reaction(Reaction::Scene(layout)) = event {
-            log::info!("Changing layout: {:?}", layout);
-            //self.layout = layout;
-            true
-        } else {
-            false
-        }
+        None
     }
 
     fn main_view(&self) -> View<Self> {
@@ -70,7 +55,7 @@ impl Widget for Model {
                         <widgets::Fixed: value=value, />
                     }
                 }
-                Widget::Button(id) => {
+                Widget::Button(_id) => {
                     html! {
                         <widgets::Button: />
                     }

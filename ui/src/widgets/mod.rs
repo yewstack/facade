@@ -10,6 +10,9 @@ pub use fixed::Fixed;
 mod layout;
 pub use layout::LayoutWidget as Layout;
 
+mod scene;
+pub use scene::SceneWidget as Scene;
+
 mod welcome;
 pub use welcome::Welcome;
 

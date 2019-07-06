@@ -1,4 +1,4 @@
 mod live;
 mod widgets;
 
-pub use widgets::Layout as Model;
+pub use widgets::Scene as Model;
