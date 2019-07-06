@@ -1,10 +1,22 @@
 #![allow(non_snake_case)]
 
-use protocol::{Id, Layout, Value, Widget};
+use protocol::{Id, Layout, Scene, Value, Widget};
 
-// ╦  ╔═╗╦ ╦╔═╗╦ ╦╔╦╗
-// ║  ╠═╣╚╦╝║ ║║ ║ ║
-// ╩═╝╩ ╩ ╩ ╚═╝╚═╝ ╩
+// ╔═╗┌─┐┌─┐┌┐┌┌─┐┌─┐
+// ╚═╗│  ├┤ │││├┤ └─┐
+// ╚═╝└─┘└─┘┘└┘└─┘└─┘
+
+pub fn FullScreen(value: Layout) -> Scene {
+    Scene::FullScreen(value)
+}
+
+// ╔═╗┌─┐┌┐┌┌┬┐┌─┐┬┌┐┌┌─┐┬─┐┌─┐
+// ║  │ ││││ │ ├─┤││││├┤ ├┬┘└─┐
+// ╚═╝└─┘┘└┘ ┴ ┴ ┴┴┘└┘└─┘┴└─└─┘
+
+// ╦  ┌─┐┬ ┬┌─┐┬ ┬┌┬┐
+// ║  ├─┤└┬┘│ ││ │ │
+// ╩═╝┴ ┴ ┴ └─┘└─┘ ┴
 
 pub fn Row(value: impl IntoIterator<Item = Layout>) -> Layout {
     let layouts = value.into_iter().collect();
@@ -16,9 +28,9 @@ pub fn Column(value: impl IntoIterator<Item = Layout>) -> Layout {
     Layout::Column(layouts)
 }
 
-// ╦ ╦╦╔╦╗╔═╗╔═╗╔╦╗╔═╗
-// ║║║║ ║║║ ╦║╣  ║ ╚═╗
-// ╚╩╝╩═╩╝╚═╝╚═╝ ╩ ╚═╝
+// ╦ ╦┬┌┬┐┌─┐┌─┐┌┬┐┌─┐
+// ║║║│ │││ ┬├┤  │ └─┐
+// ╚╩╝┴─┴┘└─┘└─┘ ┴ └─┘
 
 pub fn Dynamic(value: impl AsRef<str>) -> Layout {
     let id = Id::from(value);

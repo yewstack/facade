@@ -2,7 +2,7 @@ use crate::router::Request;
 use futures3::channel::mpsc;
 use futures3::executor::block_on;
 use futures3::SinkExt;
-use protocol::{Delta, Id, Layout, Value};
+use protocol::{Delta, Id, Scene, Value};
 
 #[derive(Clone)]
 pub struct Control {
@@ -14,9 +14,9 @@ impl Control {
         Self { tx }
     }
 
-    pub fn layout(&mut self, layout: Layout) {
-        let request = Request::SetLayout(layout);
-        block_on(self.tx.send(request)).expect("RillRate router lost to set layout");
+    pub fn scene(&mut self, scene: Scene) {
+        let request = Request::SetScene(scene);
+        block_on(self.tx.send(request)).expect("RillRate router lost to set scene");
     }
 
     pub fn assign(&mut self, id: impl Into<Id>, value: impl Into<Value>) {

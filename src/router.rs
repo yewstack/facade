@@ -1,7 +1,7 @@
 use failure::Error;
 use futures3::channel::mpsc;
 use futures3::{SinkExt, StreamExt};
-use protocol::{Delta, Id, Layout, Reaction, Value};
+use protocol::{Delta, Id, Reaction, Scene, Value};
 use std::collections::HashMap;
 
 #[derive(Clone)]
@@ -34,7 +34,7 @@ impl Receiver {
 
 pub enum Request {
     Subscribe(mpsc::Sender<Response>),
-    SetLayout(Layout),
+    SetScene(Scene),
     SetValue(Delta),
 }
 
@@ -43,13 +43,13 @@ pub type Response = Reaction;
 pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
     let mut subscribers = Vec::new();
     let mut board = HashMap::<Id, Value>::new();
-    let mut layout = Layout::Welcome;
+    let mut scene = Scene::Spinner;
     while let Some(request) = receiver.rx.next().await {
         let mut drain_all = false;
         match request {
             Request::Subscribe(mut sender) => {
-                // Send layout to a new subscriber
-                let response = Reaction::Layout(layout.clone());
+                // Send scene to a new subscriber
+                let response = Reaction::Scene(scene.clone());
                 drain_all |= sender.send(response).await.is_err();
                 let snapshot = board
                     .iter()
@@ -60,10 +60,10 @@ pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
                 }
                 subscribers.push(sender);
             }
-            Request::SetLayout(new_layout) => {
-                // Send new_layout to every subscriber
-                layout = new_layout;
-                let response = Reaction::Layout(layout.clone());
+            Request::SetScene(new_scene) => {
+                // Send new_scene to every subscriber
+                scene = new_scene;
+                let response = Reaction::Scene(scene.clone());
                 for sender in &mut subscribers {
                     drain_all |= sender.send(response.clone()).await.is_err();
                 }

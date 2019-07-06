@@ -1,5 +1,5 @@
 use failure::Error;
-use protocol::{Action, Delta, Id, Layout, Reaction, Value};
+use protocol::{Action, Delta, Id, Reaction, Scene, Value};
 use serde_derive::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use yew::agent::{Agent, AgentLink, Context, HandlerId, Transferable};
@@ -8,14 +8,14 @@ use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask}
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Requirement {
-    LayoutChange,
+    SceneChange,
     AssignUpdate(Id),
 }
 
 impl From<Reaction> for Requirement {
     fn from(reaction: Reaction) -> Self {
         match reaction {
-            Reaction::Layout(_) => Requirement::LayoutChange,
+            Reaction::Scene(_) => Requirement::SceneChange,
             Reaction::Delta(Delta { id, .. }) => Requirement::AssignUpdate(id),
         }
     }
@@ -48,7 +48,7 @@ pub struct LiveAgent {
     /// This field keeps all `Requirement` values required by a listener.
     subscriptions: HashMap<HandlerId, HashSet<Requirement>>,
     listeners: HashMap<Requirement, HashSet<HandlerId>>,
-    layout: Layout,
+    scene: Scene,
     board: HashMap<Id, Value>,
 }
 
@@ -71,7 +71,7 @@ impl Agent for LiveAgent {
             connection,
             subscriptions: HashMap::new(),
             listeners: HashMap::new(),
-            layout: Layout::Blank,
+            scene: Scene::Spinner,
             board: HashMap::new(),
         }
     }
@@ -82,9 +82,9 @@ impl Agent for LiveAgent {
                 //log::trace!("Warehouse reveiced: {:?}", event);
                 let requirement = event.clone().into();
                 match event {
-                    Reaction::Layout(layout) => {
-                        log::trace!("Layout: {:?}", layout);
-                        self.layout = layout;
+                    Reaction::Scene(scene) => {
+                        log::trace!("Scene: {:?}", scene);
+                        self.scene = scene;
                     }
                     Reaction::Delta(delta) => {
                         log::trace!("Delta: {:?}", delta);
@@ -153,9 +153,9 @@ impl LiveAgent {
     fn send_data_to(&mut self, requirement: Requirement, who: HandlerId) {
         let reaction = {
             match requirement {
-                Requirement::LayoutChange => {
-                    let layout = self.layout.clone();
-                    Some(Reaction::Layout(layout))
+                Requirement::SceneChange => {
+                    let scene = self.scene.clone();
+                    Some(Reaction::Scene(scene))
                 }
                 Requirement::AssignUpdate(id) => self
                     .board

@@ -31,14 +31,15 @@ impl Widget for Model {
             // Don't subscribe if layout was set by properties
             None
         } else {
-            Some(vec![Requirement::LayoutChange].into_iter().collect())
+            // TODO REMOVE IT
+            Some(vec![Requirement::SceneChange].into_iter().collect())
         }
     }
 
     fn handle_incoming(&mut self, event: ResponseEvt) -> ShouldRender {
-        if let ResponseEvt::Reaction(Reaction::Layout(layout)) = event {
+        if let ResponseEvt::Reaction(Reaction::Scene(layout)) = event {
             log::info!("Changing layout: {:?}", layout);
-            self.layout = layout;
+            //self.layout = layout;
             true
         } else {
             false

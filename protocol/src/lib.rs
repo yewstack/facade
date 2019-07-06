@@ -15,7 +15,7 @@ pub enum Kind {
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Reaction {
-    Layout(Layout),
+    Scene(Scene),
     Delta(Delta),
 }
 
@@ -24,10 +24,37 @@ pub type OverlayId = Option<Id>;
 impl Reaction {
     pub fn overlay_id(&self) -> OverlayId {
         match self {
-            Reaction::Layout(_) => None,
+            Reaction::Scene(_) => None,
             Reaction::Delta(delta) => Some(delta.id.clone()),
         }
     }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Scene {
+    Spinner,
+    FullScreen(Layout),
+    Dashboard {
+        title: Value,
+        body: Layout,
+    },
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Menu {
+    Item(Id, Value),
+    Bar(Vec<Menu>),
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Container {
+    Tabs(Vec<Tab>),
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Tab {
+    title: Value,
+    body: Layout,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
