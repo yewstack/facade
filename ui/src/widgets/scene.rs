@@ -43,7 +43,9 @@ impl Widget for Model {
         match self.scene {
             Scene::Spinner => {
                 html! {
-                    <div class="loader",>{ "Loading..." }</div>
+                    <div class="scene-spinner",>
+                        <img src="./spinner.svg", width=100, />
+                    </div>
                 }
             }
             Scene::FullScreen(ref layout) => {

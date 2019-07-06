@@ -10,6 +10,10 @@ pub fn FullScreen(value: Layout) -> Scene {
     Scene::FullScreen(value)
 }
 
+pub fn Spinner() -> Scene {
+    Scene::Spinner
+}
+
 // ╔═╗┌─┐┌┐┌┌┬┐┌─┐┬┌┐┌┌─┐┬─┐┌─┐
 // ║  │ ││││ │ ├─┤││││├┤ ├┬┘└─┐
 // ╚═╝└─┘┘└┘ ┴ ┴ ┴┴┘└┘└─┘┴└─└─┘
