@@ -20,9 +20,13 @@
 body { background: #F9FAFB; color: #495057; }
 
 .flex { display: flex; }
-.flex-row { .flex; flex-direction: row; }
-.flex-col { .flex; flex-direction: column; }
+.flex-row { flex-direction: row; }
+.flex-col { flex-direction: column; }
 .pad { padding: 10px; }
+
+.horizontal { .flex; .flex-row; }
+.vertical { .flex; .flex-col; }
+.grow { flex-grow: 1; }
 
 .rows { .flex-row; .pad; }
 .row { .pad; }
@@ -30,3 +34,22 @@ body { background: #F9FAFB; color: #495057; }
 .column { .pad; }
 
 .spinner { width: 200px; height: 200px; background-color: red; }
+
+
+.scene-dashboard {
+    .vertical;
+    background: #f9f9fc;
+    color: #646c9a;
+
+    .header {
+        background: #fff;
+        height: 80px;
+    }
+    .body {
+        .grow;
+    }
+    .footer {
+        color: #74788d;
+    }
+
+}

@@ -42,6 +42,7 @@ impl Widget for Model {
     fn main_view(&self) -> View<Self> {
         match self.scene {
             Scene::Spinner => {
+                // TODO Maybe move to a component?
                 html! {
                     <div class="scene-spinner",>
                         <img src="./spinner.svg", width=200, />
@@ -57,7 +58,14 @@ impl Widget for Model {
             }
             Scene::Dashboard { ref title, ref body } => {
                 html! {
-                    <p>{ "Dashboard" }</p>
+                    <div class="scene-dashboard",>
+                        <div class="header",>
+                        </div>
+                        <div class="body",>
+                        </div>
+                        <div class="footer",>
+                        </div>
+                    </div>
                 }
             }
         }

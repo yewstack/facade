@@ -14,8 +14,8 @@ impl Control {
         Self { tx }
     }
 
-    pub fn scene(&mut self, scene: Scene) {
-        let request = Request::SetScene(scene);
+    pub fn scene(&mut self, scene: impl Into<Scene>) {
+        let request = Request::SetScene(scene.into());
         block_on(self.tx.send(request)).expect("RillRate router lost to set scene");
     }
 
