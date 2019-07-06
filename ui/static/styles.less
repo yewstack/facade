@@ -12,12 +12,23 @@
 @color5: rgba(242, 226, 210, 1);
 
 
-@font: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+/*@font: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;*/
+@font: "Lato", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 
-* { font-family: @font; font-size: 20px; }
+/** { font-family: @font; font-size: 20px; }*/
 * { padding: 0; margin: 0; box-sizing: border-box; }
 
-body { background: #F9FAFB; color: #495057; }
+html {
+    font-size: 13px;
+}
+body {
+    font-family: @font;
+    background: #F9FAFB;
+    color: #495057;
+    font-size: 13px;
+    font-weight: 300;
+}
 
 .flex { display: flex; }
 .flex-row { flex-direction: row; }
@@ -27,6 +38,7 @@ body { background: #F9FAFB; color: #495057; }
 .horizontal { .flex; .flex-row; }
 .vertical { .flex; .flex-col; }
 .grow { flex-grow: 1; }
+.stick-corners { justify-content: space-between; }
 
 .rows { .flex-row; .pad; }
 .row { .pad; }
@@ -49,7 +61,23 @@ body { background: #F9FAFB; color: #495057; }
         .grow;
     }
     .footer {
+        padding: 1rem 0;
+        font-size: 1rem;
+        font-weight: 400;
         color: #74788d;
+
+        .container {
+            .horizontal; .stick-corners;
+            width: 1380px;
+            margin: 0 auto;
+            padding: 0 2rem;
+
+            .copyright {
+            }
+            .menu {
+                .horizontal;
+            }
+        }
     }
 
 }

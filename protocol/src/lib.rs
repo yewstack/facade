@@ -37,13 +37,24 @@ pub enum Scene {
     Dashboard {
         title: Value,
         body: Layout,
+        footer: Footer,
     },
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum Menu {
-    Item(Id, Value),
-    Bar(Vec<Menu>),
+pub struct Footer {
+    pub copyright: Value,
+    pub menu: Menu,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Menu {
+    pub items: Vec<MenuItem>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct MenuItem {
+    pub caption: Value,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]

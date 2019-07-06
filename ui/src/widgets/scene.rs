@@ -56,14 +56,29 @@ impl Widget for Model {
                     </div>
                 }
             }
-            Scene::Dashboard { ref title, ref body } => {
+            Scene::Dashboard { ref title, ref body, ref footer } => {
+                let item = |item: &protocol::MenuItem| {
+                    html! {
+                        <p>{ &item.caption }</p>
+                    }
+                };
                 html! {
                     <div class="scene-dashboard",>
                         <div class="header",>
+                            <p>{ title }</p>
                         </div>
                         <div class="body",>
+                            <widgets::Layout: layout=Some(body.clone()), />
                         </div>
                         <div class="footer",>
+                            <div class="container",>
+                                <div class="copyright",>
+                                    <p>{ &footer.copyright }</p>
+                                </div>
+                                <div class="menu",>
+                                    { for footer.menu.items.iter().map(item) }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 }

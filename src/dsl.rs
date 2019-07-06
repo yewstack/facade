@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
 
-use protocol::{Id, Layout, Scene, Value, Widget};
+use protocol::{self as p, Id, Layout, Scene, Value, Widget};
 
 // ╔═╗┌─┐┌─┐┌┐┌┌─┐┌─┐
 // ╚═╗│  ├┤ │││├┤ └─┐
@@ -14,27 +14,66 @@ pub fn Spinner() -> Scene {
     Scene::Spinner
 }
 
-pub struct Dashboard<T, B>
+pub struct Dashboard<T, B, F>
 where
     T: Into<Value>,
     B: Into<Layout>,
+    F: Into<p::Footer>,
 {
     pub title: T,
     pub body: B,
+    pub footer: F,
 }
 
-impl<T, B> Into<Scene> for Dashboard<T, B>
+impl<T, B, F> Into<Scene> for Dashboard<T, B, F>
 where
     T: Into<Value>,
     B: Into<Layout>,
+    F: Into<p::Footer>,
 {
     fn into(self) -> Scene {
         Scene::Dashboard {
             title: self.title.into(),
             body: self.body.into(),
+            footer: self.footer.into(),
         }
     }
 }
+
+pub struct Footer<C, M>
+where
+    C: Into<Value>,
+    M: Into<p::Menu>,
+{
+    pub copyright: C,
+    pub menu: M,
+}
+
+impl<C, M> Into<p::Footer> for Footer<C, M>
+where
+    C: Into<Value>,
+    M: Into<p::Menu>,
+{
+    fn into(self) -> p::Footer {
+        p::Footer {
+            copyright: self.copyright.into(),
+            menu: self.menu.into(),
+        }
+    }
+}
+
+pub fn Menu(value: impl IntoIterator<Item = p::MenuItem>) -> p::Menu {
+    p::Menu {
+        items: value.into_iter().collect(),
+    }
+}
+
+pub fn Item(value: impl Into<Value>) -> p::MenuItem {
+    p::MenuItem {
+        caption: value.into(),
+    }
+}
+
 
 // ╔═╗┌─┐┌┐┌┌┬┐┌─┐┬┌┐┌┌─┐┬─┐┌─┐
 // ║  │ ││││ │ ├─┤││││├┤ ├┬┘└─┐
