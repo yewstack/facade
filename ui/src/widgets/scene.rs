@@ -43,7 +43,7 @@ impl Widget for Model {
         match self.scene {
             Scene::Spinner => {
                 html! {
-                    <p>{ "Spinner" }</p>
+                    <div class="loader",>{ "Loading..." }</div>
                 }
             }
             Scene::FullScreen(ref layout) => {
