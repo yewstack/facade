@@ -44,7 +44,7 @@ impl Widget for Model {
             Scene::Spinner => {
                 html! {
                     <div class="scene-spinner",>
-                        <img src="./spinner.svg", width=100, />
+                        <img src="./spinner.svg", width=200, />
                     </div>
                 }
             }
