@@ -4,7 +4,7 @@ use yew::html;
 pub type Spinner = WidgetModel<Model>;
 
 #[derive(Default)]
-pub struct Model { }
+pub struct Model {}
 
 impl Widget for Model {
     type Message = ();

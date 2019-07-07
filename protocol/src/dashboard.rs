@@ -1,5 +1,5 @@
+use super::{Layout, Value};
 use serde_derive::{Deserialize, Serialize};
-use super::{Value, Layout};
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Dashboard {
@@ -13,4 +13,3 @@ pub struct Page {
     pub subtitle: Value,
     pub body: Layout,
 }
-

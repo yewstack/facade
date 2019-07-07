@@ -10,9 +10,7 @@ pub struct Model {
 
 impl Default for Model {
     fn default() -> Self {
-        Self {
-            page: None,
-        }
+        Self { page: None }
     }
 }
 
