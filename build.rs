@@ -31,10 +31,17 @@ fn main() -> Result<(), Error> {
     let tar_path = tar_path
         .to_str()
         .ok_or_else(|| format_err!("can't create path to archive"))?;
+
     Command::new("tar")
         .args(&["-cvzf", tar_path, "-C", "target/deploy", "."])
         .current_dir("ui")
         .run_it("Can't pack UI")?;
+
+    if cfg!(feature = "refresh") {
+        Command::new("touch")
+            .args(&["build.rs"])
+            .run_it("Can't touch the build file")?;
+    }
 
     Ok(())
 }

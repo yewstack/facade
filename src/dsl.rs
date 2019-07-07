@@ -14,6 +14,27 @@ pub fn Spinner() -> Scene {
     Scene::Spinner
 }
 
+pub struct Dashboard<T>
+where
+    T: Into<Value>,
+{
+    pub title: T,
+}
+
+impl<T> Into<Scene> for Dashboard<T>
+where
+    T: Into<Value>,
+{
+    fn into(self) -> Scene {
+        let dashboard = p::dashboard::Dashboard {
+            title: self.title.into(),
+            pages: vec![],
+        };
+        Scene::Dashboard(dashboard)
+    }
+}
+
+/*
 pub struct Dashboard<T, B, F>
 where
     T: Into<Value>,
@@ -61,6 +82,7 @@ where
         }
     }
 }
+*/
 
 pub fn Menu(value: impl IntoIterator<Item = p::MenuItem>) -> p::Menu {
     p::Menu {

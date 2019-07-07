@@ -45,7 +45,7 @@ body {
 .columns { .flex-col; .pad; }
 .column { .pad; }
 
-.spinner { width: 200px; height: 200px; background-color: red; }
+/*.spinner { width: 200px; height: 200px; background-color: red; }*/
 
 
 .scene-dashboard {
@@ -55,29 +55,25 @@ body {
 
     .header {
         background: #fff;
-        height: 80px;
+        /*height: 80px;*/
+
+        .menu {
+            padding: 25px;
+
+            .item {
+                margin: 5px;
+                transition: all .3s ease;
+                color: #6c7293;
+                font-weight: 500;
+
+                &:hover {
+                    background-color: rgba(44,119,244,.05);
+                    color: #2c77f4;
+                }
+            }
+        }
     }
     .body {
         .grow;
     }
-    .footer {
-        padding: 1rem 0;
-        font-size: 1rem;
-        font-weight: 400;
-        color: #74788d;
-
-        .container {
-            .horizontal; .stick-corners;
-            width: 1380px;
-            margin: 0 auto;
-            padding: 0 2rem;
-
-            .copyright {
-            }
-            .menu {
-                .horizontal;
-            }
-        }
-    }
-
 }

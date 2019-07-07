@@ -34,3 +34,7 @@ path = "protocol"
 
 [build-dependencies]
 failure = "0.1.5"
+
+[features]
+default = []
+refresh = []

@@ -1,3 +1,5 @@
+pub mod dashboard;
+
 use bigdecimal::BigDecimal;
 use serde_derive::{Deserialize, Serialize};
 use std::fmt;
@@ -34,11 +36,7 @@ impl Reaction {
 pub enum Scene {
     Spinner,
     FullScreen(Layout),
-    Dashboard {
-        title: Value,
-        body: Layout,
-        footer: Footer,
-    },
+    Dashboard(dashboard::Dashboard),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
