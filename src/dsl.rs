@@ -1,24 +1,34 @@
 #![allow(non_snake_case)]
 
-use protocol::{self as p, Id, Layout, Scene, Value, Widget};
+use protocol::{self as frame, Id, Layout, Value, Widget};
 
 // ╔═╗┌─┐┌─┐┌┐┌┌─┐┌─┐
 // ╚═╗│  ├┤ │││├┤ └─┐
 // ╚═╝└─┘└─┘┘└┘└─┘└─┘
 
-pub fn FullScreen(value: Layout) -> Scene {
-    Scene::FullScreen(value)
+pub fn FullScreen(value: Layout) -> frame::Scene {
+    frame::Scene::FullScreen(value)
 }
 
-pub fn Spinner() -> Scene {
-    Scene::Spinner
+pub fn Spinner() -> frame::Scene {
+    frame::Scene::Spinner
 }
 
+pub fn Dashboard(title: impl Into<Value>) -> frame::Scene {
+    let dashboard = frame::dashboard::Dashboard {
+        title: title.into(),
+        pages: vec![],
+    };
+    frame::Scene::Dashboard(dashboard)
+}
+
+/*
 pub struct Dashboard<T>
 where
     T: Into<Value>,
 {
     pub title: T,
+    pub pages: Vec<frame::dashboard::Page>,
 }
 
 impl<T> Into<Scene> for Dashboard<T>
@@ -26,9 +36,9 @@ where
     T: Into<Value>,
 {
     fn into(self) -> Scene {
-        let dashboard = p::dashboard::Dashboard {
+        let dashboard = frame::dashboard::Dashboard {
             title: self.title.into(),
-            pages: vec![],
+            pages: self.pages.into_iter().map(,
         };
         Scene::Dashboard(dashboard)
     }
@@ -41,19 +51,19 @@ where
     pub title: T,
 }
 
-impl<T> Into<p::dashboard::Page> for Page<T>
+impl<T> Into<frame::dashboard::Page> for Page<T>
 where
     T: Into<Value>,
 {
-    fn into(self) -> p::dashboard::Page {
-        p::dashboard::Page {
+    fn into(self) -> frame::dashboard::Page {
+        frame::dashboard::Page {
             title: self.title.into(),
             subtitle: "".into(),
             body: Layout::Blank,
         }
     }
 }
-
+*/
 
 
 /*
@@ -61,7 +71,7 @@ pub struct Dashboard<T, B, F>
 where
     T: Into<Value>,
     B: Into<Layout>,
-    F: Into<p::Footer>,
+    F: Into<frame::Footer>,
 {
     pub title: T,
     pub body: B,
@@ -72,7 +82,7 @@ impl<T, B, F> Into<Scene> for Dashboard<T, B, F>
 where
     T: Into<Value>,
     B: Into<Layout>,
-    F: Into<p::Footer>,
+    F: Into<frame::Footer>,
 {
     fn into(self) -> Scene {
         Scene::Dashboard {
@@ -86,19 +96,19 @@ where
 pub struct Footer<C, M>
 where
     C: Into<Value>,
-    M: Into<p::Menu>,
+    M: Into<frame::Menu>,
 {
     pub copyright: C,
     pub menu: M,
 }
 
-impl<C, M> Into<p::Footer> for Footer<C, M>
+impl<C, M> Into<frame::Footer> for Footer<C, M>
 where
     C: Into<Value>,
-    M: Into<p::Menu>,
+    M: Into<frame::Menu>,
 {
-    fn into(self) -> p::Footer {
-        p::Footer {
+    fn into(self) -> frame::Footer {
+        frame::Footer {
             copyright: self.copyright.into(),
             menu: self.menu.into(),
         }
@@ -106,14 +116,14 @@ where
 }
 */
 
-pub fn Menu(value: impl IntoIterator<Item = p::MenuItem>) -> p::Menu {
-    p::Menu {
+pub fn Menu(value: impl IntoIterator<Item = frame::MenuItem>) -> frame::Menu {
+    frame::Menu {
         items: value.into_iter().collect(),
     }
 }
 
-pub fn Item(value: impl Into<Value>) -> p::MenuItem {
-    p::MenuItem {
+pub fn Item(value: impl Into<Value>) -> frame::MenuItem {
+    frame::MenuItem {
         caption: value.into(),
     }
 }
