@@ -1,4 +1,4 @@
-use crate::widgets::{Reqs, View, Widget, WidgetModel};
+use crate::widgets::{Page, Reqs, Spinner, View, Widget, WidgetModel};
 use protocol::dashboard as frame;
 use yew::html;
 
@@ -6,12 +6,14 @@ pub type Dashboard = WidgetModel<Model>;
 
 pub struct Model {
     dashboard: Option<frame::Dashboard>,
+    selected_page: usize,
 }
 
 impl Default for Model {
     fn default() -> Self {
         Self {
             dashboard: None,
+            selected_page: 0,
         }
     }
 }
@@ -31,12 +33,22 @@ impl Widget for Model {
 
     fn main_view(&self) -> View<Self> {
         if let Some(dashboard) = self.dashboard.as_ref() {
+            let page = dashboard.pages.get(self.selected_page).cloned();
             html! {
-                <p>{ &dashboard.title }</p>
+                <div class="dashboard",>
+                    <div class="side-menu",>
+                        <div class="header",>
+                            <p>{ &dashboard.title }</p>
+                        </div>
+                    </div>
+                    <div class="content",>
+                        <Page: page=page, />
+                    </div>
+                </div>
             }
         } else {
             html! {
-                //<Spinner: />
+                <Spinner: />
             }
         }
     }

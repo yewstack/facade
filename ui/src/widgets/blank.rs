@@ -1,7 +1,7 @@
 use crate::widgets::{View, Widget, WidgetModel};
 use yew::html;
 
-pub type Spinner = WidgetModel<Model>;
+pub type Blank = WidgetModel<Model>;
 
 #[derive(Default)]
 pub struct Model { }
@@ -11,8 +11,8 @@ impl Widget for Model {
 
     fn main_view(&self) -> View<Self> {
         html! {
-            <div class="spinner",>
-                <img src="./spinner.svg", width=200, />
+            <div class="blank",>
+                <img src="./blank.svg", width=200, />
             </div>
         }
     }

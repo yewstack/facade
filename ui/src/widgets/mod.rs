@@ -13,6 +13,9 @@ pub use fixed::Fixed;
 mod layout;
 pub use layout::LayoutWidget as Layout;
 
+mod page;
+pub use page::Page;
+
 mod scene;
 pub use scene::SceneWidget as Scene;
 
