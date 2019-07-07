@@ -36,10 +36,13 @@ impl Widget for Model {
             let page = dashboard.pages.get(self.selected_page).cloned();
             html! {
                 <div class="dashboard",>
-                    <div class="side-menu",>
+                    <div class="sidebar",>
                         <div class="header",>
                             <p>{ &dashboard.title }</p>
                         </div>
+                        <ul class="menu",>
+                            { for dashboard.pages.iter().map(Model::view_page_title) }
+                        </ul>
                     </div>
                     <div class="content",>
                         <Page: page=page, />
@@ -50,6 +53,14 @@ impl Widget for Model {
             html! {
                 <Spinner: />
             }
+        }
+    }
+}
+
+impl Model {
+    fn view_page_title(page: &frame::Page) -> View<Self> {
+        html! {
+            <li>{ &page.title }</li>
         }
     }
 }
