@@ -34,6 +34,28 @@ where
     }
 }
 
+pub struct Page<T>
+where
+    T: Into<Value>,
+{
+    pub title: T,
+}
+
+impl<T> Into<p::dashboard::Page> for Page<T>
+where
+    T: Into<Value>,
+{
+    fn into(self) -> p::dashboard::Page {
+        p::dashboard::Page {
+            title: self.title.into(),
+            subtitle: "".into(),
+            body: Layout::Blank,
+        }
+    }
+}
+
+
+
 /*
 pub struct Dashboard<T, B, F>
 where
