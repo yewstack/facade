@@ -25,11 +25,15 @@ pub fn Dashboard(
     frame::Scene::Dashboard(dashboard)
 }
 
-pub fn Page(title: impl Into<Value>) -> frame::dashboard::Page {
+pub fn Page(
+    title: impl Into<Value>,
+    subtitle: impl Into<Value>,
+    body: impl Into<Layout>,
+) -> frame::dashboard::Page {
     frame::dashboard::Page {
         title: title.into(),
-        subtitle: "".into(),
-        body: Layout::Blank,
+        subtitle: subtitle.into(),
+        body: body.into(),
     }
 }
 
