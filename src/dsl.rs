@@ -57,6 +57,10 @@ pub fn Item(value: impl Into<Value>) -> frame::MenuItem {
 // ║  ├─┤└┬┘│ ││ │ │
 // ╩═╝┴ ┴ ┴ └─┘└─┘ ┴
 
+pub fn Blank() -> frame::Layout {
+    frame::Layout::Blank
+}
+
 pub fn Row(value: impl IntoIterator<Item = Layout>) -> Layout {
     let layouts = value.into_iter().collect();
     Layout::Row(layouts)

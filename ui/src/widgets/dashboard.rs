@@ -53,10 +53,10 @@ impl Widget for Model {
                 <div class="dashboard",>
                     <div class="sidebar",>
                         <div class="header",>
-                            <p>{ &dashboard.title }</p>
+                            <p class="title",>{ &dashboard.title }</p>
                         </div>
                         <ul class="menu",>
-                            { for dashboard.pages.iter().map(Model::view_page_title) }
+                            { for dashboard.pages.iter().enumerate().map(Model::view_page_title) }
                         </ul>
                     </div>
                     <div class="content",>
@@ -73,9 +73,9 @@ impl Widget for Model {
 }
 
 impl Model {
-    fn view_page_title(page: &frame::Page) -> View<Self> {
+    fn view_page_title((idx, page): (usize, &frame::Page)) -> View<Self> {
         html! {
-            <li onclick=|_| Msg::SelectPage(0).into(),>{ &page.title }</li>
+            <li class="item", onclick=|_| Msg::SelectPage(idx).into(),>{ &page.title }</li>
         }
     }
 }

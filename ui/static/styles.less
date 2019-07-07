@@ -38,14 +38,14 @@
 
 html {
     .fill;
-    font-size: 13px;
+    font-size: 16px;
 }
 body {
     .fill;
     font-family: @font;
     background: #F9FAFB;
     color: #495057;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 300;
 }
 
@@ -60,10 +60,29 @@ body {
 
     .sidebar {
         .vertical;
-        width: 120px;
+        width: 220px;
         background-color: #1e1e2d;
+        color: #fff;
 
         .header {
+            background-color: #1a1a27;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            .title {
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+        }
+        .menu {
+            .vertical;
+            .item {
+                cursor:pointer;
+                padding: 10px 30px;
+
+                &:hover {
+                    background-color: #1a1a27;
+                }
+            }
         }
     }
 
