@@ -14,12 +14,23 @@ pub fn Spinner() -> frame::Scene {
     frame::Scene::Spinner
 }
 
-pub fn Dashboard(title: impl Into<Value>) -> frame::Scene {
+pub fn Dashboard(
+    title: impl Into<Value>,
+    pages: impl IntoIterator<Item = frame::dashboard::Page>,
+) -> frame::Scene {
     let dashboard = frame::dashboard::Dashboard {
         title: title.into(),
-        pages: vec![],
+        pages: pages.into_iter().collect(),
     };
     frame::Scene::Dashboard(dashboard)
+}
+
+pub fn Page(title: impl Into<Value>) -> frame::dashboard::Page {
+    frame::dashboard::Page {
+        title: title.into(),
+        subtitle: "".into(),
+        body: Layout::Blank,
+    }
 }
 
 /*
