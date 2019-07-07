@@ -23,6 +23,7 @@ pub struct Props {
 }
 
 impl Widget for Model {
+    type Message = ();
     type Properties = Props;
 
     fn recompose(&mut self, _: &Self::Properties) -> Reqs {

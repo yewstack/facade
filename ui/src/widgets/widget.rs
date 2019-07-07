@@ -6,6 +6,7 @@ pub type Reqs = Option<HashSet<Requirement>>;
 pub type View<T> = Html<WidgetModel<T>>;
 
 pub trait Widget: Default + 'static {
+    type Message: std::fmt::Debug;
     type Properties: Default + Clone + PartialEq;
 
     fn recompose(&mut self, _props: &Self::Properties) -> Reqs {
@@ -13,6 +14,10 @@ pub trait Widget: Default + 'static {
     }
 
     fn handle_incoming(&mut self, _event: ResponseEvt) -> ShouldRender {
+        false
+    }
+
+    fn handle_inner(&mut self, _msg: Self::Message) -> ShouldRender {
         false
     }
 
@@ -26,12 +31,19 @@ pub struct WidgetModel<T: Widget> {
     requirements: HashSet<Requirement>,
 }
 
-pub enum Msg {
+pub enum Msg<T> {
     Incoming(ResponseEvt),
+    Inner(T),
+}
+
+impl<T> From<T> for Msg<T> {
+    fn from(value: T) -> Self {
+        Msg::Inner(value)
+    }
 }
 
 impl<T: Widget> Component for WidgetModel<T> {
-    type Message = Msg;
+    type Message = Msg<T::Message>;
     type Properties = T::Properties;
 
     fn create(props: Self::Properties, mut link: ComponentLink<Self>) -> Self {
@@ -50,8 +62,12 @@ impl<T: Widget> Component for WidgetModel<T> {
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::Incoming(event) => {
-                log::trace!("Incioming event: {:?}", event);
+                log::trace!("Incoming event: {:?}", event);
                 self.widget.handle_incoming(event)
+            }
+            Msg::Inner(msg) => {
+                log::trace!("Inner msg: {:?}", msg);
+                self.widget.handle_inner(msg)
             }
         }
     }

@@ -1,6 +1,6 @@
 use crate::widgets::{Page, Reqs, Spinner, View, Widget, WidgetModel};
 use protocol::dashboard as frame;
-use yew::html;
+use yew::{html, ShouldRender};
 
 pub type Dashboard = WidgetModel<Model>;
 
@@ -23,12 +23,27 @@ pub struct Props {
     pub dashboard: Option<frame::Dashboard>,
 }
 
+#[derive(Debug)]
+pub enum Msg {
+    SelectPage(usize),
+}
+
 impl Widget for Model {
+    type Message = Msg;
     type Properties = Props;
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.dashboard = props.dashboard.to_owned();
         None
+    }
+
+    fn handle_inner(&mut self, msg: Self::Message) -> ShouldRender {
+        match msg {
+            Msg::SelectPage(idx) => {
+                self.selected_page = idx;
+                true
+            }
+        }
     }
 
     fn main_view(&self) -> View<Self> {
@@ -60,7 +75,7 @@ impl Widget for Model {
 impl Model {
     fn view_page_title(page: &frame::Page) -> View<Self> {
         html! {
-            <li>{ &page.title }</li>
+            <li onclick=|_| Msg::SelectPage(0).into(),>{ &page.title }</li>
         }
     }
 }

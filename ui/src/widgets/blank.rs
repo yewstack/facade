@@ -7,6 +7,7 @@ pub type Blank = WidgetModel<Model>;
 pub struct Model { }
 
 impl Widget for Model {
+    type Message = ();
     type Properties = ();
 
     fn main_view(&self) -> View<Self> {

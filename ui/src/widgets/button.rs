@@ -12,6 +12,7 @@ impl Default for Model {
 }
 
 impl Widget for Model {
+    type Message = ();
     type Properties = ();
 
     fn main_view(&self) -> View<Self> {
