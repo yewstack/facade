@@ -76,6 +76,11 @@ impl Widget for Model {
                     </>
                 }
             }
+            Layout::Container(ref container) => {
+                html! {
+                    <widgets::Container: container = Some(*container.clone()), />
+                }
+            }
         }
     }
 }
@@ -84,7 +89,7 @@ impl Model {
     fn column(&self, layout: &Layout) -> View<Self> {
         html! {
             <div class="column",>
-                <LayoutWidget: layout=Some(layout.clone()), />
+                <widgets::Layout: layout=Some(layout.clone()), />
             </div>
         }
     }
@@ -92,7 +97,7 @@ impl Model {
     fn row(&self, layout: &Layout) -> View<Self> {
         html! {
             <div class="row",>
-                <LayoutWidget: layout=Some(layout.clone()), />
+                <widgets::Layout: layout=Some(layout.clone()), />
             </div>
         }
     }

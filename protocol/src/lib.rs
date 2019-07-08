@@ -55,9 +55,12 @@ pub struct MenuItem {
     pub caption: Value,
 }
 
+/// Like `Layout`, but has physical appearance
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Container {
+    Blank,
     Tabs(Vec<Tab>),
+    Panel(Layout),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -66,6 +69,7 @@ pub struct Tab {
     body: Layout,
 }
 
+/// Like `Container`, but without physical appearance (row, column, center)
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Layout {
     Blank,
@@ -73,6 +77,7 @@ pub enum Layout {
     Widget(Widget),
     Row(Vec<Layout>),
     Column(Vec<Layout>),
+    Container(Box<Container>),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]

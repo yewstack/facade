@@ -1,5 +1,10 @@
+//! This module defines aliases to widget types.
+
 mod button;
 pub use button::Button;
+
+mod container;
+pub use container::ContainerWidget as Container;
 
 mod dashboard;
 pub use dashboard::Dashboard;
