@@ -6,8 +6,8 @@ use protocol::{self as frame, Id, Layout, Value, Widget};
 // ╚═╗│  ├┤ │││├┤ └─┐
 // ╚═╝└─┘└─┘┘└┘└─┘└─┘
 
-pub fn FullScreen(value: Layout) -> frame::Scene {
-    frame::Scene::FullScreen(value)
+pub fn FullScreen(value: impl Into<Layout>) -> frame::Scene {
+    frame::Scene::FullScreen(value.into())
 }
 
 pub fn Spinner() -> frame::Scene {
@@ -53,6 +53,14 @@ pub fn Item(value: impl Into<Value>) -> frame::MenuItem {
 // ║  │ ││││ │ ├─┤││││├┤ ├┬┘└─┐
 // ╚═╝└─┘┘└┘ ┴ ┴ ┴┴┘└┘└─┘┴└─└─┘
 
+pub fn Panel(value: impl Into<Layout>) -> Layout {
+    let panel = frame::Panel {
+        body: value.into(),
+    };
+    let container = frame::Container::Panel(panel);
+    Layout::Container(Box::new(container))
+}
+
 // ╦  ┌─┐┬ ┬┌─┐┬ ┬┌┬┐
 // ║  ├─┤└┬┘│ ││ │ │
 // ╩═╝┴ ┴ ┴ └─┘└─┘ ┴
@@ -75,9 +83,8 @@ pub fn Column(value: impl IntoIterator<Item = Layout>) -> Layout {
 // ║║║│ │││ ┬├┤  │ └─┐
 // ╚╩╝┴─┴┘└─┘└─┘ ┴ └─┘
 
-pub fn Dynamic(value: impl AsRef<str>) -> Layout {
-    let id = Id::from(value);
-    Layout::Widget(Widget::Dynamic(id))
+pub fn Dynamic(value: impl Into<Id>) -> Layout {
+    Layout::Widget(Widget::Dynamic(value.into()))
 }
 
 pub fn Fixed(value: impl Into<Value>) -> Layout {
