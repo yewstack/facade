@@ -65,7 +65,7 @@ pub enum Container {
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Panel {
-    // pub title: Value,
+    pub title: Option<Value>,
     pub body: Layout,
 }
 

@@ -55,6 +55,16 @@ pub fn Item(value: impl Into<Value>) -> frame::MenuItem {
 
 pub fn Panel(value: impl Into<Layout>) -> Layout {
     let panel = frame::Panel {
+        title: None,
+        body: value.into(),
+    };
+    let container = frame::Container::Panel(panel);
+    Layout::Container(Box::new(container))
+}
+
+pub fn TitledPanel(title: impl Into<Value>, value: impl Into<Layout>) -> Layout {
+    let panel = frame::Panel {
+        title: Some(title.into()),
         body: value.into(),
     };
     let container = frame::Container::Panel(panel);

@@ -29,10 +29,25 @@ impl Widget for Model {
 
     fn main_view(&self) -> View<Self> {
         if let Some(panel) = self.panel.as_ref() {
-            html! {
-                <div class="panel",>
-                    <widgets::Layout: layout=Some(panel.body.clone()), />
-                </div>
+            if let Some(ref title) = panel.title {
+                html! {
+                    <div class="panel",>
+                        <div class="header",>
+                            <p class="title",>{ title }</p>
+                        </div>
+                        <div class="content",>
+                            <widgets::Layout: layout=Some(panel.body.clone()), />
+                        </div>
+                    </div>
+                }
+            } else {
+                html! {
+                    <div class="panel",>
+                        <div class="content",>
+                            <widgets::Layout: layout=Some(panel.body.clone()), />
+                        </div>
+                    </div>
+                }
             }
         } else {
             html! {
