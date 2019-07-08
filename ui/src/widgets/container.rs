@@ -44,12 +44,10 @@ impl Widget for Model {
                     <p>{ "Tabs" }</p>
                 }
             }
-            Container::Panel(ref layout) => {
+            Container::Panel(ref panel) => {
                 html! {
                     <div class="container",>
-                        <div class="panel",>
-                            <widgets::Layout: layout=Some(layout.clone()), />
-                        </div>
+                        <widgets::Panel: panel=Some(panel.clone()), />
                     </div>
                 }
             }

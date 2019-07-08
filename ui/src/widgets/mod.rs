@@ -24,6 +24,9 @@ pub use layout::LayoutWidget as Layout;
 mod page;
 pub use page::PageWidget as Page;
 
+mod panel;
+pub use panel::PanelWidget as Panel;
+
 mod scene;
 pub use scene::SceneWidget as Scene;
 

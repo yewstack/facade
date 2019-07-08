@@ -60,7 +60,13 @@ pub struct MenuItem {
 pub enum Container {
     Blank,
     Tabs(Vec<Tab>),
-    Panel(Layout),
+    Panel(Panel),
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Panel {
+    // pub title: Value,
+    pub body: Layout,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
