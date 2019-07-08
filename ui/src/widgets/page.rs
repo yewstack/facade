@@ -33,8 +33,9 @@ impl Widget for Model {
             html! {
                 <div class="page",>
                     <div class="header",>
-                        <p>{ &page.title }</p>
-                        <p>{ &page.subtitle }</p>
+                        <p class="title",>{ &page.title }</p>
+                        <div class="separator",></div>
+                        <p class="subtitle",>{ &page.subtitle }</p>
                     </div>
                     <div class="body",>
                         <Layout: layout=Some(page.body.clone()), />
