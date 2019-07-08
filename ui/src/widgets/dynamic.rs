@@ -43,7 +43,7 @@ impl Widget for Model {
 
     fn main_view(&self) -> View<Self> {
         html! {
-            <p>{ &self.value }</p>
+            <p class="dynamic",>{ &self.value }</p>
         }
     }
 }

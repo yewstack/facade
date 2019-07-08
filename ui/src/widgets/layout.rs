@@ -64,14 +64,14 @@ impl Widget for Model {
             },
             Layout::Row(ref layouts) => {
                 html! {
-                    <div class="rows",>
+                    <div class="layout-row",>
                         { for layouts.iter().map(|lyo| self.row(lyo)) }
                     </>
                 }
             }
             Layout::Column(ref layouts) => {
                 html! {
-                    <div class="columns",>
+                    <div class="layout-column",>
                         { for layouts.iter().map(|lyo| self.column(lyo)) }
                     </>
                 }
@@ -88,17 +88,13 @@ impl Widget for Model {
 impl Model {
     fn column(&self, layout: &Layout) -> View<Self> {
         html! {
-            <div class="column",>
-                <widgets::Layout: layout=Some(layout.clone()), />
-            </div>
+            <widgets::Layout: layout=Some(layout.clone()), />
         }
     }
 
     fn row(&self, layout: &Layout) -> View<Self> {
         html! {
-            <div class="row",>
-                <widgets::Layout: layout=Some(layout.clone()), />
-            </div>
+            <widgets::Layout: layout=Some(layout.clone()), />
         }
     }
 }
