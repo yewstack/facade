@@ -46,7 +46,11 @@ impl Widget for Model {
             }
             Container::Panel(ref layout) => {
                 html! {
-                    <widgets::Layout: layout=Some(layout.clone()), />
+                    <div class="container",>
+                        <div class="panel",>
+                            <widgets::Layout: layout=Some(layout.clone()), />
+                        </div>
+                    </div>
                 }
             }
         }

@@ -1,7 +1,7 @@
 use crate::widgets::{View, Widget, WidgetModel};
 use yew::html;
 
-pub type Button = WidgetModel<Model>;
+pub type ButtonWidget = WidgetModel<Model>;
 
 pub struct Model {}
 

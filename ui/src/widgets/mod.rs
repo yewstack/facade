@@ -1,34 +1,37 @@
 //! This module defines aliases to widget types.
 
+mod blank;
+pub use blank::BlankWidget as Blank;
+
 mod button;
-pub use button::Button;
+pub use button::ButtonWidget as Button;
 
 mod container;
 pub use container::ContainerWidget as Container;
 
 mod dashboard;
-pub use dashboard::Dashboard;
+pub use dashboard::DashboardWidget as Dashboard;
 
 mod dynamic;
-pub use dynamic::Dynamic;
+pub use dynamic::DynamicWidget as Dynamic;
 
 mod fixed;
-pub use fixed::Fixed;
+pub use fixed::FixedWidget as Fixed;
 
 mod layout;
 pub use layout::LayoutWidget as Layout;
 
 mod page;
-pub use page::Page;
+pub use page::PageWidget as Page;
 
 mod scene;
 pub use scene::SceneWidget as Scene;
 
 mod spinner;
-pub use spinner::Spinner;
+pub use spinner::SpinnerWidget as Spinner;
 
 mod welcome;
-pub use welcome::Welcome;
+pub use welcome::WelcomeWidget as Welcome;
 
 mod widget;
 pub use widget::{Reqs, View, Widget, WidgetModel};

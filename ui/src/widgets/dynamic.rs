@@ -3,7 +3,7 @@ use crate::widgets::{Reqs, View, Widget, WidgetModel};
 use protocol::{Id, Reaction, Value};
 use yew::{html, ShouldRender};
 
-pub type Dynamic = WidgetModel<Model>;
+pub type DynamicWidget = WidgetModel<Model>;
 
 pub struct Model {
     value: Value,

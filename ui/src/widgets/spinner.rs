@@ -1,7 +1,7 @@
 use crate::widgets::{View, Widget, WidgetModel};
 use yew::html;
 
-pub type Spinner = WidgetModel<Model>;
+pub type SpinnerWidget = WidgetModel<Model>;
 
 #[derive(Default)]
 pub struct Model {}

@@ -2,7 +2,7 @@ use crate::widgets::{Reqs, View, Widget, WidgetModel};
 use protocol::Value;
 use yew::html;
 
-pub type Fixed = WidgetModel<Model>;
+pub type FixedWidget = WidgetModel<Model>;
 
 pub struct Model {
     value: Value,

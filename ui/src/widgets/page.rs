@@ -2,7 +2,7 @@ use crate::widgets::{Layout, Reqs, Spinner, View, Widget, WidgetModel};
 use protocol::dashboard as frame;
 use yew::html;
 
-pub type Page = WidgetModel<Model>;
+pub type PageWidget = WidgetModel<Model>;
 
 pub struct Model {
     page: Option<frame::Page>,
