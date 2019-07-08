@@ -56,7 +56,7 @@ impl Widget for Model {
                             <p class="title",>{ &dashboard.title }</p>
                         </div>
                         <ul class="menu",>
-                            { for dashboard.pages.iter().enumerate().map(Model::view_page_title) }
+                            { for dashboard.pages.iter().enumerate().map(|(idx, page)| self.view_page_title(idx, page)) }
                         </ul>
                     </div>
                     <div class="content",>
@@ -73,9 +73,10 @@ impl Widget for Model {
 }
 
 impl Model {
-    fn view_page_title((idx, page): (usize, &frame::Page)) -> View<Self> {
+    fn view_page_title(&self, idx: usize, page: &frame::Page) -> View<Self> {
+        let class = if self.selected_page == idx { "item selected" } else { "item" };
         html! {
-            <li class="item", onclick=|_| Msg::SelectPage(idx).into(),>{ &page.title }</li>
+            <li class=class, onclick=|_| Msg::SelectPage(idx).into(),>{ &page.title }</li>
         }
     }
 }
