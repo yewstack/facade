@@ -1,5 +1,5 @@
 use crate::live::{Requirement, ResponseEvt};
-use crate::widgets::{self, Dashboard, Reqs, Spinner, View, Widget, WidgetModel};
+use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::{Reaction, Scene};
 use yew::{html, ShouldRender};
 
@@ -44,7 +44,7 @@ impl Widget for Model {
         match self.scene {
             Scene::Spinner => {
                 html! {
-                    <Spinner: />
+                    <widgets::Spinner: />
                 }
             }
             Scene::FullScreen(ref layout) => {
@@ -56,7 +56,7 @@ impl Widget for Model {
             }
             Scene::Dashboard(ref dashboard) => {
                 html! {
-                    <Dashboard: dashboard=Some(dashboard.clone()), />
+                    <widgets::Dashboard: dashboard=Some(dashboard.clone()), />
                 }
             }
         }

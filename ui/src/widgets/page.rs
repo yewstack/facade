@@ -1,4 +1,4 @@
-use crate::widgets::{Layout, Reqs, Spinner, View, Widget, WidgetModel};
+use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::dashboard as frame;
 use yew::html;
 
@@ -38,13 +38,13 @@ impl Widget for Model {
                         <p class="subtitle",>{ &page.subtitle }</p>
                     </div>
                     <div class="body",>
-                        <Layout: layout=Some(page.body.clone()), />
+                        <widgets::Layout: layout=Some(page.body.clone()), />
                     </div>
                 </div>
             }
         } else {
             html! {
-                <Spinner: />
+                <widgets::Spinner: />
             }
         }
     }

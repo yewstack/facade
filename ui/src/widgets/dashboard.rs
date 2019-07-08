@@ -1,4 +1,4 @@
-use crate::widgets::{Page, Reqs, Spinner, View, Widget, WidgetModel};
+use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::dashboard as frame;
 use yew::{html, ShouldRender};
 
@@ -60,13 +60,13 @@ impl Widget for Model {
                         </ul>
                     </div>
                     <div class="content",>
-                        <Page: page=page, />
+                        <widgets::Page: page=page, />
                     </div>
                 </div>
             }
         } else {
             html! {
-                <Spinner: />
+                <widgets::Spinner: />
             }
         }
     }
