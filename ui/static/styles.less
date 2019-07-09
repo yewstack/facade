@@ -167,7 +167,8 @@ ul {
         .horizontal;
         .stick-corners;
         .middle;
-        border-bottom: .07rem dashed #ebedf2;
+        border-bottom: 1px dashed #ebedf2;
+        padding: 1rem 0;
         &:last-child { border-bottom: none; }
         .list-item-info {
             .vertical;
@@ -175,6 +176,7 @@ ul {
                 font-size: 1.1rem;
                 font-weight: 500;
                 color: #595d6e;
+                margin-bottom: 0.5rem;
             }
             .list-item-info-description {
                 font-size: 1rem;
@@ -186,9 +188,13 @@ ul {
             font-size: 1.4rem;
             font-weight: 600;
             color: #5d78ff;
+            margin-left: 2rem;
         }
     }
 }
+
+.panel .list-item:first-child { padding-top: 0; }
+.panel .list-item:last-child { padding-bottom: 0; }
 
 .dynamic {
     margin: 0 0.2rem;
