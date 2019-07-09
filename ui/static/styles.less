@@ -100,8 +100,8 @@ ul {
     }
 
     .content {
-        .vertical;
         .grow;
+        .vertical;
 
         .page {
             .vertical;
@@ -139,7 +139,11 @@ ul {
 }
 
 .container {
+    .grow;
+    .horizontal;
     .panel {
+        .grow;
+        .vertical;
         background-color: #fff;
         border-radius: 4px;
         box-shadow: 0 0 13px 0 rgba(82,63,105,.05);
@@ -157,6 +161,8 @@ ul {
             }
         }
         .panel-content {
+            .vertical;
+            .grow;
             padding: 1rem;
         }
     }
@@ -209,8 +215,10 @@ ul {
 
 .layout-column {
     .vertical;
+    .stretch;
 }
 
 .layout-row {
     .horizontal;
+    .stretch;
 }
