@@ -1,5 +1,8 @@
 //! This module defines aliases to widget types.
 
+mod bind;
+pub use bind::BindWidget as Bind;
+
 mod blank;
 pub use blank::BlankWidget as Blank;
 
@@ -8,6 +11,9 @@ pub use button::ButtonWidget as Button;
 
 mod container;
 pub use container::ContainerWidget as Container;
+
+mod control;
+pub use control::ControlWidget as Control;
 
 mod dashboard;
 pub use dashboard::DashboardWidget as Dashboard;
@@ -20,6 +26,9 @@ pub use fixed::FixedWidget as Fixed;
 
 mod layout;
 pub use layout::LayoutWidget as Layout;
+
+mod list;
+pub use list::ListWidget as List;
 
 mod page;
 pub use page::PageWidget as Page;

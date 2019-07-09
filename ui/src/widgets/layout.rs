@@ -33,7 +33,6 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        use protocol::Widget;
         match self.layout {
             Layout::Blank => {
                 html! {
@@ -45,23 +44,16 @@ impl Widget for Model {
                     <p>{ "Welcome" }</p>
                 }
             }
-            Layout::Widget(ref widget) => match widget {
-                Widget::Dynamic(id) => {
-                    html! {
-                        <widgets::Dynamic: id=id, />
-                    }
+            Layout::Bind(ref bind) => {
+                html! {
+                    <widgets::Bind: bind = Some(bind.clone()), />
                 }
-                Widget::Fixed(value) => {
-                    html! {
-                        <widgets::Fixed: value=value, />
-                    }
+            }
+            Layout::Control(ref control) => {
+                html! {
+                    <widgets::Control: control = Some(control.clone()), />
                 }
-                Widget::Button(_id) => {
-                    html! {
-                        <widgets::Button: />
-                    }
-                }
-            },
+            }
             Layout::Row(ref layouts) => {
                 html! {
                     <div class="layout-row",>
@@ -74,6 +66,11 @@ impl Widget for Model {
                     <div class="layout-column",>
                         { for layouts.iter().map(|lyo| self.column(lyo)) }
                     </>
+                }
+            }
+            Layout::List(ref list) => {
+                html! {
+                    <widgets::List: list = Some(list.clone()), />
                 }
             }
             Layout::Container(ref container) => {

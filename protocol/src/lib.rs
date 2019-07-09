@@ -80,16 +80,52 @@ pub struct Tab {
 pub enum Layout {
     Blank,
     Welcome,
-    Widget(Widget),
+    Bind(Bind),
+    Control(Control),
     Row(Vec<Layout>),
     Column(Vec<Layout>),
+    List(List),
     Container(Box<Container>),
 }
 
+impl From<Bind> for Layout {
+    fn from(bind: Bind) -> Self {
+        Self::Bind(bind)
+    }
+}
+
+impl From<Control> for Layout {
+    fn from(control: Control) -> Self {
+        Self::Control(control)
+    }
+}
+
+impl From<Container> for Layout {
+    fn from(container: Container) -> Self {
+        Self::Container(Box::new(container))
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum Widget {
+pub struct List {
+    pub items: Vec<ListItem>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct ListItem {
+    pub title: Value,
+    pub description: Value,
+    pub bind: Bind,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Bind {
     Dynamic(Id),
     Fixed(Value),
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Control {
     Button(Id),
 }
 
