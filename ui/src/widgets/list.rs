@@ -50,7 +50,9 @@ impl Model {
                     <div class="list-item-info-title",>{ &item.title }</div>
                     <div class="list-item-info-description",>{ &item.description }</div>
                 </div>
-                <div class="list-item-value",>{ "-" }</div>
+                <div class="list-item-value",>
+                    <widgets::Bind: bind=Some(item.bind.clone()), />
+                </div>
             </div>
         }
     }
