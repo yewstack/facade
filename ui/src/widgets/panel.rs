@@ -32,10 +32,10 @@ impl Widget for Model {
             if let Some(ref title) = panel.title {
                 html! {
                     <div class="panel",>
-                        <div class="header",>
-                            <p class="title",>{ title }</p>
+                        <div class="panel-header",>
+                            <p class="panel-header-title",>{ title }</p>
                         </div>
-                        <div class="content",>
+                        <div class="panel-content",>
                             <widgets::Layout: layout=Some(panel.body.clone()), />
                         </div>
                     </div>
@@ -43,7 +43,7 @@ impl Widget for Model {
             } else {
                 html! {
                     <div class="panel",>
-                        <div class="content",>
+                        <div class="panel-content",>
                             <widgets::Layout: layout=Some(panel.body.clone()), />
                         </div>
                     </div>
