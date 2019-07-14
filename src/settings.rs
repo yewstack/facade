@@ -31,8 +31,8 @@ pub struct Inner {
 impl Settings {
     pub fn parse() -> Result<Self, ConfigError> {
         let mut c = Config::new();
-        c.merge(File::with_name("rillrate").required(false))?;
-        c.merge(Environment::with_prefix("rillrate"))?;
+        c.merge(File::with_name("facade").required(false))?;
+        c.merge(Environment::with_prefix("facade"))?;
         c.set_default("ms", 100)?;
         c.set_default("address", "127.0.0.1")?;
         c.set_default("port", 12400)?;

@@ -1,5 +1,5 @@
 [package]
-name = "rillrate-ui"
+name = "facade-ui"
 version = "0.1.0"
 authors = ["Denis Kolodin <deniskolodin@gmail.com>"]
 edition = "2018"
@@ -14,5 +14,5 @@ web_logger = "0.1.0"
 yew = { git = "https://github.com/DenisKolodin/yew" }
 
 [dependencies.protocol]
-package = "rillrate-protocol"
+package = "facade-protocol"
 path = "../protocol"

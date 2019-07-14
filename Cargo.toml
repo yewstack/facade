@@ -1,5 +1,5 @@
 [package]
-name = "rillrate"
+name = "facade"
 version = "0.1.0"
 authors = ["Denis Kolodin <deniskolodin@gmail.com>"]
 edition = "2018"
@@ -29,7 +29,7 @@ version = "0.3.0-alpha.17"
 features = ["async-await", "nightly", "compat"]
 
 [dependencies.protocol]
-package = "rillrate-protocol"
+package = "facade-protocol"
 path = "protocol"
 
 [build-dependencies]
