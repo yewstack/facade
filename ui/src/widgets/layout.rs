@@ -58,14 +58,14 @@ impl Widget for Model {
                 html! {
                     <div class="layout-row",>
                         { for layouts.iter().map(|lyo| self.row(lyo)) }
-                    </>
+                    </div>
                 }
             }
             Layout::Column(ref layouts) => {
                 html! {
                     <div class="layout-column",>
                         { for layouts.iter().map(|lyo| self.column(lyo)) }
-                    </>
+                    </div>
                 }
             }
             Layout::List(ref list) => {
