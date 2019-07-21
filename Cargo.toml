@@ -3,6 +3,14 @@ name = "facade"
 version = "0.1.0"
 authors = ["Denis Kolodin <deniskolodin@gmail.com>"]
 edition = "2018"
+repository = "https://github.com/DenisKolodin/facade"
+homepage = "https://github.com/DenisKolodin/facade"
+documentation = "https://docs.rs/facade/"
+license = "MIT/Apache-2.0"
+readme = "README.md"
+keywords = ["webasm", "javascript"]
+categories = ["gui", "web-programming"]
+description = "A framework to rapidly add UI to any Rust app"
 
 [dependencies]
 config = "0.9.3"
