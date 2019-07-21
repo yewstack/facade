@@ -38,6 +38,7 @@ features = ["async-await", "nightly", "compat"]
 
 [dependencies.protocol]
 package = "facade-protocol"
+version = "0.1.0"
 path = "protocol"
 
 [build-dependencies]
