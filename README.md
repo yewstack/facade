@@ -82,9 +82,11 @@ loop {
 And yeah, you supplied updates too fast in this example, but that's not a problem, because **Facade**
 accumulate updates before send them, overwrites changed values and send the latest update only.
 
-Start and enjoy by connecting to: http://localhost:6012 port (by default) with your favorite browser.
+Start and enjoy live updates by connecting to: http://localhost:12400 port (by default) with your favorite browser.
 If you want to check it with your smartphone than set bind address to `FACADE_ADDRESS=0.0.0.0` and connect
 to the same port, but to IP address of your PC/Mac (both to avoid sexism).
+
+You can also check ready to use example [here](https://github.com/DenisKolodin/facade-example).
 
 ### Tuning
 
