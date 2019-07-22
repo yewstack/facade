@@ -1,7 +1,7 @@
 use crate::live::{Requirement, ResponseEvt};
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::{Reaction, Scene};
-use yew::{html, ShouldRender};
+use yew::{html, Properties, ShouldRender};
 
 pub type SceneWidget = WidgetModel<Model>;
 
@@ -17,7 +17,7 @@ impl Default for Model {
     }
 }
 
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, Default, PartialEq, Clone)]
 pub struct Props {
     pub scene: Option<Scene>,
 }

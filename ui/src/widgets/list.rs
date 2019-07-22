@@ -1,5 +1,5 @@
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use yew::html;
+use yew::{html, Properties};
 
 pub type ListWidget = WidgetModel<Model>;
 
@@ -13,7 +13,7 @@ impl Default for Model {
     }
 }
 
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, Default, PartialEq, Clone)]
 pub struct Props {
     pub list: Option<protocol::List>,
 }

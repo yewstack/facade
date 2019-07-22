@@ -1,6 +1,6 @@
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::dashboard as frame;
-use yew::{html, ShouldRender};
+use yew::{html, Properties, ShouldRender};
 
 pub type DashboardWidget = WidgetModel<Model>;
 
@@ -18,7 +18,7 @@ impl Default for Model {
     }
 }
 
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, Default, PartialEq, Clone)]
 pub struct Props {
     pub dashboard: Option<frame::Dashboard>,
 }

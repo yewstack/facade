@@ -1,7 +1,7 @@
 use crate::live::{Requirement, ResponseEvt};
 use crate::widgets::{Reqs, View, Widget, WidgetModel};
 use protocol::{Id, Reaction, Value};
-use yew::{html, ShouldRender};
+use yew::{html, Properties, ShouldRender};
 
 pub type DynamicWidget = WidgetModel<Model>;
 
@@ -17,7 +17,7 @@ impl Default for Model {
     }
 }
 
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, Default, PartialEq, Clone)]
 pub struct Props {
     pub id: Id,
 }

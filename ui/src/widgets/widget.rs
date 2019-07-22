@@ -1,13 +1,13 @@
 use crate::live::{LiveAgent, RequestEvt, Requirement, ResponseEvt};
 use std::collections::HashSet;
-use yew::{Bridge, Bridged, Component, ComponentLink, Html, Renderable, ShouldRender};
+use yew::{Bridge, Bridged, Component, ComponentLink, Html, Properties, Renderable, ShouldRender};
 
 pub type Reqs = Option<HashSet<Requirement>>;
 pub type View<T> = Html<WidgetModel<T>>;
 
 pub trait Widget: Default + 'static {
     type Message: std::fmt::Debug;
-    type Properties: Default + Clone + PartialEq;
+    type Properties: Properties + Default + Clone + PartialEq;
 
     fn recompose(&mut self, _props: &Self::Properties) -> Reqs {
         None

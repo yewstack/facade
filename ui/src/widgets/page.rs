@@ -1,6 +1,6 @@
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::dashboard;
-use yew::html;
+use yew::{html, Properties};
 
 pub type PageWidget = WidgetModel<Model>;
 
@@ -14,7 +14,7 @@ impl Default for Model {
     }
 }
 
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, Default, PartialEq, Clone)]
 pub struct Props {
     pub page: Option<dashboard::Page>,
 }

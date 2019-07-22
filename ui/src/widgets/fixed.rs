@@ -1,6 +1,6 @@
 use crate::widgets::{Reqs, View, Widget, WidgetModel};
 use protocol::Value;
-use yew::html;
+use yew::{html, Properties};
 
 pub type FixedWidget = WidgetModel<Model>;
 
@@ -16,7 +16,7 @@ impl Default for Model {
     }
 }
 
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, Default, PartialEq, Clone)]
 pub struct Props {
     pub value: Value,
 }
