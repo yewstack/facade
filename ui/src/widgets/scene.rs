@@ -50,7 +50,7 @@ impl Widget for Model {
             Scene::FullScreen(ref layout) => {
                 html! {
                     <div class="scene-fullscreen",>
-                        <widgets::Layout: layout=Some(layout.clone()), />
+                        <widgets::Layout: layout=layout.clone(), />
                     </div>
                 }
             }

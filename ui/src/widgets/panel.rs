@@ -36,7 +36,7 @@ impl Widget for Model {
                             <p class="panel-header-title",>{ title }</p>
                         </div>
                         <div class="panel-content",>
-                            <widgets::Layout: layout=Some(panel.body.clone()), />
+                            <widgets::Layout: layout=panel.body.clone(), />
                         </div>
                     </div>
                 }
@@ -44,7 +44,7 @@ impl Widget for Model {
                 html! {
                     <div class="panel",>
                         <div class="panel-content",>
-                            <widgets::Layout: layout=Some(panel.body.clone()), />
+                            <widgets::Layout: layout=panel.body.clone(), />
                         </div>
                     </div>
                 }

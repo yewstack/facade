@@ -7,7 +7,7 @@ pub type View<T> = Html<WidgetModel<T>>;
 
 pub trait Widget: Default + 'static {
     type Message: std::fmt::Debug;
-    type Properties: Properties + Default + Clone + PartialEq;
+    type Properties: Properties + Clone + PartialEq;
 
     fn recompose(&mut self, _props: &Self::Properties) -> Reqs {
         None

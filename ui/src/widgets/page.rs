@@ -38,7 +38,7 @@ impl Widget for Model {
                         <p class="subtitle",>{ &page.subtitle }</p>
                     </div>
                     <div class="body",>
-                        <widgets::Layout: layout=Some(page.body.clone()), />
+                        <widgets::Layout: layout=page.body.clone(), />
                     </div>
                 </div>
             }

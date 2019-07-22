@@ -16,9 +16,10 @@ impl Default for Model {
     }
 }
 
-#[derive(Properties, Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
-    pub layout: Option<Layout>,
+    #[props(required)]
+    pub layout: Layout,
 }
 
 impl Widget for Model {
@@ -26,9 +27,7 @@ impl Widget for Model {
     type Properties = Props;
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
-        if let Some(ref layout) = props.layout {
-            self.layout = layout.clone();
-        }
+        self.layout = props.layout.clone();
         None
     }
 
@@ -85,13 +84,13 @@ impl Widget for Model {
 impl Model {
     fn column(&self, layout: &Layout) -> View<Self> {
         html! {
-            <widgets::Layout: layout=Some(layout.clone()), />
+            <widgets::Layout: layout=layout.clone(), />
         }
     }
 
     fn row(&self, layout: &Layout) -> View<Self> {
         html! {
-            <widgets::Layout: layout=Some(layout.clone()), />
+            <widgets::Layout: layout=layout.clone(), />
         }
     }
 }
