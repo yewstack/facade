@@ -18,7 +18,7 @@ impl Widget for Model {
     type Message = ();
     type Properties = Props;
 
-    fn produce(props: &Self::Properties) -> Self {
+    fn produce(_: &Self::Properties) -> Self {
         Self {
             value: Value::Nothing,
         }

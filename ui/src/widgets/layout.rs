@@ -20,7 +20,7 @@ impl Widget for Model {
 
     fn produce(props: &Self::Properties) -> Self {
         Self {
-            layout: Layout::Blank,
+            layout: props.layout.clone(),
         }
     }
 
@@ -67,7 +67,7 @@ impl Widget for Model {
             }
             Layout::List(ref list) => {
                 html! {
-                    <widgets::List: list = Some(list.clone()), />
+                    <widgets::List: list = list.clone(), />
                 }
             }
             Layout::Container(ref container) => {

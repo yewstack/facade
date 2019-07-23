@@ -19,7 +19,7 @@ impl Widget for Model {
 
     fn produce(props: &Self::Properties) -> Self {
         Self {
-            value: Value::Nothing,
+            value: props.value.to_owned(),
         }
     }
 
