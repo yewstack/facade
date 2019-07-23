@@ -47,6 +47,20 @@ impl Widget for Model {
 
     fn main_view(&self) -> View<Self> {
         let page = self.dashboard.pages.get(self.selected_page).cloned();
+        let page = {
+            match page {
+                Some(page) => {
+                    html! {
+                        <widgets::Page: page=page, />
+                    }
+                }
+                None => {
+                    html! {
+                        <widgets::Spinner: />
+                    }
+                }
+            }
+        };
         html! {
             <div class="dashboard",>
                 <div class="sidebar",>
@@ -63,7 +77,7 @@ impl Widget for Model {
                     </ul>
                 </div>
                 <div class="content",>
-                    <widgets::Page: page=page, />
+                    { page }
                 </div>
             </div>
         }
