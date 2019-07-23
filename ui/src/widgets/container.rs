@@ -10,7 +10,8 @@ pub struct Model {
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
-    pub container: Option<Container>,
+    #[props(required)]
+    pub container: Container,
 }
 
 impl Widget for Model {
@@ -19,14 +20,12 @@ impl Widget for Model {
 
     fn produce(props: &Self::Properties) -> Self {
         Self {
-            container: Container::Blank,
+            container: props.container.clone(),
         }
     }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
-        if let Some(ref container) = props.container {
-            self.container = container.clone();
-        }
+        self.container = props.container.clone();
         None
     }
 

@@ -72,7 +72,7 @@ impl Widget for Model {
             }
             Layout::Container(ref container) => {
                 html! {
-                    <widgets::Container: container = Some(*container.clone()), />
+                    <widgets::Container: container = *container.clone(), />
                 }
             }
         }
