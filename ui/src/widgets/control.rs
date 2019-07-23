@@ -4,12 +4,13 @@ use yew::{html, Properties};
 pub type ControlWidget = WidgetModel<Model>;
 
 pub struct Model {
-    control: Option<protocol::Control>,
+    control: protocol::Control,
 }
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
-    pub control: Option<protocol::Control>,
+    #[props(required)]
+    pub control: protocol::Control,
 }
 
 impl Widget for Model {
@@ -17,7 +18,7 @@ impl Widget for Model {
     type Properties = Props;
 
     fn produce(props: &Self::Properties) -> Self {
-        Self { control: None }
+        Self { control: props.control.to_owned() }
     }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
@@ -26,17 +27,11 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        if let Some(control) = self.control.as_ref() {
-            match control {
-                protocol::Control::Button(ref _id) => {
-                    html! {
-                        <widgets::Button: />
-                    }
+        match self.control {
+            protocol::Control::Button(ref _id) => {
+                html! {
+                    <widgets::Button: />
                 }
-            }
-        } else {
-            html! {
-                <widgets::Spinner: />
             }
         }
     }

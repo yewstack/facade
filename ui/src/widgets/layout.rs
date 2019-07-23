@@ -48,7 +48,7 @@ impl Widget for Model {
             }
             Layout::Control(ref control) => {
                 html! {
-                    <widgets::Control: control = Some(control.clone()), />
+                    <widgets::Control: control = control.clone(), />
                 }
             }
             Layout::Row(ref layouts) => {
