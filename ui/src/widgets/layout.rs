@@ -8,14 +8,6 @@ pub struct Model {
     layout: Layout,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {
-            layout: Layout::Blank,
-        }
-    }
-}
-
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     #[props(required)]
@@ -25,6 +17,12 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            layout: Layout::Blank,
+        }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.layout = props.layout.clone();
@@ -45,7 +43,7 @@ impl Widget for Model {
             }
             Layout::Bind(ref bind) => {
                 html! {
-                    <widgets::Bind: bind = Some(bind.clone()), />
+                    <widgets::Bind: bind = bind.clone(), />
                 }
             }
             Layout::Control(ref control) => {

@@ -9,16 +9,7 @@ pub struct Model {
     selected_page: usize,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {
-            dashboard: None,
-            selected_page: 0,
-        }
-    }
-}
-
-#[derive(Properties, Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub dashboard: Option<frame::Dashboard>,
 }
@@ -31,6 +22,13 @@ pub enum Msg {
 impl Widget for Model {
     type Message = Msg;
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            dashboard: None,
+            selected_page: 0,
+        }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.dashboard = props.dashboard.to_owned();

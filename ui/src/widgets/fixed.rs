@@ -8,15 +8,7 @@ pub struct Model {
     value: Value,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {
-            value: Value::Nothing,
-        }
-    }
-}
-
-#[derive(Properties, Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub value: Value,
 }
@@ -24,6 +16,12 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            value: Value::Nothing,
+        }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.value = props.value.to_owned();

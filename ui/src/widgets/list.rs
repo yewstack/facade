@@ -7,13 +7,7 @@ pub struct Model {
     list: Option<protocol::List>,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self { list: None }
-    }
-}
-
-#[derive(Properties, Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub list: Option<protocol::List>,
 }
@@ -21,6 +15,10 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self { list: None }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.list = props.list.to_owned();
@@ -51,7 +49,7 @@ impl Model {
                     <div class="list-item-info-description",>{ &item.description }</div>
                 </div>
                 <div class="list-item-value",>
-                    <widgets::Bind: bind=Some(item.bind.clone()), />
+                    <widgets::Bind: bind=item.bind.clone(), />
                 </div>
             </div>
         }

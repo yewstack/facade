@@ -8,13 +8,7 @@ pub struct Model {
     page: Option<dashboard::Page>,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self { page: None }
-    }
-}
-
-#[derive(Properties, Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub page: Option<dashboard::Page>,
 }
@@ -22,6 +16,10 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self { page: None }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.page = props.page.to_owned();

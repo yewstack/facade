@@ -9,15 +9,7 @@ pub struct Model {
     scene: Scene,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {
-            scene: Scene::Spinner,
-        }
-    }
-}
-
-#[derive(Properties, Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub scene: Option<Scene>,
 }
@@ -25,6 +17,12 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            scene: Scene::Spinner,
+        }
+    }
 
     fn recompose(&mut self, _: &Self::Properties) -> Reqs {
         Some(vec![Requirement::SceneChange].into_iter().collect())

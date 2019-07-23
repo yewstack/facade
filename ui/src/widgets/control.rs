@@ -7,13 +7,7 @@ pub struct Model {
     control: Option<protocol::Control>,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self { control: None }
-    }
-}
-
-#[derive(Properties, Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub control: Option<protocol::Control>,
 }
@@ -21,6 +15,10 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self { control: None }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.control = props.control.to_owned();

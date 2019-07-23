@@ -8,15 +8,7 @@ pub struct Model {
     container: Container,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {
-            container: Container::Blank,
-        }
-    }
-}
-
-#[derive(Properties, Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub container: Option<Container>,
 }
@@ -24,6 +16,12 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            container: Container::Blank,
+        }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         if let Some(ref container) = props.container {

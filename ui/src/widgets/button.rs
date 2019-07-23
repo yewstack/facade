@@ -5,15 +5,13 @@ pub type ButtonWidget = WidgetModel<Model>;
 
 pub struct Model {}
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {}
-    }
-}
-
 impl Widget for Model {
     type Message = ();
     type Properties = ();
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self { }
+    }
 
     fn main_view(&self) -> View<Self> {
         html! {

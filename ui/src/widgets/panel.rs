@@ -7,13 +7,7 @@ pub struct Model {
     panel: Option<protocol::Panel>,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self { panel: None }
-    }
-}
-
-#[derive(Properties, Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub panel: Option<protocol::Panel>,
 }
@@ -21,6 +15,10 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self { panel: None }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.panel = props.panel.to_owned();

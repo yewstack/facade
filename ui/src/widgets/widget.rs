@@ -5,9 +5,11 @@ use yew::{Bridge, Bridged, Component, ComponentLink, Html, Properties, Renderabl
 pub type Reqs = Option<HashSet<Requirement>>;
 pub type View<T> = Html<WidgetModel<T>>;
 
-pub trait Widget: Default + 'static {
+pub trait Widget: Sized + 'static {
     type Message: std::fmt::Debug;
     type Properties: Properties + Clone + PartialEq;
+
+    fn produce(props: &Self::Properties) -> Self;
 
     fn recompose(&mut self, _props: &Self::Properties) -> Reqs {
         None
@@ -51,7 +53,7 @@ impl<T: Widget> Component for WidgetModel<T> {
         let connection = LiveAgent::bridge(callback);
         let mut this = Self {
             connection,
-            widget: T::default(),
+            widget: T::produce(&props),
             props,
             requirements: HashSet::new(),
         };
