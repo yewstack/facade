@@ -86,7 +86,11 @@ impl Widget for Model {
 
 impl Model {
     fn view_page_title(&self, idx: usize, page: &frame::Page) -> View<Self> {
-        let class = if self.selected_page == idx { "item selected" } else { "item" };
+        let class = if self.selected_page == idx {
+            "item selected"
+        } else {
+            "item"
+        };
         html! {
             <li class=class, onclick=|_| Msg::SelectPage(idx).into(),>{ &page.title }</li>
         }

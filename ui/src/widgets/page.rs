@@ -19,7 +19,9 @@ impl Widget for Model {
     type Properties = Props;
 
     fn produce(props: &Self::Properties) -> Self {
-        Self { page: props.page.clone() }
+        Self {
+            page: props.page.clone(),
+        }
     }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {

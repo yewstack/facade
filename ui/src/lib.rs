@@ -12,7 +12,7 @@ impl Component for Model {
     type Properties = ();
 
     fn create(props: Self::Properties, mut link: ComponentLink<Self>) -> Self {
-        Self { }
+        Self {}
     }
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         true
@@ -21,9 +21,8 @@ impl Component for Model {
 
 impl Renderable<Self> for Model {
     fn view(&self) -> Html<Self> {
-        html!{
+        html! {
             <widgets::Scene: />
         }
     }
 }
-

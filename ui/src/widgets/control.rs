@@ -18,7 +18,9 @@ impl Widget for Model {
     type Properties = Props;
 
     fn produce(props: &Self::Properties) -> Self {
-        Self { control: props.control.to_owned() }
+        Self {
+            control: props.control.to_owned(),
+        }
     }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
@@ -36,4 +38,3 @@ impl Widget for Model {
         }
     }
 }
-

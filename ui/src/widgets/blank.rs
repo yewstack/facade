@@ -3,14 +3,14 @@ use yew::html;
 
 pub type BlankWidget = WidgetModel<Model>;
 
-pub struct Model { }
+pub struct Model {}
 
 impl Widget for Model {
     type Message = ();
     type Properties = ();
 
-    fn produce(props: &Self::Properties) -> Self {
-        Self { }
+    fn produce(_: &Self::Properties) -> Self {
+        Self {}
     }
 
     fn main_view(&self) -> View<Self> {
