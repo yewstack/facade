@@ -5,13 +5,14 @@ use yew::{html, Properties, ShouldRender};
 pub type DashboardWidget = WidgetModel<Model>;
 
 pub struct Model {
-    dashboard: Option<frame::Dashboard>,
+    dashboard: frame::Dashboard,
     selected_page: usize,
 }
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
-    pub dashboard: Option<frame::Dashboard>,
+    #[props(required)]
+    pub dashboard: frame::Dashboard,
 }
 
 #[derive(Debug)]
@@ -25,7 +26,7 @@ impl Widget for Model {
 
     fn produce(props: &Self::Properties) -> Self {
         Self {
-            dashboard: None,
+            dashboard: props.dashboard.to_owned(),
             selected_page: 0,
         }
     }
@@ -45,27 +46,26 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        if let Some(dashboard) = self.dashboard.as_ref() {
-            let page = dashboard.pages.get(self.selected_page).cloned();
-            html! {
-                <div class="dashboard",>
-                    <div class="sidebar",>
-                        <div class="header",>
-                            <p class="title",>{ &dashboard.title }</p>
-                        </div>
-                        <ul class="menu",>
-                            { for dashboard.pages.iter().enumerate().map(|(idx, page)| self.view_page_title(idx, page)) }
-                        </ul>
+        let page = self.dashboard.pages.get(self.selected_page).cloned();
+        html! {
+            <div class="dashboard",>
+                <div class="sidebar",>
+                    <div class="header",>
+                        <p class="title",>{ &self.dashboard.title }</p>
                     </div>
-                    <div class="content",>
-                        <widgets::Page: page=page, />
-                    </div>
+                    <ul class="menu",>
+                        { for self
+                            .dashboard
+                            .pages
+                            .iter()
+                            .enumerate()
+                            .map(|(idx, page)| self.view_page_title(idx, page)) }
+                    </ul>
                 </div>
-            }
-        } else {
-            html! {
-                <widgets::Spinner: />
-            }
+                <div class="content",>
+                    <widgets::Page: page=page, />
+                </div>
+            </div>
         }
     }
 }

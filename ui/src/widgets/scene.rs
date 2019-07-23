@@ -54,7 +54,7 @@ impl Widget for Model {
             }
             Scene::Dashboard(ref dashboard) => {
                 html! {
-                    <widgets::Dashboard: dashboard=Some(dashboard.clone()), />
+                    <widgets::Dashboard: dashboard=dashboard.clone(), />
                 }
             }
         }
