@@ -1,26 +1,27 @@
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use yew::html;
+use yew::{html, Properties};
 
 pub type ListWidget = WidgetModel<Model>;
 
 pub struct Model {
-    list: Option<protocol::List>,
+    list: protocol::List,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self { list: None }
-    }
-}
-
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
-    pub list: Option<protocol::List>,
+    #[props(required)]
+    pub list: protocol::List,
 }
 
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            list: props.list.clone(),
+        }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.list = props.list.to_owned();
@@ -28,16 +29,10 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        if let Some(list) = self.list.as_ref() {
-            html! {
-                <div class="list",>
-                    { for list.items.iter().map(|item| self.view_item(item)) }
-                </div>
-            }
-        } else {
-            html! {
-                <widgets::Spinner: />
-            }
+        html! {
+            <div class="list",>
+                { for self.list.items.iter().map(|item| self.view_item(item)) }
+            </div>
         }
     }
 }
@@ -51,7 +46,7 @@ impl Model {
                     <div class="list-item-info-description",>{ &item.description }</div>
                 </div>
                 <div class="list-item-value",>
-                    <widgets::Bind: bind=Some(item.bind.clone()), />
+                    <widgets::Bind: bind=item.bind.clone(), />
                 </div>
             </div>
         }

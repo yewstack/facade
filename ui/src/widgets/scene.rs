@@ -1,7 +1,7 @@
 use crate::live::{Requirement, ResponseEvt};
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::{Reaction, Scene};
-use yew::{html, ShouldRender};
+use yew::{html, Properties, ShouldRender};
 
 pub type SceneWidget = WidgetModel<Model>;
 
@@ -9,15 +9,7 @@ pub struct Model {
     scene: Scene,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {
-            scene: Scene::Spinner,
-        }
-    }
-}
-
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub scene: Option<Scene>,
 }
@@ -25,6 +17,12 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(_: &Self::Properties) -> Self {
+        Self {
+            scene: Scene::Spinner,
+        }
+    }
 
     fn recompose(&mut self, _: &Self::Properties) -> Reqs {
         Some(vec![Requirement::SceneChange].into_iter().collect())
@@ -50,13 +48,13 @@ impl Widget for Model {
             Scene::FullScreen(ref layout) => {
                 html! {
                     <div class="scene-fullscreen",>
-                        <widgets::Layout: layout=Some(layout.clone()), />
+                        <widgets::Layout: layout=layout.clone(), />
                     </div>
                 }
             }
             Scene::Dashboard(ref dashboard) => {
                 html! {
-                    <widgets::Dashboard: dashboard=Some(dashboard.clone()), />
+                    <widgets::Dashboard: dashboard=dashboard.clone(), />
                 }
             }
         }

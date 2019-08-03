@@ -1,26 +1,27 @@
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use yew::html;
+use yew::{html, Properties};
 
 pub type PanelWidget = WidgetModel<Model>;
 
 pub struct Model {
-    panel: Option<protocol::Panel>,
+    panel: protocol::Panel,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self { panel: None }
-    }
-}
-
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
-    pub panel: Option<protocol::Panel>,
+    #[props(required)]
+    pub panel: protocol::Panel,
 }
 
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            panel: props.panel.clone(),
+        }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.panel = props.panel.to_owned();
@@ -28,30 +29,24 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        if let Some(panel) = self.panel.as_ref() {
-            if let Some(ref title) = panel.title {
-                html! {
-                    <div class="panel",>
-                        <div class="panel-header",>
-                            <p class="panel-header-title",>{ title }</p>
-                        </div>
-                        <div class="panel-content",>
-                            <widgets::Layout: layout=Some(panel.body.clone()), />
-                        </div>
+        if let Some(ref title) = self.panel.title {
+            html! {
+                <div class="panel",>
+                    <div class="panel-header",>
+                        <p class="panel-header-title",>{ title }</p>
                     </div>
-                }
-            } else {
-                html! {
-                    <div class="panel",>
-                        <div class="panel-content",>
-                            <widgets::Layout: layout=Some(panel.body.clone()), />
-                        </div>
+                    <div class="panel-content",>
+                        <widgets::Layout: layout=self.panel.body.clone(), />
                     </div>
-                }
+                </div>
             }
         } else {
             html! {
-                <widgets::Spinner: />
+                <div class="panel",>
+                    <div class="panel-content",>
+                        <widgets::Layout: layout=self.panel.body.clone(), />
+                    </div>
+                </div>
             }
         }
     }

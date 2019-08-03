@@ -1,6 +1,6 @@
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::Container;
-use yew::html;
+use yew::{html, Properties};
 
 pub type ContainerWidget = WidgetModel<Model>;
 
@@ -8,27 +8,24 @@ pub struct Model {
     container: Container,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {
-            container: Container::Blank,
-        }
-    }
-}
-
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
-    pub container: Option<Container>,
+    #[props(required)]
+    pub container: Container,
 }
 
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
 
-    fn recompose(&mut self, props: &Self::Properties) -> Reqs {
-        if let Some(ref container) = props.container {
-            self.container = container.clone();
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            container: props.container.clone(),
         }
+    }
+
+    fn recompose(&mut self, props: &Self::Properties) -> Reqs {
+        self.container = props.container.clone();
         None
     }
 
@@ -47,7 +44,7 @@ impl Widget for Model {
             Container::Panel(ref panel) => {
                 html! {
                     <div class="container",>
-                        <widgets::Panel: panel=Some(panel.clone()), />
+                        <widgets::Panel: panel=panel.clone(), />
                     </div>
                 }
             }

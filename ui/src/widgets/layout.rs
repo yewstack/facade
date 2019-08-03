@@ -1,6 +1,6 @@
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::Layout;
-use yew::html;
+use yew::{html, Properties};
 
 pub type LayoutWidget = WidgetModel<Model>;
 
@@ -8,27 +8,24 @@ pub struct Model {
     layout: Layout,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {
-            layout: Layout::Blank,
-        }
-    }
-}
-
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
-    pub layout: Option<Layout>,
+    #[props(required)]
+    pub layout: Layout,
 }
 
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
 
-    fn recompose(&mut self, props: &Self::Properties) -> Reqs {
-        if let Some(ref layout) = props.layout {
-            self.layout = layout.clone();
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            layout: props.layout.clone(),
         }
+    }
+
+    fn recompose(&mut self, props: &Self::Properties) -> Reqs {
+        self.layout = props.layout.clone();
         None
     }
 
@@ -46,12 +43,12 @@ impl Widget for Model {
             }
             Layout::Bind(ref bind) => {
                 html! {
-                    <widgets::Bind: bind = Some(bind.clone()), />
+                    <widgets::Bind: bind = bind.clone(), />
                 }
             }
             Layout::Control(ref control) => {
                 html! {
-                    <widgets::Control: control = Some(control.clone()), />
+                    <widgets::Control: control = control.clone(), />
                 }
             }
             Layout::Row(ref layouts) => {
@@ -70,12 +67,12 @@ impl Widget for Model {
             }
             Layout::List(ref list) => {
                 html! {
-                    <widgets::List: list = Some(list.clone()), />
+                    <widgets::List: list = list.clone(), />
                 }
             }
             Layout::Container(ref container) => {
                 html! {
-                    <widgets::Container: container = Some(*container.clone()), />
+                    <widgets::Container: container = *container.clone(), />
                 }
             }
         }
@@ -85,13 +82,13 @@ impl Widget for Model {
 impl Model {
     fn column(&self, layout: &Layout) -> View<Self> {
         html! {
-            <widgets::Layout: layout=Some(layout.clone()), />
+            <widgets::Layout: layout=layout.clone(), />
         }
     }
 
     fn row(&self, layout: &Layout) -> View<Self> {
         html! {
-            <widgets::Layout: layout=Some(layout.clone()), />
+            <widgets::Layout: layout=layout.clone(), />
         }
     }
 }

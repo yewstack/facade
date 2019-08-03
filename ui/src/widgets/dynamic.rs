@@ -1,7 +1,7 @@
 use crate::live::{Requirement, ResponseEvt};
 use crate::widgets::{Reqs, View, Widget, WidgetModel};
 use protocol::{Id, Reaction, Value};
-use yew::{html, ShouldRender};
+use yew::{html, Properties, ShouldRender};
 
 pub type DynamicWidget = WidgetModel<Model>;
 
@@ -9,15 +9,7 @@ pub struct Model {
     value: Value,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self {
-            value: Value::Nothing,
-        }
-    }
-}
-
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub id: Id,
 }
@@ -25,6 +17,12 @@ pub struct Props {
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(_: &Self::Properties) -> Self {
+        Self {
+            value: Value::Nothing,
+        }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         let id = props.id.clone();

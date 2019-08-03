@@ -1,26 +1,27 @@
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use yew::html;
+use yew::{html, Properties};
 
 pub type BindWidget = WidgetModel<Model>;
 
 pub struct Model {
-    bind: Option<protocol::Bind>,
+    bind: protocol::Bind,
 }
 
-impl Default for Model {
-    fn default() -> Self {
-        Self { bind: None }
-    }
-}
-
-#[derive(Default, PartialEq, Clone)]
+#[derive(Properties, PartialEq, Clone)]
 pub struct Props {
-    pub bind: Option<protocol::Bind>,
+    #[props(required)]
+    pub bind: protocol::Bind,
 }
 
 impl Widget for Model {
     type Message = ();
     type Properties = Props;
+
+    fn produce(props: &Self::Properties) -> Self {
+        Self {
+            bind: props.bind.to_owned(),
+        }
+    }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
         self.bind = props.bind.to_owned();
@@ -28,22 +29,16 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        if let Some(bind) = self.bind.as_ref() {
-            match bind {
-                protocol::Bind::Fixed(ref value) => {
-                    html! {
-                        <widgets::Fixed: value=value, />
-                    }
-                }
-                protocol::Bind::Dynamic(ref id) => {
-                    html! {
-                        <widgets::Dynamic: id=id, />
-                    }
+        match self.bind {
+            protocol::Bind::Fixed(ref value) => {
+                html! {
+                    <widgets::Fixed: value=value, />
                 }
             }
-        } else {
-            html! {
-                <widgets::Spinner: />
+            protocol::Bind::Dynamic(ref id) => {
+                html! {
+                    <widgets::Dynamic: id=id, />
+                }
             }
         }
     }

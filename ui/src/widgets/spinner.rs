@@ -3,12 +3,15 @@ use yew::html;
 
 pub type SpinnerWidget = WidgetModel<Model>;
 
-#[derive(Default)]
 pub struct Model {}
 
 impl Widget for Model {
     type Message = ();
     type Properties = ();
+
+    fn produce(_: &Self::Properties) -> Self {
+        Self {}
+    }
 
     fn main_view(&self) -> View<Self> {
         html! {
