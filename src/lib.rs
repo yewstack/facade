@@ -8,9 +8,9 @@ mod settings;
 
 pub use control::Control;
 use failure::Error;
-use futures3::channel::mpsc;
-use futures3::compat::Compat;
-use futures3::{join, TryFutureExt};
+use futures::channel::mpsc;
+use futures::compat::Compat;
+use futures::{join, TryFutureExt};
 use settings::Settings;
 use std::thread;
 

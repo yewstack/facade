@@ -1,6 +1,6 @@
 use failure::Fail;
-use futures3::channel::mpsc;
-use futures3::{SinkExt, StreamExt};
+use futures::channel::mpsc;
+use futures::{SinkExt, StreamExt};
 use protocol::{Delta, Id, Reaction, Scene, Value};
 use std::collections::HashMap;
 
