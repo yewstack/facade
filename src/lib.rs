@@ -8,9 +8,9 @@ mod settings;
 
 pub use control::Control;
 use failure::Error;
-use futures3::channel::mpsc;
-use futures3::compat::Compat;
-use futures3::{join, TryFutureExt};
+use futures::channel::mpsc;
+use futures::compat::Compat;
+use futures::{join, TryFutureExt};
 use settings::Settings;
 use std::thread;
 
@@ -32,8 +32,8 @@ async fn routine(
     tx: router::Sender,
     rx: router::Receiver,
 ) -> Result<(), Error> {
-    let router = router::main(rx);
-    let main = server::main(settings.clone(), tx);
+    let router = router::main(rx).map_err(Error::from);
+    let main = server::main(settings.clone(), tx).map_err(Error::from);
     let (r1, r2) = join!(router, main);
     r1.and(r2)
 }

@@ -119,7 +119,6 @@ pub fn Fixed(value: impl Into<Value>) -> protocol::Bind {
     protocol::Bind::Fixed(value.into())
 }
 
-
 // MACROS
 
 pub mod macros {

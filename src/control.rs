@@ -1,7 +1,7 @@
 use crate::router::Request;
-use futures3::channel::mpsc;
-use futures3::executor::block_on;
-use futures3::SinkExt;
+use futures::channel::mpsc;
+use futures::executor::block_on;
+use futures::SinkExt;
 use protocol::{Delta, Id, Scene, Value};
 
 #[derive(Clone)]

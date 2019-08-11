@@ -1,13 +1,13 @@
 use crate::router;
 use crate::settings::Settings;
-use failure::{format_err, Error};
+use failure::Fail;
 use flate2::read::GzDecoder;
-use futures::Stream;
-use futures3::compat::{Compat, Future01CompatExt, Sink01CompatExt, Stream01CompatExt};
-use futures3::{join, SinkExt, StreamExt, TryFutureExt};
+use futures::compat::{Compat, Future01CompatExt, Sink01CompatExt, Stream01CompatExt};
+use futures::{join, SinkExt, StreamExt, TryFutureExt};
+use futures_legacy::Stream;
 use futures_timer::Interval;
 use headers::{ContentType, HeaderMapExt};
-use protocol::{Action, OverlayId, Reaction};
+use protocol::{Action, Message as _, OverlayId, Reaction};
 use std::collections::HashMap;
 use std::io::Read;
 use std::sync::{Arc, Mutex};
@@ -18,7 +18,49 @@ use warp::path::Tail;
 use warp::reply::Reply;
 use warp::Filter;
 
-const DATA: &'static [u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ui.tar.gz"));
+const ASSETS: &'static [u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ui.tar.gz"));
+
+#[derive(Fail, Debug)]
+pub enum Error {
+    #[fail(display = "io error: {}", _0)]
+    IoError(#[cause] std::io::Error),
+    #[fail(display = "protocol error: {}", _0)]
+    ProtocolError(#[cause] protocol::Error),
+    #[fail(display = "wrap error: {}", _0)]
+    WarpError(#[cause] warp::Error),
+    #[fail(display = "router error: {}", _0)]
+    RouterError(#[cause] router::Error),
+    #[fail(display = "can't lock throttle map")]
+    CantLockThrottleMap,
+    #[fail(display = "wrong assets format")]
+    WrongAssetsFormat,
+    #[fail(display = "bind error")]
+    BindError,
+}
+
+impl From<std::io::Error> for Error {
+    fn from(err: std::io::Error) -> Self {
+        Error::IoError(err)
+    }
+}
+
+impl From<warp::Error> for Error {
+    fn from(err: warp::Error) -> Self {
+        Error::WarpError(err)
+    }
+}
+
+impl From<router::Error> for Error {
+    fn from(err: router::Error) -> Self {
+        Error::RouterError(err)
+    }
+}
+
+impl From<protocol::Error> for Error {
+    fn from(err: protocol::Error) -> Self {
+        Error::ProtocolError(err)
+    }
+}
 
 pub async fn process_ws(
     settings: Settings,
@@ -35,9 +77,7 @@ pub async fn process_ws(
     let map = throttle_map.clone();
     let outbound_get = (async move || -> Result<(), Error> {
         while let Some(reaction) = router_rx.next().await {
-            let mut map = map
-                .lock()
-                .map_err(|_| format_err!("can't borrow shared map to add a message"))?;
+            let mut map = map.lock().map_err(|_| Error::CantLockThrottleMap)?;
             map.insert(reaction.overlay_id(), reaction);
         }
         Ok(())
@@ -52,16 +92,14 @@ pub async fn process_ws(
         loop {
             interval.next().await;
             if let Some(map) = map.upgrade() {
-                let mut map = map
-                    .lock()
-                    .map_err(|_| format_err!("can't borrow shared map to get a message"))?;
+                let mut map = map.lock().map_err(|_| Error::CantLockThrottleMap)?;
                 buffer.extend(map.drain().map(|(_, msg)| msg));
             } else {
                 break;
             }
             for reaction in buffer.drain(..) {
-                let text = serde_json::to_string(&reaction)?;
-                let msg = Message::text(text);
+                let payload = reaction.serialize()?;
+                let msg = Message::binary(payload);
                 tx.send(msg).await?;
             }
         }
@@ -71,10 +109,8 @@ pub async fn process_ws(
     let inbound = (async move || -> Result<(), Error> {
         let mut rx = rx.compat();
         while let Some(msg) = rx.next().await.transpose()? {
-            let text = msg
-                .to_str()
-                .map_err(|_| format_err!("WebSocket message doesn't contain text"))?;
-            let action: Action = serde_json::from_str(text)?;
+            let payload = msg.as_bytes();
+            let action = Action::deserialize(payload)?;
             log::debug!("Action: {:?}", action);
         }
         Ok(())
@@ -86,7 +122,7 @@ pub async fn process_ws(
 pub async fn main(settings: Settings, router: router::Sender) -> Result<(), Error> {
     let address = settings.socket_addr();
 
-    let tar = GzDecoder::new(DATA);
+    let tar = GzDecoder::new(ASSETS);
     let mut archive = Archive::new(tar);
     let mut files = HashMap::new();
     for entry in archive.entries()? {
@@ -98,7 +134,7 @@ pub async fn main(settings: Settings, router: router::Sender) -> Result<(), Erro
                 .path()?
                 .to_str()
                 .map(|s| &s[2..])
-                .ok_or_else(|| format_err!("can't get path from static srchaive"))?
+                .ok_or_else(|| Error::WrongAssetsFormat)?
                 .to_owned();
             log::trace!("Register asset file: {}", name);
             files.insert(name, data);
@@ -135,6 +171,6 @@ pub async fn main(settings: Settings, router: router::Sender) -> Result<(), Erro
         .bind(address)
         .compat()
         .await
-        .or_else(|_| Err(format_err!("server error")))?;
+        .or_else(|_| Err(Error::BindError))?;
     Ok(())
 }

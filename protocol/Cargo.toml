@@ -14,5 +14,6 @@ description = "Universal UI interaction protocol of the Facade framework"
 
 [dependencies]
 bigdecimal = { version = "0.1.0", features = ["serde"] }
-serde = "1.0.94"
-serde_derive = "1.0.94"
+failure = "0.1.5"
+serde = { version = "1.0.94", features = ["derive"] }
+serde_json = "1.0.40"
