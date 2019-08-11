@@ -1,7 +1,8 @@
 use failure::{format_err, Error};
 use std::env;
+use std::io::{BufRead, BufReader, Read};
 use std::path::PathBuf;
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 trait RunIt {
     fn run_it(&mut self, err: &str) -> Result<(), Error>;
@@ -9,10 +10,20 @@ trait RunIt {
 
 impl RunIt for Command {
     fn run_it(&mut self, err: &str) -> Result<(), Error> {
-        let output = self.output()?;
-        if !output.status.success() {
-            let out = String::from_utf8_lossy(&output.stderr);
-            eprintln!("{}", out);
+        self.stderr(Stdio::piped());
+        let mut child = self.spawn()?;
+        if let Some(out) = child.stdout.take() {
+            let buf = BufReader::new(out);
+            for line in buf.lines() {
+                print!("{}", line?);
+            }
+        }
+        if !child.wait()?.success() {
+            if let Some(mut err) = child.stderr.take() {
+                let mut out = String::new();
+                err.read_to_string(&mut out)?;
+                eprintln!("{}", out);
+            }
             Err(format_err!("{}", err))
         } else {
             Ok(())
