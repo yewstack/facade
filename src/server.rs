@@ -75,16 +75,17 @@ pub async fn process_ws(
 
     // TODO Read router_rx and send Reactions to a connected client
     let map = throttle_map.clone();
-    let outbound_get = (async move || -> Result<(), Error> {
+    let outbound_get = async move {
         while let Some(reaction) = router_rx.next().await {
+            log::trace!("Reaction: {:?}", reaction);
             let mut map = map.lock().map_err(|_| Error::CantLockThrottleMap)?;
             map.insert(reaction.overlay_id(), reaction);
         }
         Ok(())
-    })();
+    };
 
     let map = Arc::downgrade(&throttle_map);
-    let outbound_send = (async move || -> Result<(), Error> {
+    let outbound_send = async move {
         let mut tx = tx.sink_compat();
         let ms = settings.throttle_ms();
         let mut interval = Interval::new(ms);
@@ -104,9 +105,9 @@ pub async fn process_ws(
             }
         }
         Ok(())
-    })();
+    };
 
-    let inbound = (async move || -> Result<(), Error> {
+    let inbound = async move {
         let mut rx = rx.compat();
         while let Some(msg) = rx.next().await.transpose()? {
             let payload = msg.as_bytes();
@@ -114,7 +115,8 @@ pub async fn process_ws(
             log::debug!("Action: {:?}", action);
         }
         Ok(())
-    })();
+    };
+
     let (r1, r2, r3) = join!(inbound, outbound_get, outbound_send);
     r1.and(r2).and(r3)
 }
