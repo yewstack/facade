@@ -1,14 +1,41 @@
 pub mod dashboard;
 
 use bigdecimal::BigDecimal;
-use serde_derive::{Deserialize, Serialize};
+use failure::Fail;
+use serde::{Deserialize, Serialize};
 use std::fmt;
+
+
+#[derive(Fail, Debug)]
+pub enum Error {
+    #[fail(display = "serialization error: {}", _0)]
+    SerdeError(#[cause] serde_json::error::Error),
+}
+
+impl From<serde_json::error::Error> for Error {
+    fn from(err: serde_json::error::Error) -> Self {
+        Error::SerdeError(err)
+    }
+}
+
+pub trait Message: Serialize + for <'de> Deserialize<'de> + Sized {
+    fn serialize(&self) -> Result<Vec<u8>, Error> {
+        serde_json::to_vec(self).map_err(Error::from)
+    }
+
+    fn deserialize(data: &[u8]) -> Result<Self, Error> {
+        serde_json::from_slice(data).map_err(Error::from)
+    }
+}
+
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Action {
     id: Id,
     kind: Kind,
 }
+
+impl Message for Action {}
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Kind {
@@ -20,6 +47,8 @@ pub enum Reaction {
     Scene(Scene),
     Delta(Delta),
 }
+
+impl Message for Reaction {}
 
 pub type OverlayId = Option<Id>;
 

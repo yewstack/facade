@@ -15,7 +15,7 @@ impl RunIt for Command {
         if let Some(out) = child.stdout.take() {
             let buf = BufReader::new(out);
             for line in buf.lines() {
-                print!("{}", line?);
+                eprint!("{}", line?);
             }
         }
         if !child.wait()?.success() {

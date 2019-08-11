@@ -1,5 +1,5 @@
 use config::{Config, ConfigError, Environment, File};
-use serde_derive::Deserialize;
+use serde::Deserialize;
 use std::net::{IpAddr, SocketAddr};
 use std::sync::Arc;
 use std::time::Duration;

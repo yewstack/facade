@@ -1,8 +1,20 @@
-use failure::Error;
+use failure::Fail;
 use futures3::channel::mpsc;
 use futures3::{SinkExt, StreamExt};
 use protocol::{Delta, Id, Reaction, Scene, Value};
 use std::collections::HashMap;
+
+#[derive(Fail, Debug)]
+pub enum Error {
+    #[fail(display = "io error: {}", _0)]
+    SendError(#[cause] mpsc::SendError),
+}
+
+impl From<mpsc::SendError> for Error {
+    fn from(err: mpsc::SendError) -> Self {
+        Error::SendError(err)
+    }
+}
 
 #[derive(Clone)]
 pub struct Sender {
