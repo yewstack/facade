@@ -55,7 +55,7 @@ pub type Response = Reaction;
 pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
     let mut subscribers = Vec::new();
     let mut board = HashMap::<Id, Value>::new();
-    let mut scene = Scene::Spinner;
+    let mut scene = (); // TODO: Scene::Spinner;
     while let Some(request) = receiver.rx.next().await {
         let mut drain_all = false;
         match request {

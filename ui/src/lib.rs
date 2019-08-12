@@ -22,7 +22,7 @@ impl Component for Model {
 impl Renderable<Self> for Model {
     fn view(&self) -> Html<Self> {
         html! {
-            <widgets::Scene: />
+            <widgets::Spinner: />
         }
     }
 }

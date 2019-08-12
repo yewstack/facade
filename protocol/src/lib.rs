@@ -1,5 +1,3 @@
-pub mod dashboard;
-
 use bigdecimal::BigDecimal;
 use failure::Fail;
 use serde::{Deserialize, Serialize};
@@ -48,6 +46,8 @@ pub enum Reaction {
     Delta(Delta),
 }
 
+pub type Scene = ();
+
 impl Message for Reaction {}
 
 pub type OverlayId = Option<Id>;
@@ -62,100 +62,9 @@ impl Reaction {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum Scene {
-    Spinner,
-    FullScreen(Layout),
-    Dashboard(dashboard::Dashboard),
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Footer {
-    pub copyright: Value,
-    pub menu: Menu,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Menu {
-    pub items: Vec<MenuItem>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct MenuItem {
-    pub caption: Value,
-}
-
-/// Like `Layout`, but has physical appearance
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum Container {
-    Blank,
-    Tabs(Vec<Tab>),
-    Panel(Panel),
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Panel {
-    pub title: Option<Value>,
-    pub body: Layout,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Tab {
-    title: Value,
-    body: Layout,
-}
-
-/// Like `Container`, but without physical appearance (row, column, center)
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum Layout {
-    Blank,
-    Welcome,
-    Bind(Bind),
-    Control(Control),
-    Row(Vec<Layout>),
-    Column(Vec<Layout>),
-    List(List),
-    Container(Box<Container>),
-}
-
-impl From<Bind> for Layout {
-    fn from(bind: Bind) -> Self {
-        Self::Bind(bind)
-    }
-}
-
-impl From<Control> for Layout {
-    fn from(control: Control) -> Self {
-        Self::Control(control)
-    }
-}
-
-impl From<Container> for Layout {
-    fn from(container: Container) -> Self {
-        Self::Container(Box::new(container))
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct List {
-    pub items: Vec<ListItem>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct ListItem {
-    pub title: Value,
-    pub description: Value,
-    pub bind: Bind,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Bind {
     Dynamic(Id),
     Fixed(Value),
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum Control {
-    Button(Id),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
