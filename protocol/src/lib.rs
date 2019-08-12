@@ -56,18 +56,19 @@ pub enum Scene {
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct Container {
-    layout: Layout,
+    pub fluid: bool,
+    pub layout: Layout,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct Layout {
-    flex_vec: Vec<Flex>,
-    wrap: bool,
-    fill: bool,
-    reverse: bool,
-    direction: Option<Direction>,
-    alignment: Option<Align>,
-    justify: Option<Justify>,
+    pub flex_vec: Vec<Flex>,
+    pub wrap: bool,
+    pub fill: bool,
+    pub reverse: bool,
+    pub direction: Option<Direction>,
+    pub align: Option<Align>,
+    pub justify: Option<Justify>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Hash)]
@@ -96,9 +97,9 @@ pub enum Justify {
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct Flex {
-    breakpoints: HashMap<Breakpoint, Cols>,
-    offsets: HashMap<Breakpoint, Cols>,
-    components: Vec<Component>,
+    pub breakpoints: HashMap<Breakpoint, Cols>,
+    pub offsets: HashMap<Breakpoint, Cols>,
+    pub components: Vec<Component>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]

@@ -2,6 +2,7 @@
 
 mod live;
 mod widgets;
+mod utils;
 
 use yew::{html, Component, ComponentLink, Html, Renderable, ShouldRender};
 

@@ -30,8 +30,13 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
+        let mut classes = vec!["container"];
+        if self.container.fluid {
+            classes.push("fluid");
+        }
         html! {
-            <div class="container">
+            <div class=classes>
+                <widgets::Layout: layout=self.container.layout.clone() />
             </div>
         }
     }

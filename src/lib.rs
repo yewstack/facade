@@ -11,9 +11,9 @@ use failure::Error;
 use futures::channel::mpsc;
 use futures::compat::Compat;
 use futures::{join, TryFutureExt};
+pub use protocol as dsl;
 use settings::Settings;
 use std::thread;
-pub use protocol as dsl;
 
 pub fn main() -> Result<Control, Error> {
     let settings = Settings::parse()?;
