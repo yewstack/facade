@@ -1,1 +1,30 @@
-@import 'reset';
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,400,600,700&display=swap');
+
+// PALLETE
+
+// COLORS
+
+$background_color: #FFF;
+$text_color: #000;
+$small_padding: 30px;
+
+// MIXINS
+
+// Standard block that has no special properties
+@mixin block {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+html, body, div {
+    @include block;
+}
+
+body {
+    background: $background_color;
+    color: $text_color;
+}
