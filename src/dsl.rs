@@ -1,5 +1,39 @@
 #![allow(non_snake_case)]
 
+use std::collections::HashMap;
+
+pub fn Scene(container: protocol::Container) -> protocol::Scene {
+    protocol::Scene::Container(container)
+}
+
+pub fn Container(layout: protocol::Layout) -> protocol::Container {
+    protocol::Container {
+        layout,
+        fluid: false,
+    }
+}
+
+pub fn Layout(flex_vec: Vec<protocol::Flex>) -> protocol::Layout {
+    protocol::Layout {
+        flex_vec,
+        wrap: false,
+        fill: false,
+        reverse: false,
+        direction: None,
+        align: None,
+        justify: None,
+    }
+}
+
+pub fn Flex() -> protocol::Flex {
+    protocol::Flex {
+        breakpoints: HashMap::new(),
+        offsets: HashMap::new(),
+        components: Vec::new(),
+    }
+}
+
+/*
 use protocol::{self, Id, Layout, Value};
 
 // ╔═╗┌─┐┌─┐┌┐┌┌─┐┌─┐
@@ -136,3 +170,4 @@ pub mod macros {
     }
 }
 pub use super::many;
+*/

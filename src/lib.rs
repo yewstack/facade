@@ -1,7 +1,7 @@
 #![feature(async_await, async_closure)]
 
 mod control;
-//pub mod dsl;
+pub mod dsl;
 mod router;
 mod server;
 mod settings;
@@ -11,7 +11,6 @@ use failure::Error;
 use futures::channel::mpsc;
 use futures::compat::Compat;
 use futures::{join, TryFutureExt};
-pub use protocol as dsl;
 use settings::Settings;
 use std::thread;
 
