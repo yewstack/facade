@@ -1,6 +1,6 @@
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use crate::utils::ToClass;
-use protocol::Layout;
+use protocol::{Flex, Layout};
 use yew::{html, Properties};
 
 pub type LayoutWidget = WidgetModel<Model>;
@@ -53,7 +53,21 @@ impl Widget for Model {
         }
         html! {
             <div class=classes>
+                { for self.layout.flex_vec.iter().map(|flex| self.view_flex(flex)) }
             </div>
+        }
+    }
+}
+
+impl Model {
+    fn view_flex(&self, flex: &Flex) -> View<Self> {
+        html! {
+            let mut classes = Vec::with_capacity(10);
+            classes.push("flex");
+            html! {
+                <div class=classes>
+                </div>
+            }
         }
     }
 }
