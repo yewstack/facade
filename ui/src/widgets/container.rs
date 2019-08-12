@@ -30,24 +30,9 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        match self.container {
-            Container::Blank => {
-                html! {
-                    <p>{ "Blank" }</p>
-                }
-            }
-            Container::Tabs(_) => {
-                html! {
-                    <p>{ "Tabs" }</p>
-                }
-            }
-            Container::Panel(ref panel) => {
-                html! {
-                    <div class="container",>
-                        <widgets::Panel: panel=panel.clone(), />
-                    </div>
-                }
-            }
+        html! {
+            <div class="container">
+            </div>
         }
     }
 }

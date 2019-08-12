@@ -10,9 +10,6 @@ pub use blank::BlankWidget as Blank;
 mod button;
 pub use button::ButtonWidget as Button;
 
-mod container;
-pub use container::ContainerWidget as Container;
-
 mod control;
 pub use control::ControlWidget as Control;
 
@@ -37,12 +34,15 @@ pub use page::PageWidget as Page;
 mod panel;
 pub use panel::PanelWidget as Panel;
 
-mod scene;
-pub use scene::SceneWidget as Scene;
-
 mod welcome;
 pub use welcome::WelcomeWidget as Welcome;
 */
+
+mod container;
+pub use container::ContainerWidget as Container;
+
+mod scene;
+pub use scene::SceneWidget as Scene;
 
 mod spinner;
 pub use spinner::SpinnerWidget as Spinner;
