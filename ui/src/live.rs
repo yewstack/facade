@@ -71,7 +71,7 @@ impl Agent for LiveAgent {
             connection,
             subscriptions: HashMap::new(),
             listeners: HashMap::new(),
-            scene: (),// TODO: Scene::Spinner,
+            scene: Scene::Spinner,
             board: HashMap::new(),
         }
     }

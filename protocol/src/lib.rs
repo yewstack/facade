@@ -1,8 +1,8 @@
 use bigdecimal::BigDecimal;
 use failure::Fail;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::fmt;
-
 
 #[derive(Fail, Debug)]
 pub enum Error {
@@ -16,7 +16,7 @@ impl From<serde_json::error::Error> for Error {
     }
 }
 
-pub trait Message: Serialize + for <'de> Deserialize<'de> + Sized {
+pub trait Message: Serialize + for<'de> Deserialize<'de> + Sized {
     fn serialize(&self) -> Result<Vec<u8>, Error> {
         serde_json::to_vec(self).map_err(Error::from)
     }
@@ -26,8 +26,7 @@ pub trait Message: Serialize + for <'de> Deserialize<'de> + Sized {
     }
 }
 
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct Action {
     id: Id,
     kind: Kind,
@@ -35,20 +34,103 @@ pub struct Action {
 
 impl Message for Action {}
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum Kind {
     Click,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum Reaction {
     Scene(Scene),
     Delta(Delta),
 }
 
-pub type Scene = ();
-
 impl Message for Reaction {}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub enum Scene {
+    Spinner,
+    App,
+    Container(Container),
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct Container {
+    layout: Layout,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct Layout {
+    flex_vec: Vec<Flex>,
+    wrap: bool,
+    fill: bool,
+    reverse: bool,
+    direction: Option<Direction>,
+    alignment: Option<Align>,
+    justify: Option<Justify>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Hash)]
+pub enum Direction {
+    Row,
+    Column,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Hash)]
+pub enum Align {
+    Start,
+    Center,
+    End,
+    SpaceAround,
+    SpaceBetween,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Hash)]
+pub enum Justify {
+    Start,
+    Center,
+    End,
+    SpaceAround,
+    SpaceBetween,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct Flex {
+    breakpoints: HashMap<Breakpoint, Cols>,
+    offsets: HashMap<Breakpoint, Cols>,
+    components: Vec<Component>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Breakpoint {
+    XSmall,
+    Small,
+    Medium,
+    Large,
+    XLarge,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Cols {
+    N1,
+    N2,
+    N3,
+    N4,
+    N5,
+    N6,
+    N7,
+    N8,
+    N9,
+    N10,
+    N11,
+    N12,
+}
+
+// TODO: Consider to replace with trait (but has issues with derived traits)
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub enum Component {
+    List,
+}
 
 pub type OverlayId = Option<Id>;
 
