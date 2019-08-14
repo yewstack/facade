@@ -1,5 +1,5 @@
-use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use crate::utils::ToClass;
+use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
 use protocol::{Flex, Layout};
 use yew::{html, Properties};
 

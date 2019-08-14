@@ -1,8 +1,8 @@
 #![recursion_limit = "128"]
 
 mod live;
-mod widgets;
 mod utils;
+mod widgets;
 
 use yew::{html, Component, ComponentLink, Html, Renderable, ShouldRender};
 

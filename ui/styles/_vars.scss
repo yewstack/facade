@@ -1,0 +1,13 @@
+$spacer: 4px !default;
+
+$form-gutter: $spacer * 2 !default;
+
+$grid-columns: 12 !default;
+$grid-gutter: $spacer * 6 !default;
+$grid-breakpoints: (
+  'xs': 0,
+  'sm': 600px,
+  'md': 960px,
+  'lg': 1280px - 16px,
+  'xl': 1920px - 16px
+) !default;

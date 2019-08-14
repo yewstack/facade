@@ -3,6 +3,7 @@ use failure::Fail;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
+use strum_macros::EnumIter;
 
 #[derive(Fail, Debug)]
 pub enum Error {
@@ -102,7 +103,9 @@ pub struct Flex {
     pub components: Vec<Component>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub type FlexWidth = (Breakpoint, Cols);
+
+#[derive(Serialize, Deserialize, EnumIter, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Breakpoint {
     XSmall,
     Small,
@@ -111,7 +114,7 @@ pub enum Breakpoint {
     XLarge,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Serialize, Deserialize, EnumIter, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Cols {
     N1,
     N2,

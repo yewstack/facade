@@ -1,0 +1,50 @@
+@import './_vars';
+
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,400,600,700&display=swap');
+
+// VARS
+
+// PALLETE
+
+// COLORS
+
+$background_color: #FFF
+$text_color: #000
+$small_padding: 30px
+
+// MIXINS
+
+// Standard block that has no special properties
+=block
+    margin: 0
+    padding: 0
+    border: 0
+    font: inherit
+    font-size: 100%
+    vertical-align: baseline
+
+html, body, div
+    +block
+
+body
+    background: $background_color
+    color: $text_color
+
+// Master block
+.container
+    width: 100%
+    padding: 0
+    margin-right: auto
+    margin-left: auto
+
+// Alignment and justification
+.layout
+  display: flex
+  flex-wrap: wrap
+  flex: 1 1 auto
+  margin-right: -$grid-gutter / 2
+  margin-left: -$grid-gutter / 2
+
+// Support breakpoints
+.flex
+    // TODO: breakpoints...
