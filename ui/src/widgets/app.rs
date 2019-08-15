@@ -33,7 +33,14 @@ impl Widget for Model {
         let mut classes = vec!["app"];
         html! {
             <div class=classes>
-                <widgets::List: list=self.app.navigation_drawer.clone() />
+                <div class="navigation-drawer">
+                    <widgets::List: list=self.app.navigation_drawer.clone() />
+                </div>
+                <div class="app-bar">
+                </div>
+                <div class="content">
+                    <widgets::Container: container=self.app.content.clone() />
+                </div>
             </div>
         }
     }

@@ -45,6 +45,7 @@ impl Model {
                     { widgets::Icon::new(item.action.clone()).render() }
                 </div>
                 <div class="list-item-content">
+                    { &item.content.caption }
                 </div>
             </div>
         }

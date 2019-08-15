@@ -1,5 +1,6 @@
 #![allow(non_snake_case)]
 
+pub use protocol::Icon;
 use std::collections::HashMap;
 
 pub fn Scene(app: protocol::App) -> protocol::Scene {
@@ -22,6 +23,15 @@ pub fn App(list: protocol::List, content: protocol::Container) -> protocol::App 
 pub fn List(items: Vec<protocol::ListItem>) -> protocol::List {
     protocol::List {
         items,
+    }
+}
+
+pub fn ListItem(icon: protocol::Icon, title: String) -> protocol::ListItem {
+    protocol::ListItem {
+        action: icon,
+        content: protocol::Title {
+            caption: title,
+        },
     }
 }
 

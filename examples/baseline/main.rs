@@ -18,7 +18,9 @@ pub async fn main() -> Result<(), Error> {
     let scene = {
         use facade::dsl::*;
         Scene(App(
-            List(vec![]),
+            List(vec![
+                 ListItem(Icon::Home, "MenuItem".into()),
+            ]),
             Container(
                 Layout(vec![
                    Flex(),
