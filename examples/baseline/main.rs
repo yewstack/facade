@@ -17,12 +17,14 @@ pub async fn main() -> Result<(), Error> {
     let mut control = facade::main()?;
     let scene = {
         use facade::dsl::*;
-        Scene(Container(
-            Layout(vec![
-               Flex(),
-               Flex(),
-               Flex(),
-            ])
+        Scene(App(
+            Container(
+                Layout(vec![
+                   Flex(),
+                   Flex(),
+                   Flex(),
+                ])
+            )
         ))
     };
     control.scene(scene);

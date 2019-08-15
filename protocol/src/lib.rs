@@ -51,8 +51,43 @@ impl Message for Reaction {}
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum Scene {
     Spinner,
-    App,
+    App(App),
     Container(Container),
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct App {
+    pub navigation_drawer: List,
+    pub app_bar: Bar,
+    pub content: Container,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct List {
+    pub items: Vec<ListItem>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct ListItem {
+    pub action: Icon,
+    pub content: Title,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub enum Icon {
+    Home,
+    MenuSandwich,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct Title {
+    pub caption: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct Bar {
+    pub nav_icon: Icon,
+    pub title: Title,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]

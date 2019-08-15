@@ -35,6 +35,9 @@ mod welcome;
 pub use welcome::WelcomeWidget as Welcome;
 */
 
+mod app;
+pub use app::AppWidget as App;
+
 mod layout;
 pub use layout::LayoutWidget as Layout;
 

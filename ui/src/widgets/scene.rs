@@ -45,10 +45,9 @@ impl Widget for Model {
                     <widgets::Spinner: />
                 }
             }
-            Scene::App => {
+            Scene::App(ref app) => {
                 html! {
-                    <div class="app">
-                    </div>
+                    <widgets::App: app=app.clone() />
                 }
             }
             Scene::Container(ref container) => {

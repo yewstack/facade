@@ -2,8 +2,21 @@
 
 use std::collections::HashMap;
 
-pub fn Scene(container: protocol::Container) -> protocol::Scene {
-    protocol::Scene::Container(container)
+pub fn Scene(app: protocol::App) -> protocol::Scene {
+    protocol::Scene::App(app)
+}
+
+pub fn App(content: protocol::Container) -> protocol::App {
+    protocol::App {
+        navigation_drawer: protocol::List { items: Vec::new() },
+        app_bar: protocol::Bar {
+            nav_icon: protocol::Icon::MenuSandwich,
+            title: protocol::Title {
+                caption: "Title".into(),
+            }
+        },
+        content,
+    }
 }
 
 pub fn Container(layout: protocol::Layout) -> protocol::Container {
