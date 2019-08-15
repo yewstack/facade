@@ -41,12 +41,10 @@ impl Model {
     fn view_item(&self, item: &protocol::ListItem) -> View<Self> {
         html! {
             <div class="list-item",>
-                <div class="list-item-info",>
-                    <div class="list-item-info-title",>{ &item.title }</div>
-                    <div class="list-item-info-description",>{ &item.description }</div>
+                <div class="list-item-action">
+                    { widgets::Icon::new(item.action.clone()).render() }
                 </div>
-                <div class="list-item-value",>
-                    <widgets::Bind: bind=item.bind.clone(), />
+                <div class="list-item-content">
                 </div>
             </div>
         }

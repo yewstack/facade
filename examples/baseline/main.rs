@@ -18,6 +18,7 @@ pub async fn main() -> Result<(), Error> {
     let scene = {
         use facade::dsl::*;
         Scene(App(
+            List(vec![]),
             Container(
                 Layout(vec![
                    Flex(),

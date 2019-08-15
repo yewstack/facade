@@ -6,9 +6,9 @@ pub fn Scene(app: protocol::App) -> protocol::Scene {
     protocol::Scene::App(app)
 }
 
-pub fn App(content: protocol::Container) -> protocol::App {
+pub fn App(list: protocol::List, content: protocol::Container) -> protocol::App {
     protocol::App {
-        navigation_drawer: protocol::List { items: Vec::new() },
+        navigation_drawer: list,
         app_bar: protocol::Bar {
             nav_icon: protocol::Icon::MenuSandwich,
             title: protocol::Title {
@@ -16,6 +16,12 @@ pub fn App(content: protocol::Container) -> protocol::App {
             }
         },
         content,
+    }
+}
+
+pub fn List(items: Vec<protocol::ListItem>) -> protocol::List {
+    protocol::List {
+        items,
     }
 }
 

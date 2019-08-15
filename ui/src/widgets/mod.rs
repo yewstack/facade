@@ -22,9 +22,6 @@ pub use dynamic::DynamicWidget as Dynamic;
 mod fixed;
 pub use fixed::FixedWidget as Fixed;
 
-mod list;
-pub use list::ListWidget as List;
-
 mod page;
 pub use page::PageWidget as Page;
 
@@ -38,11 +35,17 @@ pub use welcome::WelcomeWidget as Welcome;
 mod app;
 pub use app::AppWidget as App;
 
+mod container;
+pub use container::ContainerWidget as Container;
+
+mod icon;
+pub use icon::Icon;
+
 mod layout;
 pub use layout::LayoutWidget as Layout;
 
-mod container;
-pub use container::ContainerWidget as Container;
+mod list;
+pub use list::ListWidget as List;
 
 mod scene;
 pub use scene::SceneWidget as Scene;
