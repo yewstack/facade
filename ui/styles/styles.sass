@@ -20,6 +20,15 @@ $background_color: #FFF
 $text_color: #000
 $small_padding: 30px
 
+body
+    box-sizing: border-box
+    overflow-y: scroll
+
+*
+    box-sizing: inherit
+    padding: 0
+    margin: 0
+
 // MIXINS
 
 // Standard block that has no special properties
@@ -41,26 +50,6 @@ body
 a
   cursor: pointer
 
-// Master block
-.container
-    width: 100%
-    margin-right: auto
-    margin-left: auto
-    padding: 0
-
-// Alignment and justification
-.layout
-    display: flex
-    flex-wrap: wrap
-    flex: 1 1 auto
-    margin-right: -$grid-gutter / 2
-    margin-left: -$grid-gutter / 2
-
-// Support breakpoints
-.flex
-    // TODO: breakpoints...
-
-
 .f-application
     display: flex
 
@@ -69,8 +58,8 @@ a
         min-height: 100vh
         max-width: 100%
         display: flex
-        flex: 1 1 auto
         flex-direction: column
+        flex: 1 1 auto
         backface-visibility: hidden
 
 .f-navigation-drawer
@@ -81,6 +70,11 @@ a
     flex-direction: column
     overflow: hidden
     pointer-events: auto
+
+.f-navigation-drawer--fixed
+  position: fixed
+  z-index: 6
+  background: wheat
 
 .f-navigation-drawer__border
     position: absolute
@@ -93,3 +87,15 @@ a
     height: 100%
     overflow-y: auto
     overflow-x: hidden
+
+.f-app-bar
+    background: yellow
+
+.f-toolbar
+    max-width: 100%
+    flex: 1 1 auto
+
+.f-content
+    display: flex
+    flex: 1 0 auto
+    max-width: 100%
