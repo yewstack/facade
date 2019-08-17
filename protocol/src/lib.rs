@@ -57,9 +57,14 @@ pub enum Scene {
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct App {
-    pub navigation_drawer: List,
+    pub navigation_drawer: NavigationDrawer,
     pub app_bar: Bar,
     pub content: Container,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct NavigationDrawer {
+    pub list: List,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]

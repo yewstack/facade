@@ -7,9 +7,9 @@ pub fn Scene(app: protocol::App) -> protocol::Scene {
     protocol::Scene::App(app)
 }
 
-pub fn App(list: protocol::List, content: protocol::Container) -> protocol::App {
+pub fn App(navigation_drawer: protocol::NavigationDrawer, content: protocol::Container) -> protocol::App {
     protocol::App {
-        navigation_drawer: list,
+        navigation_drawer,
         app_bar: protocol::Bar {
             nav_icon: protocol::Icon::MenuSandwich,
             title: protocol::Title {
@@ -17,6 +17,12 @@ pub fn App(list: protocol::List, content: protocol::Container) -> protocol::App 
             }
         },
         content,
+    }
+}
+
+pub fn NavigationDrawer(list: protocol::List) -> protocol::NavigationDrawer {
+    protocol::NavigationDrawer {
+        list,
     }
 }
 

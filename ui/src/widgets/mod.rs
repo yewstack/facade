@@ -47,6 +47,9 @@ pub use layout::LayoutWidget as Layout;
 mod list;
 pub use list::ListWidget as List;
 
+mod navigation_drawer;
+pub use navigation_drawer::NavigationDrawerWidget as NavigationDrawer;
+
 mod scene;
 pub use scene::SceneWidget as Scene;
 
