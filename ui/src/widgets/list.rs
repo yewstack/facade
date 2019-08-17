@@ -29,8 +29,12 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
+        let mut classes = vec!["list"];
+        if self.list.dense {
+            classes.push("dense");
+        }
         html! {
-            <div class="list",>
+            <div class=classes,>
                 { for self.list.items.iter().map(|item| self.view_item(item)) }
             </div>
         }

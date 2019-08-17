@@ -64,6 +64,7 @@ pub struct App {
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct List {
+    pub dense: bool,
     pub items: Vec<ListItem>,
 }
 

@@ -22,6 +22,7 @@ pub fn App(list: protocol::List, content: protocol::Container) -> protocol::App 
 
 pub fn List(items: Vec<protocol::ListItem>) -> protocol::List {
     protocol::List {
+        dense: true,
         items,
     }
 }

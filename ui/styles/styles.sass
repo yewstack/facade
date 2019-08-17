@@ -1,3 +1,11 @@
+// Ordering:
+// 1. Position
+// 2. Size
+// 3. Layout
+// 4. Margin
+// 5. Padding
+// 6. Other
+
 @import './_vars';
 
 @import url('https://fonts.googleapis.com/css?family=Nunito:300,400,600,700&display=swap');
@@ -30,21 +38,58 @@ body
     background: $background_color
     color: $text_color
 
+a
+  cursor: pointer
+
 // Master block
 .container
     width: 100%
-    padding: 0
     margin-right: auto
     margin-left: auto
+    padding: 0
 
 // Alignment and justification
 .layout
-  display: flex
-  flex-wrap: wrap
-  flex: 1 1 auto
-  margin-right: -$grid-gutter / 2
-  margin-left: -$grid-gutter / 2
+    display: flex
+    flex-wrap: wrap
+    flex: 1 1 auto
+    margin-right: -$grid-gutter / 2
+    margin-left: -$grid-gutter / 2
 
 // Support breakpoints
 .flex
     // TODO: breakpoints...
+
+
+.f-application
+    display: flex
+
+    &--wrap
+        position: relative
+        min-height: 100vh
+        max-width: 100%
+        display: flex
+        flex: 1 1 auto
+        flex-direction: column
+        backface-visibility: hidden
+
+.f-navigation-drawer
+    top: 0
+    left: 0
+    max-width: 100%
+    display: flex
+    flex-direction: column
+    overflow: hidden
+    pointer-events: auto
+
+.f-navigation-drawer__border
+    position: absolute
+    right: 0
+    top: 0
+    height: 100%
+    width: 1px
+
+.f-navigation-drawer__content
+    height: 100%
+    overflow-y: auto
+    overflow-x: hidden

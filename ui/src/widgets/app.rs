@@ -30,16 +30,20 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        let mut classes = vec!["app"];
         html! {
-            <div class=classes>
-                <div class="navigation-drawer">
-                    <widgets::List: list=self.app.navigation_drawer.clone() />
-                </div>
-                <div class="app-bar">
-                </div>
-                <div class="content">
-                    <widgets::Container: container=self.app.content.clone() />
+            <div class="f-application">
+                <div class="f-application--wrap">
+                    <div class="f-navigation-drawer">
+                        <div class="f-navigation-drawer_border" />
+                        <div class="f-navigation-drawer_content">
+                            <widgets::List: list=self.app.navigation_drawer.clone() />
+                        </div>
+                    </div>
+                    <div class="app-bar">
+                    </div>
+                    <div class="content">
+                        <widgets::Container: container=self.app.content.clone() />
+                    </div>
                 </div>
             </div>
         }
