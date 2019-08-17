@@ -39,7 +39,11 @@ impl Widget for Model {
             <div class="f-application">
                 <div class="f-application--wrap">
                     <widgets::NavigationDrawer: navigation_drawer=self.app.navigation_drawer.clone() />
-                    <div class="f-app-bar f-toolbar" style=app_bar_style>
+                    <div class="f-app-bar f-app-bar--fixed f-toolbar" style=app_bar_style>
+                        <div class="f-toolbar__content">
+                            <div class="f-app-bar__nav-icon" />
+                            <div class="f-toolbar__title">{ &self.app.app_bar.title.caption }</div>
+                        </div>
                     </div>
                     <div class="f-content">
                         <widgets::Container: container=self.app.content.clone() />
