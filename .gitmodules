@@ -1,0 +1,3 @@
+[submodule "ui/styles/vuetify"]
+	path = ui/styles/vuetify
+	url = git@github.com:vuetifyjs/vuetify.git

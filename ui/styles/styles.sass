@@ -1,113 +1,75 @@
-// Ordering:
-// 1. Position
-// 2. Size
-// 3. Layout
-// 4. Margin
-// 5. Padding
-// 6. Other
-
-@import './_vars';
-
-@import url('https://fonts.googleapis.com/css?family=Nunito:300,400,600,700&display=swap');
-
-// VARS
-
-// PALLETE
-
-// COLORS
-
-$background_color: #FFF
-$text_color: #000
-$small_padding: 30px
-
-body
-    box-sizing: border-box
-    overflow-y: scroll
-
-*
-    box-sizing: inherit
-    padding: 0
-    margin: 0
-
-// MIXINS
-
-// Standard block that has no special properties
-=block
-    margin: 0
-    padding: 0
-    border: 0
-    font: inherit
-    font-size: 100%
-    vertical-align: baseline
-
-html, body, div
-    +block
-
-body
-    background: $background_color
-    color: $text_color
-
-a
-  cursor: pointer
-
-.f-application
-    display: flex
-
-    &--wrap
-        position: relative
-        min-height: 100vh
-        max-width: 100%
-        display: flex
-        flex-direction: column
-        flex: 1 1 auto
-        backface-visibility: hidden
-
-.f-navigation-drawer
-    top: 0
-    left: 0
-    max-width: 100%
-    display: flex
-    flex-direction: column
-    overflow: hidden
-    pointer-events: auto
-
-.f-navigation-drawer--fixed
-  position: fixed
-  z-index: 6
-  background: wheat
-
-.f-navigation-drawer__border
-    position: absolute
-    right: 0
-    top: 0
-    height: 100%
-    width: 1px
-
-.f-navigation-drawer__content
-    height: 100%
-    overflow-y: auto
-    overflow-x: hidden
-
-.f-app-bar
-    background: yellow
-
-.f-app-bar--fixed
-    position: fixed
-    top: 0
-    z-index: 5
-
-.f-toolbar
-    max-width: 100%
-    flex: 1 1 auto
-
-.f-toolbar__content
-    position: relative
-    align-items: center
-    display: flex
-    z-index: 0
-    padding: $toolbar-content-padding-y $toolbar-content-padding-x
-
-.f-content
-    display: flex
-    flex: 1 0 auto
-    max-width: 100%
+@import './vuetify/packages/vuetify/src/styles/main.sass'
+//@import './vuetify/packages/vuetify/src/components/VAlert/VAlert.sass'
+@import './vuetify/packages/vuetify/src/components/VApp/VApp.sass'
+@import './vuetify/packages/vuetify/src/components/VAppBar/VAppBar.sass'
+//@import './vuetify/packages/vuetify/src/components/VAutocomplete/VAutocomplete.sass'
+//@import './vuetify/packages/vuetify/src/components/VAvatar/VAvatar.sass'
+//@import './vuetify/packages/vuetify/src/components/VBadge/VBadge.sass'
+//@import './vuetify/packages/vuetify/src/components/VBanner/VBanner.sass'
+//@import './vuetify/packages/vuetify/src/components/VBottomNavigation/VBottomNavigation.sass'
+//@import './vuetify/packages/vuetify/src/components/VBottomSheet/VBottomSheet.sass'
+//@import './vuetify/packages/vuetify/src/components/VBreadcrumbs/VBreadcrumbs.sass'
+//@import './vuetify/packages/vuetify/src/components/VBtn/VBtn.sass'
+//@import './vuetify/packages/vuetify/src/components/VBtnToggle/VBtnToggle.sass'
+//@import './vuetify/packages/vuetify/src/components/VCalendar/VCalendar.sass'
+//@import './vuetify/packages/vuetify/src/components/VCard/VCard.sass'
+//@import './vuetify/packages/vuetify/src/components/VCarousel/VCarousel.sass'
+//@import './vuetify/packages/vuetify/src/components/VCheckbox/VCheckbox.sass'
+//@import './vuetify/packages/vuetify/src/components/VChip/VChip.sass'
+//@import './vuetify/packages/vuetify/src/components/VChipGroup/VChipGroup.sass'
+//@import './vuetify/packages/vuetify/src/components/VColorPicker/VColorPicker.sass'
+//@import './vuetify/packages/vuetify/src/components/VCombobox/VCombobox.sass'
+//@import './vuetify/packages/vuetify/src/components/VContent/VContent.sass'
+//@import './vuetify/packages/vuetify/src/components/VCounter/VCounter.sass'
+//@import './vuetify/packages/vuetify/src/components/VData/VData.sass'
+//@import './vuetify/packages/vuetify/src/components/VDataIterator/VDataIterator.sass'
+//@import './vuetify/packages/vuetify/src/components/VDataTable/VDataTable.sass'
+//@import './vuetify/packages/vuetify/src/components/VDatePicker/VDatePicker.sass'
+//@import './vuetify/packages/vuetify/src/components/VDialog/VDialog.sass'
+//@import './vuetify/packages/vuetify/src/components/VDivider/VDivider.sass'
+//@import './vuetify/packages/vuetify/src/components/VExpansionPanel/VExpansionPanel.sass'
+//@import './vuetify/packages/vuetify/src/components/VFileInput/VFileInput.sass'
+//@import './vuetify/packages/vuetify/src/components/VFooter/VFooter.sass'
+//@import './vuetify/packages/vuetify/src/components/VForm/VForm.sass'
+//@import './vuetify/packages/vuetify/src/components/VGrid/VGrid.sass'
+//@import './vuetify/packages/vuetify/src/components/VHover/VHover.sass'
+//@import './vuetify/packages/vuetify/src/components/VIcon/VIcon.sass'
+//@import './vuetify/packages/vuetify/src/components/VImg/VImg.sass'
+//@import './vuetify/packages/vuetify/src/components/VInput/VInput.sass'
+//@import './vuetify/packages/vuetify/src/components/VItemGroup/VItemGroup.sass'
+//@import './vuetify/packages/vuetify/src/components/VLabel/VLabel.sass'
+//@import './vuetify/packages/vuetify/src/components/VList/VList.sass'
+//@import './vuetify/packages/vuetify/src/components/VMenu/VMenu.sass'
+//@import './vuetify/packages/vuetify/src/components/VMessages/VMessages.sass'
+@import './vuetify/packages/vuetify/src/components/VNavigationDrawer/VNavigationDrawer.sass'
+//@import './vuetify/packages/vuetify/src/components/VOverflowBtn/VOverflowBtn.sass'
+//@import './vuetify/packages/vuetify/src/components/VOverlay/VOverlay.sass'
+//@import './vuetify/packages/vuetify/src/components/VPagination/VPagination.sass'
+//@import './vuetify/packages/vuetify/src/components/VParallax/VParallax.sass'
+//@import './vuetify/packages/vuetify/src/components/VPicker/VPicker.sass'
+//@import './vuetify/packages/vuetify/src/components/VProgressCircular/VProgressCircular.sass'
+//@import './vuetify/packages/vuetify/src/components/VProgressLinear/VProgressLinear.sass'
+//@import './vuetify/packages/vuetify/src/components/VRadioGroup/VRadioGroup.sass'
+//@import './vuetify/packages/vuetify/src/components/VRangeSlider/VRangeSlider.sass'
+//@import './vuetify/packages/vuetify/src/components/VRating/VRating.sass'
+//@import './vuetify/packages/vuetify/src/components/VResponsive/VResponsive.sass'
+//@import './vuetify/packages/vuetify/src/components/VSelect/VSelect.sass'
+//@import './vuetify/packages/vuetify/src/components/VSheet/VSheet.sass'
+//@import './vuetify/packages/vuetify/src/components/VSlideGroup/VSlideGroup.sass'
+//@import './vuetify/packages/vuetify/src/components/VSlider/VSlider.sass'
+//@import './vuetify/packages/vuetify/src/components/VSnackbar/VSnackbar.sass'
+//@import './vuetify/packages/vuetify/src/components/VSparkline/VSparkline.sass'
+//@import './vuetify/packages/vuetify/src/components/VSpeedDial/VSpeedDial.sass'
+//@import './vuetify/packages/vuetify/src/components/VStepper/VStepper.sass'
+//@import './vuetify/packages/vuetify/src/components/VSubheader/VSubheader.sass'
+//@import './vuetify/packages/vuetify/src/components/VSwitch/VSwitch.sass'
+//@import './vuetify/packages/vuetify/src/components/VSystemBar/VSystemBar.sass'
+//@import './vuetify/packages/vuetify/src/components/VTabs/VTabs.sass'
+//@import './vuetify/packages/vuetify/src/components/VTextarea/VTextarea.sass'
+//@import './vuetify/packages/vuetify/src/components/VTextField/VTextField.sass'
+//@import './vuetify/packages/vuetify/src/components/VTimeline/VTimeline.sass'
+//@import './vuetify/packages/vuetify/src/components/VTimePicker/VTimePicker.sass'
+@import './vuetify/packages/vuetify/src/components/VToolbar/VToolbar.sass'
+//@import './vuetify/packages/vuetify/src/components/VTooltip/VTooltip.sass'
+//@import './vuetify/packages/vuetify/src/components/VTreeview/VTreeview.sass'
+//@import './vuetify/packages/vuetify/src/components/VWindow/VWindow.sass'

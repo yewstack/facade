@@ -36,19 +36,19 @@ impl Widget for Model {
         app_bar_style.push_str("left: 256px;");
         app_bar_style.push_str("right: 0px;");
         html! {
-            <div class="f-application">
-                <div class="f-application--wrap">
+            <div class="v-application">
+                <div class="v-application--wrap">
                     <widgets::NavigationDrawer: navigation_drawer=self.app.navigation_drawer.clone() />
-                    <div class="f-app-bar f-app-bar--fixed f-toolbar" style=app_bar_style>
-                        <div class="f-toolbar__content">
-                            <div class="f-app-bar__nav-icon" />
-                            <div class="f-toolbar__title">{ &self.app.app_bar.title.caption }</div>
+                    <div class="v-app-bar v-app-bar--fixed v-toolbar" style=app_bar_style>
+                        <div class="v-toolbar__content">
+                            <div class="v-app-bar__nav-icon" />
+                            <div class="v-toolbar__title">{ &self.app.app_bar.title.caption }</div>
                         </div>
                     </div>
-                    <div class="f-content">
+                    <div class="v-content">
                         <widgets::Container: container=self.app.content.clone() />
                     </div>
-                    <div class="f-footer">
+                    <div class="v-footer">
                     </div>
                 </div>
             </div>

@@ -6,6 +6,12 @@
 
 To achieve that effect **Facade** uses [Yew](https://github.com/DenisKolodin/yew) framework to build a universal UI and use WebSocket connection to interact with your app that supply live updates to UI that renders them reactively.
 
+## Vuetify relations
+
+We reuse CSS components' styles from Vuetify project: https://github.com/vuetifyjs/vuetify
+
+You can read the license of Vuetify here: https://github.com/vuetifyjs/vuetify/blob/master/LICENSE.md
+
 ## Use-cases
 
 Uses-cases of this framework are unlimited and include but are not limited to the following cases
