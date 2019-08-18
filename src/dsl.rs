@@ -46,7 +46,7 @@ pub fn ListItem(icon: protocol::Icon, title: String) -> protocol::ListItem {
 pub fn Container(layout: protocol::Layout) -> protocol::Container {
     protocol::Container {
         layout,
-        fluid: false,
+        fluid: true,
     }
 }
 
