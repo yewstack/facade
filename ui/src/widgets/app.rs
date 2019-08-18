@@ -38,15 +38,6 @@ impl Widget for Model {
 
         let v_content_style = "padding: 64px 0px 36px 256px;";
 
-        let mut v_footer = vec!["v-footer"];
-        v_footer.push("v-footer--fixed");
-        v_footer.push("v-sheet");
-        v_footer.push("v-sheet--tile");
-        v_footer.push("theme--light");
-        v_footer.push("indigo");
-
-        let v_footer_style = "left: 0px; right: 0px; bottom: 0px;";
-
         html! {
             <div class=v_application>
                 <div class="v-application--wrap">
@@ -57,9 +48,7 @@ impl Widget for Model {
                             <widgets::Container: container=self.app.content.clone() />
                         </div>
                     </div>
-                    <div class=v_footer style=v_footer_style>
-                        <span class="white--text">{ "© 2019" }</span>
-                    </div>
+                    <widgets::Footer: footer=self.app.footer.clone() />
                 </div>
             </div>
         }

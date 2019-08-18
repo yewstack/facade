@@ -60,6 +60,7 @@ pub struct App {
     pub navigation_drawer: NavigationDrawer,
     pub app_bar: Bar,
     pub content: Container,
+    pub footer: Footer,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -95,6 +96,10 @@ pub struct Title {
 pub struct Bar {
     pub nav_icon: Icon,
     pub title: Title,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct Footer {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]

@@ -17,6 +17,7 @@ pub fn App(navigation_drawer: protocol::NavigationDrawer, content: protocol::Con
             }
         },
         content,
+        footer: protocol::Footer { },
     }
 }
 
