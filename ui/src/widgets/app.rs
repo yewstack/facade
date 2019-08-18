@@ -36,15 +36,29 @@ impl Widget for Model {
         // TODO: Check `dark` flag in app
         v_application.push("theme--light");
 
+        let v_content_style = "padding: 64px 0px 36px 256px;";
+
+        let mut v_footer = vec!["v-footer"];
+        v_footer.push("v-footer--fixed");
+        v_footer.push("v-sheet");
+        v_footer.push("v-sheet--tile");
+        v_footer.push("theme--light");
+        v_footer.push("indigo");
+
+        let v_footer_style = "left: 0px; right: 0px; bottom: 0px;";
+
         html! {
             <div class=v_application>
                 <div class="v-application--wrap">
                     <widgets::NavigationDrawer: navigation_drawer=self.app.navigation_drawer.clone() />
                     <widgets::AppBar: app_bar=self.app.app_bar.clone() />
-                    <div class="v-content">
-                        <widgets::Container: container=self.app.content.clone() />
+                    <div class="v-content" style=v_content_style>
+                        <div class="v-content__wrap">
+                            <widgets::Container: container=self.app.content.clone() />
+                        </div>
                     </div>
-                    <div class="v-footer">
+                    <div class=v_footer style=v_footer_style>
+                        <span class="white--text">{ "© 2019" }</span>
                     </div>
                 </div>
             </div>
