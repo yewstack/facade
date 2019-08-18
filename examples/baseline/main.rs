@@ -20,7 +20,8 @@ pub async fn main() -> Result<(), Error> {
         Scene(App(
             NavigationDrawer(
                 List(vec![
-                    ListItem(Icon::Home, "MenuItem".into()),
+                    ListItem(Icon::Home, "Home".into()),
+                    ListItem(Icon::ContactMail, "Contact".into()),
                 ])
             ),
             Container(

@@ -82,6 +82,7 @@ pub struct ListItem {
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum Icon {
     Home,
+    ContactMail,
     MenuSandwich,
 }
 
