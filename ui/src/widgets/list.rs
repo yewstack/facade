@@ -56,7 +56,9 @@ impl Model {
                     { widgets::Icon::new(item.action.clone()).render() }
                 </div>
                 <div class="v-list-item__content">
-                    { &item.content.caption }
+                    <div class="v-list-item__title">
+                        { &item.content.caption }
+                    </div>
                 </div>
             </div>
         }

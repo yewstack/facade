@@ -35,6 +35,9 @@ pub use welcome::WelcomeWidget as Welcome;
 mod app;
 pub use app::AppWidget as App;
 
+mod app_bar;
+pub use app_bar::AppBarWidget as AppBar;
+
 mod container;
 pub use container::ContainerWidget as Container;
 
