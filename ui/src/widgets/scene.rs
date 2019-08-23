@@ -1,6 +1,6 @@
 use crate::live::{Requirement, ResponseEvt};
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use protocol::{Reaction, Scene};
+use protocol::{Container, Reaction, Scene};
 use yew::{html, Properties, ShouldRender};
 
 pub type SceneWidget = WidgetModel<Model>;
@@ -45,16 +45,14 @@ impl Widget for Model {
                     <widgets::Spinner: />
                 }
             }
-            Scene::FullScreen(ref layout) => {
+            Scene::App(ref app) => {
                 html! {
-                    <div class="scene-fullscreen",>
-                        <widgets::Layout: layout=layout.clone(), />
-                    </div>
+                    <widgets::App: app=app.clone() />
                 }
             }
-            Scene::Dashboard(ref dashboard) => {
+            Scene::Container(ref container) => {
                 html! {
-                    <widgets::Dashboard: dashboard=dashboard.clone(), />
+                    <widgets::Container: container=container.clone() />
                 }
             }
         }

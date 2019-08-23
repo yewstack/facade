@@ -1,5 +1,6 @@
+use crate::utils::ToClass;
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use protocol::Layout;
+use protocol::{Flex, Layout};
 use yew::{html, Properties};
 
 pub type LayoutWidget = WidgetModel<Model>;
@@ -30,65 +31,43 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        match self.layout {
-            Layout::Blank => {
-                html! {
-                    <p>{ "Blank" }</p>
-                }
-            }
-            Layout::Welcome => {
-                html! {
-                    <p>{ "Welcome" }</p>
-                }
-            }
-            Layout::Bind(ref bind) => {
-                html! {
-                    <widgets::Bind: bind = bind.clone(), />
-                }
-            }
-            Layout::Control(ref control) => {
-                html! {
-                    <widgets::Control: control = control.clone(), />
-                }
-            }
-            Layout::Row(ref layouts) => {
-                html! {
-                    <div class="layout-row",>
-                        { for layouts.iter().map(|lyo| self.row(lyo)) }
-                    </div>
-                }
-            }
-            Layout::Column(ref layouts) => {
-                html! {
-                    <div class="layout-column",>
-                        { for layouts.iter().map(|lyo| self.column(lyo)) }
-                    </div>
-                }
-            }
-            Layout::List(ref list) => {
-                html! {
-                    <widgets::List: list = list.clone(), />
-                }
-            }
-            Layout::Container(ref container) => {
-                html! {
-                    <widgets::Container: container = *container.clone(), />
-                }
-            }
+        let mut classes = Vec::with_capacity(10);
+        classes.push("layout");
+        if self.layout.wrap {
+            classes.push("wrap");
+        }
+        if self.layout.fill {
+            classes.push("fill");
+        }
+        if self.layout.reverse {
+            classes.push("reverse");
+        }
+        if let Some(ref direction) = self.layout.direction {
+            classes.push(direction.to_class());
+        }
+        if let Some(ref align) = self.layout.align {
+            classes.push(align.to_class());
+        }
+        if let Some(ref justify) = self.layout.justify {
+            classes.push(justify.to_class());
+        }
+        html! {
+            <div class=classes>
+                { for self.layout.flex_vec.iter().map(|flex| self.view_flex(flex)) }
+            </div>
         }
     }
 }
 
 impl Model {
-    fn column(&self, layout: &Layout) -> View<Self> {
+    fn view_flex(&self, flex: &Flex) -> View<Self> {
         html! {
-            <widgets::Layout: layout=layout.clone(), />
-        }
-    }
-
-    fn row(&self, layout: &Layout) -> View<Self> {
-        html! {
-            <widgets::Layout: layout=layout.clone(), />
+            let mut classes = Vec::with_capacity(10);
+            classes.push("flex");
+            html! {
+                <div class=classes>
+                </div>
+            }
         }
     }
 }

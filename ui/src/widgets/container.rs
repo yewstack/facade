@@ -30,24 +30,15 @@ impl Widget for Model {
     }
 
     fn main_view(&self) -> View<Self> {
-        match self.container {
-            Container::Blank => {
-                html! {
-                    <p>{ "Blank" }</p>
-                }
-            }
-            Container::Tabs(_) => {
-                html! {
-                    <p>{ "Tabs" }</p>
-                }
-            }
-            Container::Panel(ref panel) => {
-                html! {
-                    <div class="container",>
-                        <widgets::Panel: panel=panel.clone(), />
-                    </div>
-                }
-            }
+        let mut v_container = vec!["container"];
+        v_container.push("fill-height");
+        if self.container.fluid {
+            v_container.push("container--fluid");
+        }
+        html! {
+            <div class=v_container>
+                <widgets::Layout: layout=self.container.layout.clone() />
+            </div>
         }
     }
 }

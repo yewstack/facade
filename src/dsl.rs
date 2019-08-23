@@ -1,5 +1,76 @@
 #![allow(non_snake_case)]
 
+pub use protocol::Icon;
+use std::collections::HashMap;
+
+pub fn Scene(app: protocol::App) -> protocol::Scene {
+    protocol::Scene::App(app)
+}
+
+pub fn App(navigation_drawer: protocol::NavigationDrawer, content: protocol::Container) -> protocol::App {
+    protocol::App {
+        navigation_drawer,
+        app_bar: protocol::Bar {
+            nav_icon: protocol::Icon::MenuSandwich,
+            title: protocol::Title {
+                caption: "Title".into(),
+            }
+        },
+        content,
+        footer: protocol::Footer { },
+    }
+}
+
+pub fn NavigationDrawer(list: protocol::List) -> protocol::NavigationDrawer {
+    protocol::NavigationDrawer {
+        list,
+    }
+}
+
+pub fn List(items: Vec<protocol::ListItem>) -> protocol::List {
+    protocol::List {
+        dense: true,
+        items,
+    }
+}
+
+pub fn ListItem(icon: protocol::Icon, title: String) -> protocol::ListItem {
+    protocol::ListItem {
+        action: icon,
+        content: protocol::Title {
+            caption: title,
+        },
+    }
+}
+
+pub fn Container(layout: protocol::Layout) -> protocol::Container {
+    protocol::Container {
+        layout,
+        fluid: true,
+    }
+}
+
+pub fn Layout(flex_vec: Vec<protocol::Flex>) -> protocol::Layout {
+    protocol::Layout {
+        flex_vec,
+        wrap: false,
+        fill: false,
+        reverse: false,
+        direction: None,
+        align: None,
+        justify: None,
+    }
+}
+
+pub fn Flex() -> protocol::Flex {
+    protocol::Flex {
+        breakpoints: HashMap::new(),
+        offsets: HashMap::new(),
+        components: Vec::new(),
+    }
+}
+
+/*
 use protocol::{self, Id, Layout, Value};
 
 // ╔═╗┌─┐┌─┐┌┐┌┌─┐┌─┐
@@ -136,3 +207,4 @@ pub mod macros {
     }
 }
 pub use super::many;
+*/

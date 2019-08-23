@@ -1,5 +1,6 @@
 //! This module defines aliases to widget types.
 
+/*
 mod bind;
 pub use bind::BindWidget as Bind;
 
@@ -8,9 +9,6 @@ pub use blank::BlankWidget as Blank;
 
 mod button;
 pub use button::ButtonWidget as Button;
-
-mod container;
-pub use container::ContainerWidget as Container;
 
 mod control;
 pub use control::ControlWidget as Control;
@@ -24,26 +22,45 @@ pub use dynamic::DynamicWidget as Dynamic;
 mod fixed;
 pub use fixed::FixedWidget as Fixed;
 
-mod layout;
-pub use layout::LayoutWidget as Layout;
-
-mod list;
-pub use list::ListWidget as List;
-
 mod page;
 pub use page::PageWidget as Page;
 
 mod panel;
 pub use panel::PanelWidget as Panel;
 
+mod welcome;
+pub use welcome::WelcomeWidget as Welcome;
+*/
+
+mod app;
+pub use app::AppWidget as App;
+
+mod app_bar;
+pub use app_bar::AppBarWidget as AppBar;
+
+mod container;
+pub use container::ContainerWidget as Container;
+
+mod footer;
+pub use footer::FooterWidget as Footer;
+
+mod icon;
+pub use icon::Icon;
+
+mod layout;
+pub use layout::LayoutWidget as Layout;
+
+mod list;
+pub use list::ListWidget as List;
+
+mod navigation_drawer;
+pub use navigation_drawer::NavigationDrawerWidget as NavigationDrawer;
+
 mod scene;
 pub use scene::SceneWidget as Scene;
 
 mod spinner;
 pub use spinner::SpinnerWidget as Spinner;
-
-mod welcome;
-pub use welcome::WelcomeWidget as Welcome;
 
 mod widget;
 pub use widget::{Reqs, View, Widget, WidgetModel};
