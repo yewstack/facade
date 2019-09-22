@@ -18,19 +18,11 @@ pub async fn main() -> Result<(), Error> {
     let scene = {
         use facade::dsl::*;
         Scene(App(
-            NavigationDrawer(
-                List(vec![
-                    ListItem(Icon::Home, "Home".into()),
-                    ListItem(Icon::ContactMail, "Contact".into()),
-                ])
-            ),
-            Container(
-                Layout(vec![
-                   Flex(),
-                   Flex(),
-                   Flex(),
-                ])
-            )
+            NavigationDrawer(List(vec![
+                ListItem(Icon::Home, "Home".into()),
+                ListItem(Icon::ContactMail, "Contact".into()),
+            ])),
+            Container(Layout(vec![Flex(), Flex(), Flex()])),
         ))
     };
     control.scene(scene);
