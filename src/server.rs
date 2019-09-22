@@ -5,13 +5,13 @@ use flate2::read::GzDecoder;
 use futures::compat::{Compat, Future01CompatExt, Sink01CompatExt, Stream01CompatExt};
 use futures::{join, SinkExt, StreamExt, TryFutureExt};
 use futures_legacy::Stream;
-use futures_timer::Interval;
 use headers::{ContentType, HeaderMapExt};
 use protocol::{Action, Message as _, OverlayId, Reaction};
 use std::collections::HashMap;
 use std::io::Read;
 use std::sync::{Arc, Mutex};
 use tar::Archive;
+use tokio::timer::Interval;
 use warp::filters::ws::{Message, WebSocket};
 use warp::http::{StatusCode, Uri};
 use warp::path::Tail;
@@ -88,7 +88,7 @@ pub async fn process_ws(
     let outbound_send = async move {
         let mut tx = tx.sink_compat();
         let ms = settings.throttle_ms();
-        let mut interval = Interval::new(ms);
+        let mut interval = Interval::new_interval(ms).compat();
         let mut buffer = Vec::new();
         loop {
             interval.next().await;

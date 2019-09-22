@@ -7,39 +7,35 @@ pub fn Scene(app: protocol::App) -> protocol::Scene {
     protocol::Scene::App(app)
 }
 
-pub fn App(navigation_drawer: protocol::NavigationDrawer, content: protocol::Container) -> protocol::App {
+pub fn App(
+    navigation_drawer: protocol::NavigationDrawer,
+    content: protocol::Container,
+) -> protocol::App {
     protocol::App {
         navigation_drawer,
         app_bar: protocol::Bar {
             nav_icon: protocol::Icon::MenuSandwich,
             title: protocol::Title {
                 caption: "Title".into(),
-            }
+            },
         },
         content,
-        footer: protocol::Footer { },
+        footer: protocol::Footer {},
     }
 }
 
 pub fn NavigationDrawer(list: protocol::List) -> protocol::NavigationDrawer {
-    protocol::NavigationDrawer {
-        list,
-    }
+    protocol::NavigationDrawer { list }
 }
 
 pub fn List(items: Vec<protocol::ListItem>) -> protocol::List {
-    protocol::List {
-        dense: true,
-        items,
-    }
+    protocol::List { dense: true, items }
 }
 
 pub fn ListItem(icon: protocol::Icon, title: String) -> protocol::ListItem {
     protocol::ListItem {
         action: icon,
-        content: protocol::Title {
-            caption: title,
-        },
+        content: protocol::Title { caption: title },
     }
 }
 
