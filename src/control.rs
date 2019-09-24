@@ -30,7 +30,11 @@ impl Control {
         self.send_request(request).await
     }
 
-    pub async fn assign(&mut self, id: impl Into<Id>, value: impl Into<Value>) -> Result<(), Error> {
+    pub async fn assign(
+        &mut self,
+        id: impl Into<Id>,
+        value: impl Into<Value>,
+    ) -> Result<(), Error> {
         let delta = Delta {
             id: id.into(),
             value: value.into(),

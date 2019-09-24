@@ -81,6 +81,10 @@ pub struct ListItem {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+pub struct Card {
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum Icon {
     Home,
     ContactMail,
@@ -187,6 +191,7 @@ pub enum Cols {
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum Component {
     List,
+    Card,
 }
 
 pub type OverlayId = Option<Id>;

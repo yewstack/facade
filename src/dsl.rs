@@ -57,10 +57,10 @@ pub fn Row(cols: Vec<protocol::Col>) -> protocol::Row {
 }
 
 /// Replaces `Flex` of 1.x version.
-pub fn Col() -> protocol::Col {
+pub fn Col(components: Vec<protocol::Component>) -> protocol::Col {
     protocol::Col {
         breakpoints: HashMap::new(),
         offsets: HashMap::new(),
-        components: Vec::new(),
+        components,
     }
 }

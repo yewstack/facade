@@ -1,6 +1,6 @@
 use crate::utils::ToClass;
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use protocol::{Col, Row};
+use protocol::{Col, Component, Row};
 use yew::{html, Properties};
 
 pub type RowWidget = WidgetModel<Model>;
@@ -66,8 +66,15 @@ impl Model {
             classes.push("col");
             html! {
                 <div class=classes>
+                    { for col.components.iter().map(|comp| self.view_comp(comp)) }
                 </div>
             }
+        }
+    }
+
+    fn view_comp(&self, comp: &Component) -> View<Self> {
+        html! {
+            <widgets::Component: component=comp.clone() />
         }
     }
 }

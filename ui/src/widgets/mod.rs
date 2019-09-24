@@ -41,6 +41,9 @@ pub use app_bar::AppBarWidget as AppBar;
 mod container;
 pub use container::ContainerWidget as Container;
 
+mod component;
+pub use component::ComponentWidget as Component;
+
 mod footer;
 pub use footer::FooterWidget as Footer;
 
