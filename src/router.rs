@@ -74,10 +74,12 @@ pub async fn main(mut receiver: Receiver) -> Result<(), Error> {
             }
             Request::SetScene(new_scene) => {
                 // Send new_scene to every subscriber
-                scene = new_scene;
-                let response = Reaction::Scene(scene.clone());
-                for sender in &mut subscribers {
-                    drain_all |= sender.send(response.clone()).await.is_err();
+                if scene != new_scene {
+                    scene = new_scene;
+                    let response = Reaction::Scene(scene.clone());
+                    for sender in &mut subscribers {
+                        drain_all |= sender.send(response.clone()).await.is_err();
+                    }
                 }
             }
             Request::SetValue(delta) => {
