@@ -43,4 +43,3 @@ impl Widget for Model {
         }
     }
 }
-

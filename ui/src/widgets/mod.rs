@@ -47,8 +47,8 @@ pub use footer::FooterWidget as Footer;
 mod icon;
 pub use icon::Icon;
 
-mod layout;
-pub use layout::LayoutWidget as Layout;
+mod row;
+pub use row::RowWidget as Row;
 
 mod list;
 pub use list::ListWidget as List;

@@ -1,18 +1,18 @@
 use crate::utils::ToClass;
 use crate::widgets::{self, Reqs, View, Widget, WidgetModel};
-use protocol::{Flex, Layout};
+use protocol::{Col, Row};
 use yew::{html, Properties};
 
-pub type LayoutWidget = WidgetModel<Model>;
+pub type RowWidget = WidgetModel<Model>;
 
 pub struct Model {
-    layout: Layout,
+    row: Row,
 }
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     #[props(required)]
-    pub layout: Layout,
+    pub row: Row,
 }
 
 impl Widget for Model {
@@ -21,49 +21,49 @@ impl Widget for Model {
 
     fn produce(props: &Self::Properties) -> Self {
         Self {
-            layout: props.layout.clone(),
+            row: props.row.clone(),
         }
     }
 
     fn recompose(&mut self, props: &Self::Properties) -> Reqs {
-        self.layout = props.layout.clone();
+        self.row = props.row.clone();
         None
     }
 
     fn main_view(&self) -> View<Self> {
         let mut classes = Vec::with_capacity(10);
-        classes.push("layout");
-        if self.layout.wrap {
+        classes.push("row");
+        if self.row.wrap {
             classes.push("wrap");
         }
-        if self.layout.fill {
+        if self.row.fill {
             classes.push("fill");
         }
-        if self.layout.reverse {
+        if self.row.reverse {
             classes.push("reverse");
         }
-        if let Some(ref direction) = self.layout.direction {
+        if let Some(ref direction) = self.row.direction {
             classes.push(direction.to_class());
         }
-        if let Some(ref align) = self.layout.align {
+        if let Some(ref align) = self.row.align {
             classes.push(align.to_class());
         }
-        if let Some(ref justify) = self.layout.justify {
+        if let Some(ref justify) = self.row.justify {
             classes.push(justify.to_class());
         }
         html! {
             <div class=classes>
-                { for self.layout.flex_vec.iter().map(|flex| self.view_flex(flex)) }
+                { for self.row.cols.iter().map(|col| self.view_col(col)) }
             </div>
         }
     }
 }
 
 impl Model {
-    fn view_flex(&self, flex: &Flex) -> View<Self> {
+    fn view_col(&self, col: &Col) -> View<Self> {
         html! {
             let mut classes = Vec::with_capacity(10);
-            classes.push("flex");
+            classes.push("col");
             html! {
                 <div class=classes>
                 </div>

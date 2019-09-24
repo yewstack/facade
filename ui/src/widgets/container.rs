@@ -37,7 +37,7 @@ impl Widget for Model {
         }
         html! {
             <div class=v_container>
-                <widgets::Layout: layout=self.container.layout.clone() />
+                <widgets::Row: row=self.container.row.clone() />
             </div>
         }
     }

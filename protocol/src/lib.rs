@@ -105,12 +105,12 @@ pub struct Footer {
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct Container {
     pub fluid: bool,
-    pub layout: Layout,
+    pub row: Row,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
-pub struct Layout {
-    pub flex_vec: Vec<Flex>,
+pub struct Row {
+    pub cols: Vec<Col>,
     pub wrap: bool,
     pub fill: bool,
     pub reverse: bool,
@@ -118,6 +118,9 @@ pub struct Layout {
     pub align: Option<Align>,
     pub justify: Option<Justify>,
 }
+
+/// `Layout` replaced with `Row` since Vuetify 2.x.
+pub type Layout = Row;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Direction {
@@ -144,11 +147,14 @@ pub enum Justify {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
-pub struct Flex {
+pub struct Col {
     pub breakpoints: HashMap<Breakpoint, Cols>,
     pub offsets: HashMap<Breakpoint, Cols>,
     pub components: Vec<Component>,
 }
+
+/// `Flex` replaced with `Col` since Vuetify 2.x.
+pub type Flex = Col;
 
 pub type FlexWidth = (Breakpoint, Cols);
 
